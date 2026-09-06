@@ -13,6 +13,23 @@ against 25's platform API rather than against whatever JDK its author happens to
 therefore needs a JDK 25 or newer. `jitpack.yml` → `openjdk25` and CI → `java-version: '25'` alongside. The
 full account is in `../botmaker-studio-api/ROADMAP.md`, dated the same day.
 
+### 2026-09-06 — the skeleton stopped compiling, and nothing noticed for days
+
+`Source.string` grew a return type — `Expr` rather than `String` — and `ExamplePlugin` still passed
+`Source::string` where a codec's literal function wants a `Function<T, String>`. Every generated project
+therefore failed on its first `mvn test` with *incompatible types: bad return type in method reference*.
+Fixed by calling `Source.string(text).source()`, which is also the truer line: an `Expr` is a Java
+expression and `source()` is the text of it.
+
+**The reason it went unnoticed is the reason the check now exists.** The verification recorded below was
+done *by hand, once*, against the reactor of that day. Nothing in any build generates a plugin: the only
+plugin in the world is compiled from the same reactor as the toolkit it uses, so it cannot be out of step
+with it, and the archetype ships **text**, which no compiler reads. `botmaker-cli`'s `ArchetypeSkeletonTest`
+closes it — the placeholders are substituted in the test, the skeleton is compiled with `javac`, loaded
+through `PluginLoader` and run past every `PluginValidator` check, with no Maven and no network. It is in
+the CLI rather than here because that module already has the contract, the loader and the validator; what it
+does not cover is this module's own `archetype-metadata.xml`, since nothing there runs velocity.
+
 ### 2026-08-28 — the module exists, and the skeleton is checked by building it
 
 Plugin-ecosystem plan, phase 6. The deliverable is a project that comes out of

@@ -76,13 +76,14 @@ public final class ExamplePlugin extends AbstractStudioPlugin {
      * <p>The third function is the <b>Java literal</b> the generated bot will compile, so it goes through
      * {@code Source} rather than through string concatenation of your own: a value can contain a quote, a
      * backslash or a pasted newline, and each of those hand-escaped wrongly is a compile error in somebody
-     * else's bot.
+     * else's bot. {@code Source.string} hands back an {@code Expr} — a Java expression, not merely text —
+     * and {@code source()} is the text of it, which is what a codec's literal is declared to return.
      */
     @Override
     protected ValueCatalog buildValueTypes() {
         return ValueCatalog.builder()
                 .add(GREETING, Codecs.or(
-                        Codecs.of(wire -> wire, stored -> stored, Source::string), ""))
+                        Codecs.of(wire -> wire, stored -> stored, text -> Source.string(text).source()), ""))
                 .build();
     }
 

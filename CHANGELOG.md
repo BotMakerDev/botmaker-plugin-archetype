@@ -5,6 +5,22 @@ All notable changes to `botmaker-plugin-archetype`.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this module uses
 [semantic versioning](https://semver.org/). `release.sh` refuses to cut a version with no section here.
 
+## [Unreleased]
+
+### Fixed
+
+- **The generated skeleton compiles again.** `ExamplePlugin`'s value codec passed `Source::string` where a
+  codec's literal function must return a `String`; `Source.string` returns an `Expr` — a Java expression
+  rather than merely text — so a freshly generated project failed with *incompatible types: bad return type
+  in method reference*. The template calls `Source.string(text).source()` now. Everything this README claims
+  is true again: the skeleton builds and passes seven tests unedited.
+
+  It went unnoticed because nothing in the platform's own build ever generates a plugin — the only plugin
+  that exists is compiled from the same reactor as the toolkit it uses, so it cannot be out of step with it.
+  `botmaker-cli`'s `ArchetypeSkeletonTest` compiles this skeleton, loads it through `PluginLoader` and runs
+  every `PluginValidator` check over it, so the next such drift fails a build instead of a stranger's first
+  five minutes.
+
 ## [0.0.2] — 2026-09-02
 
 ### Changed
