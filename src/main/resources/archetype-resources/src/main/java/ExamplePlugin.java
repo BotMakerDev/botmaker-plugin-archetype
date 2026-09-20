@@ -67,23 +67,32 @@ public final class ExamplePlugin extends AbstractStudioPlugin {
     /**
      * The value vocabulary: what a project variable may be.
      *
-     * <p>A codec is per <em>item</em> — parse a stored string, store one back, and render a Java literal.
-     * Shape (a list, a pair) is composed above it, so one codec serves all four shapes without knowing they
-     * exist. {@code Codecs.or} is what makes a partial parser total: a reader of a stored value must degrade
-     * rather than throw, because a value the user typed can be anything and an editor that throws while
-     * building leaves a row of the Parameters window empty.
+     * <p>A codec is per <em>item</em> — parse a stored string, store one back, render a Java literal and
+     * read that literal back. A composite (a list, a map) is composed above it, so one codec serves every
+     * shape without knowing they exist. {@code Codecs.or} is what makes a partial parser total: a reader of
+     * a stored value must degrade rather than throw, because a value the user typed can be anything and an
+     * editor that throws while building leaves a row of the Parameters window empty.
      *
      * <p>The third function is the <b>Java literal</b> the generated bot will compile, so it goes through
      * {@code Source} rather than through string concatenation of your own: a value can contain a quote, a
      * backslash or a pasted newline, and each of those hand-escaped wrongly is a compile error in somebody
      * else's bot. {@code Source.string} hands back an {@code Expr} — a Java expression, not merely text —
      * and {@code source()} is the text of it, which is what a codec's literal is declared to return.
+     *
+     * <p>The fourth is that literal read backwards, and it is <b>not optional</b>: a user parameter is a
+     * field in the bot's own Java, so a type that cannot read its own literal is one the editor writes once
+     * and thereafter shows read-only. Write it in the same expression as the literal it undoes. Declining is
+     * still a legitimate answer for a <em>particular</em> source — a hand-written expression this plugin
+     * never emits — and the host then shows that source as it stands.
      */
     @Override
     protected ValueCatalog buildValueTypes() {
         return ValueCatalog.builder()
-                .add(GREETING, Codecs.or(
-                        Codecs.of(wire -> wire, stored -> stored, text -> Source.string(text).source()), ""))
+                .add(GREETING, Codecs.or(Codecs.of(
+                        wire -> wire,
+                        stored -> stored,
+                        text -> Source.string(text).source(),
+                        java -> Source.stringValue(java)), ""))
                 .build();
     }
 
