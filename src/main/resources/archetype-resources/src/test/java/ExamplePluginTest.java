@@ -1,6 +1,6 @@
 package ${package};
 
-import com.botmaker.plugin.api.SlotEditor;
+import com.botmaker.plugin.api.slot.SlotEditor;
 import com.botmaker.plugin.toolkit.testing.TestContexts;
 import org.junit.jupiter.api.Test;
 

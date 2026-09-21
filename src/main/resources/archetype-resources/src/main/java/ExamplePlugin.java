@@ -1,6 +1,6 @@
 package ${package};
 
-import com.botmaker.plugin.api.SlotEditor;
+import com.botmaker.plugin.api.slot.SlotEditor;
 import com.botmaker.plugin.api.catalog.PaletteCatalog;
 import com.botmaker.plugin.api.value.ValueCatalog;
 import com.botmaker.plugin.api.value.ValueType;
