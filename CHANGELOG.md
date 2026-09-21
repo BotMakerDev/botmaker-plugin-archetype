@@ -5,6 +5,17 @@ All notable changes to `botmaker-plugin-archetype`.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this module uses
 [semantic versioning](https://semver.org/). `release.sh` refuses to cut a version with no section here.
 
+## [Unreleased]
+
+No source changes since v0.0.7; re-released for updated upstream pins.
+
+### Changed
+
+- **The generated plugin imports the contract's new packages.** `ExamplePlugin` and its test take
+  `SlotEditor`, `SlotContext` and `ValueContext` from `com.botmaker.plugin.api.slot` now. A skeleton
+  generated from an earlier archetype against `botmaker-studio-api` v0.1.6 will not compile — repoint the
+  imports with the table in `botmaker-studio-api`'s changelog. The skeleton's shape is unchanged.
+
 ## [0.0.7] — 2026-09-21
 
 ### Changed
