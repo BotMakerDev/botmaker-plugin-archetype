@@ -30,8 +30,10 @@ A project that **builds and passes its tests with no edits**:
   `botmaker-plugin-toolkit` `compile`, `javafx-controls` `provided`.
 - `META-INF/services/com.botmaker.plugin.api.StudioPlugin`, the only reason Studio ever finds the plugin.
 - `ExampleApi` — a facade with one offered method and one `@Hidden` one.
-- `ExamplePlugin` — a palette, one registered `ValueType` with a codec, and one slot editor chosen by the
-  **call** rather than by the type.
+- `ExamplePlugin` — a palette, the one type it owns, and one slot editor chosen by the **call** rather than
+  by the type.
+- `Greeting`, `GreetingType`, `GreetingEditor` — a value a bot holds, declared once: what a new one is, the
+  components the host writes it as, and its editor.
 - `ExamplePluginTest` — seven tests including the ones a plugin author normally never writes: the contexts
   the editor must *decline*.
 

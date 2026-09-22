@@ -16,11 +16,13 @@ Add one before your first commit; `target/` is the whole of the minimum.
 - `ExampleApi` — the API your plugin offers a bot. Every `public` method it declares is offered in Studio's
   block palette; `@Hidden` takes one back out. Renaming a method renames its palette entry, because nothing
   lists member names as strings.
-- `ExamplePlugin` — the plugin itself: the palette, one registered value type, and one slot editor. Studio
-  finds it through `src/main/resources/META-INF/services/com.botmaker.plugin.api.StudioPlugin`, which holds
-  its fully-qualified name. **If you rename or move `ExamplePlugin`, edit that file too** — nothing else
-  will tell you.
-- `ExamplePluginTest` — the palette, the value type, the codec, and the editor's predicate including the
+- `ExamplePlugin` — the plugin itself: the palette, the one type it owns, and one slot editor chosen by
+  the call. Studio finds it through `src/main/resources/META-INF/services/com.botmaker.plugin.api.StudioPlugin`,
+  which holds its fully-qualified name. **If you rename or move `ExamplePlugin`, edit that file too** —
+  nothing else will tell you.
+- `Greeting`, `GreetingType`, `GreetingEditor` — a value a bot can hold, its one declaration (what a new
+  one is, and the components the host writes it as), and what it looks like when clicked.
+- `ExamplePluginTest` — the palette, the type and its round trip, and the editor's predicate including the
   contexts it must *decline*.
 
 # The three dependencies, and why their scopes differ
@@ -50,9 +52,9 @@ anything you intend to publish. Change both to released tags in `pom.xml` before
 
 # Next
 
-- Give your value type an id you will never change: it is what gets written into a project's
-  `activities.json`, and a project opened without your plugin keeps that text and renders it read-only.
-- Choose an editor by **type** (`ctx -> ctx.type().is(MyThing.class)`) when a value means the same thing
-  everywhere, and by **call** (`CallSites.firstArgumentOf(...)`) when it does not — a Steam app id and a
-  window title are both `String`.
+- Declare each type you own once, in `buildTypes()`. The class is the identity: a bot holds it as Java, and
+  a project opened without your plugin shows that Java read-only rather than losing it. Keep
+  `build(components(fresh()))` giving the same components back — `botmaker plugin validate` checks it.
+- A type's own editor is `PluginType.editor`. Add a `SlotEditor` only when the **call** decides what a value
+  means (`SlotEditor.forCall(...)`) — a Steam app id and a window title are both `String`.
 - Read the toolkit's Javadoc. Every widget's doc says which mistake it exists to prevent.

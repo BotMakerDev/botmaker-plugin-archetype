@@ -28,7 +28,7 @@ class ExamplePluginTest {
     void the_palette_is_well_formed() {
         // problems() is load-time validation, collected rather than thrown: no malformed catalog may be the
         // reason a user's project will not open. An empty list is the assertion worth holding.
-        assertTrue(plugin.catalog(null).problems().isEmpty(), plugin.catalog(null).problems().toString());
+        assertTrue(plugin.catalog().problems().isEmpty(), plugin.catalog().problems().toString());
     }
 
     @Test
@@ -38,15 +38,24 @@ class ExamplePluginTest {
     }
 
     @Test
-    void the_value_type_is_registered_under_its_id() {
-        assertTrue(plugin.valueTypes().knows(ExamplePlugin.GREETING.id()));
-        assertEquals("Greeting", plugin.valueTypes().type(ExamplePlugin.GREETING.id()).label());
+    void the_greeting_is_the_one_type_this_plugin_owns() {
+        assertEquals(1, plugin.types().size());
+        assertEquals(Greeting.class, plugin.types().getFirst().type());
     }
 
+    /**
+     * The host writes a greeting as its components and reads it back through {@code build}, so a value
+     * that did not survive this would be rewritten every time a bot is saved. {@code botmaker plugin
+     * validate} asks the same question of every type a plugin declares.
+     */
     @Test
-    void a_stored_greeting_becomes_a_java_literal() {
-        assertEquals("\"world\"",
-                plugin.valueTypes().literal(ExamplePlugin.GREETING.id(), "world").orElseThrow().source());
+    void a_greeting_survives_being_taken_apart_and_put_back() {
+        GreetingType type = new GreetingType();
+        Greeting fresh = type.fresh();
+
+        assertEquals(fresh, type.build(type.components(fresh)));
+        assertEquals(new Greeting("it's \"quoted\"", 3),
+                type.build(type.components(new Greeting("it's \"quoted\"", 3))));
     }
 
     @Test
@@ -75,6 +84,6 @@ class ExamplePluginTest {
     }
 
     private boolean offers(String member) {
-        return plugin.catalog(null).offers(ExampleApi.class, member);
+        return plugin.catalog().offers(ExampleApi.class, member);
     }
 }

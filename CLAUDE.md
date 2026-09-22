@@ -78,7 +78,7 @@ the requested package.
 
 The skeleton's own comments are the deliverable. A plugin author reads them before any documentation, so
 every one says which *mistake* it prevents — that renaming `ExamplePlugin` needs the services file edited,
-that a value type's id is what gets written into a project file and can never change, that a call-site
+that a type's editor is delegated so a headless host can load its declaration, that a call-site
 predicate must decline a Parameters row. That is the same rule the contract and the toolkit keep.
 
 Published through JitPack. Releases are cut from the umbrella with

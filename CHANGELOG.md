@@ -7,9 +7,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
-No source changes since v0.0.7; re-released for updated upstream pins.
-
 ### Changed
+
+- **The skeleton declares one type, and it is the documentation.** `buildValueTypes()`, the `GREETING`
+  `ValueType` and its `Codecs.or(Codecs.of(…))` block are gone with the contract's value vocabulary. In their
+  place are `Greeting` (a record a bot holds as a `@Param` field), `GreetingType` (one declaration: what a
+  new one is and the components the host writes it as, through the toolkit's `AbstractPluginType`) and
+  `GreetingEditor` (the widget, kept apart so a headless host can load the declaration without JavaFX).
+  `ExamplePluginTest` asserts the round trip `build(components(v)) == v` where it asserted a codec's
+  literal, and the call-site editor is `SlotEditor.forCall`. Still seven tests, still green unedited.
 
 - **The generated plugin imports the contract's new packages.** `ExamplePlugin` and its test take
   `SlotEditor`, `SlotContext` and `ValueContext` from `com.botmaker.plugin.api.slot` now. A skeleton
