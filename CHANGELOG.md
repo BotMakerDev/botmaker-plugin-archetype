@@ -17,11 +17,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   `ExamplePluginTest` asserts the round trip `build(components(v)) == v` where it asserted a codec's
   literal, and the call-site editor is `SlotEditor.forCall`. Still seven tests, still green unedited.
 
-- **The generated plugin imports the contract's new packages.** `ExamplePlugin` and its test take
-  `SlotEditor`, `SlotContext` and `ValueContext` from `com.botmaker.plugin.api.slot` now. A skeleton
-  generated from an earlier archetype against `botmaker-studio-api` v0.1.6 will not compile — repoint the
-  imports with the table in `botmaker-studio-api`'s changelog. The skeleton's shape is unchanged.
-
 ## [0.0.7] — 2026-09-21
 
 ### Changed
