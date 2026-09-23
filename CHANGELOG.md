@@ -5,6 +5,30 @@ All notable changes to `botmaker-plugin-archetype`.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this module uses
 [semantic versioning](https://semver.org/). `release.sh` refuses to cut a version with no section here.
 
+## [Unreleased]
+
+No source changes since v0.0.8; re-released for updated upstream pins.
+
+### Changed
+
+- **`ExamplePlugin` no longer overrides `buildCatalog()`.** The host finds every `@Palette` class in the
+  plugin's jar, so `ExampleApi` is offered because it is annotated, and a new facade needs no line in the
+  plugin class. `ExamplePluginTest` checks the annotations with `PaletteCatalog.of(ExampleApi.class)`.
+
+- **The skeleton is laid out as the standard plugin package tree.** `api/` holds `ExampleApi` and
+  `Greeting` (what a bot names), `plugin/` holds `ExamplePlugin` (wiring only), `plugin/types/GreetingType`
+  and `plugin/editors/GreetingEditor`. The services file names `${package}.plugin.ExamplePlugin`. The rule
+  the tree encodes — `plugin` → `internal` → `api`, and JavaFX or the toolkit only under `plugin` — is
+  the umbrella's `docs/refactor/34-plugin-package-tree.md`, and the SDK is being moved onto the same tree.
+
+- **The skeleton declares one type, and it is the documentation.** `buildValueTypes()`, the `GREETING`
+  `ValueType` and its `Codecs.or(Codecs.of(…))` block are gone with the contract's value vocabulary. In their
+  place are `Greeting` (a record a bot holds as a `@Param` field), `GreetingType` (one declaration: what a
+  new one is and the components the host writes it as, through the toolkit's `AbstractPluginType`) and
+  `GreetingEditor` (the widget, kept apart so a headless host can load the declaration without JavaFX).
+  `ExamplePluginTest` asserts the round trip `build(components(v)) == v` where it asserted a codec's
+  literal, and the call-site editor is `SlotEditor.forCall`. Still seven tests, still green unedited.
+
 ## [0.0.8] — 2026-09-23
 
 ### Changed
