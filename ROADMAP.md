@@ -7,8 +7,10 @@ reasoning.
 
 ### 2026-09-23 — `ExamplePlugin` lists no palette
 
-The skeleton's `buildCatalog()` override is deleted; the toolkit's default scans the jar for `@Palette`, so
-`ExampleApi` is offered because it is annotated. `ArchetypeSkeletonTest` still compiles and validates it.
+The skeleton's `buildCatalog()` override is deleted; the host (`botmaker-plugin-host`'s `Palettes`) finds
+every `@Palette` class in the plugin's jar, so `ExampleApi` is offered because it is annotated. The
+generated test checks the annotations through `PaletteCatalog.of`, since a plugin's own tests have no host.
+`ArchetypeSkeletonTest` still compiles and validates it, and `validate` runs the real discovery.
 
 ### 2026-09-02 — JDK 25 LTS, in the module's own pom *and* in the one it writes
 

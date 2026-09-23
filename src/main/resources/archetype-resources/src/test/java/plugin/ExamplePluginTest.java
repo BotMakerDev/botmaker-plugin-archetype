@@ -3,6 +3,7 @@ package ${package}.plugin;
 import ${package}.api.ExampleApi;
 import ${package}.api.Greeting;
 import ${package}.plugin.types.GreetingType;
+import com.botmaker.plugin.api.catalog.PaletteCatalog;
 import com.botmaker.plugin.api.slot.SlotEditor;
 import com.botmaker.plugin.toolkit.testing.TestContexts;
 import org.junit.jupiter.api.Test;
@@ -27,11 +28,17 @@ class ExamplePluginTest {
 
     private final ExamplePlugin plugin = new ExamplePlugin();
 
+    /**
+     * The host finds {@code ExampleApi} in this jar by its {@code @Palette} and catalogues it exactly like
+     * this; {@code botmaker plugin validate} runs the real discovery.
+     */
+    private static final PaletteCatalog PALETTE = PaletteCatalog.of(ExampleApi.class);
+
     @Test
     void the_palette_is_well_formed() {
         // problems() is load-time validation, collected rather than thrown: no malformed catalog may be the
         // reason a user's project will not open. An empty list is the assertion worth holding.
-        assertTrue(plugin.catalog().problems().isEmpty(), plugin.catalog().problems().toString());
+        assertTrue(PALETTE.problems().isEmpty(), PALETTE.problems().toString());
     }
 
     @Test
@@ -87,6 +94,6 @@ class ExamplePluginTest {
     }
 
     private boolean offers(String member) {
-        return plugin.catalog().offers(ExampleApi.class, member);
+        return PALETTE.offers(ExampleApi.class, member);
     }
 }

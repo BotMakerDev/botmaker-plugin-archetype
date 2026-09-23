@@ -9,9 +9,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Changed
 
-- **`ExamplePlugin` no longer overrides `buildCatalog()`.** The toolkit's default scans the plugin's jar for
-  `@Palette` classes (`PaletteCatalog.scan`), so `ExampleApi` is offered because it is annotated, and a new
-  facade needs no line in the plugin class.
+- **`ExamplePlugin` no longer overrides `buildCatalog()`.** The host finds every `@Palette` class in the
+  plugin's jar, so `ExampleApi` is offered because it is annotated, and a new facade needs no line in the
+  plugin class. `ExamplePluginTest` checks the annotations with `PaletteCatalog.of(ExampleApi.class)`.
 
 - **The skeleton is laid out as the standard plugin package tree.** `api/` holds `ExampleApi` and
   `Greeting` (what a bot names), `plugin/` holds `ExamplePlugin` (wiring only), `plugin/types/GreetingType`

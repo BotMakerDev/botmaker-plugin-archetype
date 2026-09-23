@@ -37,8 +37,8 @@ public final class ExamplePlugin extends AbstractStudioPlugin {
         super(ID, "${pluginName}");
     }
 
-    // The palette needs no method here: AbstractStudioPlugin scans this jar for @Palette classes, so
-    // ExampleApi is offered because it carries the annotation. Add a class to the menus by annotating it.
+    // The palette needs no method here: the host finds every @Palette class in this jar, so ExampleApi is
+    // offered because it carries the annotation. Add a class to the menus by annotating it.
 
     /**
      * The types this plugin owns: one declaration each, and the host does the rest.
