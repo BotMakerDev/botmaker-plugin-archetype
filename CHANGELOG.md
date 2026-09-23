@@ -9,6 +9,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Changed
 
+- **`ExamplePlugin` no longer overrides `buildCatalog()`.** The toolkit's default scans the plugin's jar for
+  `@Palette` classes (`PaletteCatalog.scan`), so `ExampleApi` is offered because it is annotated, and a new
+  facade needs no line in the plugin class.
+
 - **The skeleton is laid out as the standard plugin package tree.** `api/` holds `ExampleApi` and
   `Greeting` (what a bot names), `plugin/` holds `ExamplePlugin` (wiring only), `plugin/types/GreetingType`
   and `plugin/editors/GreetingEditor`. The services file names `${package}.plugin.ExamplePlugin`. The rule

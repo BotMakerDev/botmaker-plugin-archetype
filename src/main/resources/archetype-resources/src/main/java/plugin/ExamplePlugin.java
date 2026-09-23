@@ -3,7 +3,6 @@ package ${package}.plugin;
 import ${package}.api.ExampleApi;
 import ${package}.api.Greeting;
 import ${package}.plugin.types.GreetingType;
-import com.botmaker.plugin.api.catalog.PaletteCatalog;
 import com.botmaker.plugin.api.slot.SlotEditor;
 import com.botmaker.plugin.api.value.PluginType;
 import com.botmaker.plugin.toolkit.AbstractStudioPlugin;
@@ -19,8 +18,8 @@ import java.util.List;
  * field initialiser: that happens while a project is opening, whether or not the answer is ever wanted.
  * {@code AbstractStudioPlugin}'s {@code build…} hooks run at most once, and only when the host asks.
  *
- * <p>Three contribution surfaces are shown below: the palette, the types this plugin owns, and an editor
- * chosen by the call it sits in.
+ * <p>Three contribution surfaces are shown: the palette (found from {@code @Palette}, so no code below), the
+ * types this plugin owns, and an editor chosen by the call it sits in.
  *
  * <p>This class is wiring only. Declarations live in {@code plugin.types}, editors in {@code plugin.editors},
  * and each toolbar feature gets a {@code plugin.<feature>} package of its own.
@@ -38,16 +37,8 @@ public final class ExamplePlugin extends AbstractStudioPlugin {
         super(ID, "${pluginName}");
     }
 
-    /**
-     * The palette: what a bot author is offered in the block menus.
-     *
-     * <p>Built by reflection over the classes named here, so the class list is compiler-checked and the
-     * member list is discovered. Add a facade by adding its class literal.
-     */
-    @Override
-    protected PaletteCatalog buildCatalog() {
-        return PaletteCatalog.of(ExampleApi.class);
-    }
+    // The palette needs no method here: AbstractStudioPlugin scans this jar for @Palette classes, so
+    // ExampleApi is offered because it carries the annotation. Add a class to the menus by annotating it.
 
     /**
      * The types this plugin owns: one declaration each, and the host does the rest.

@@ -5,6 +5,11 @@ reasoning.
 
 ## Done
 
+### 2026-09-23 — `ExamplePlugin` lists no palette
+
+The skeleton's `buildCatalog()` override is deleted; the toolkit's default scans the jar for `@Palette`, so
+`ExampleApi` is offered because it is annotated. `ArchetypeSkeletonTest` still compiles and validates it.
+
 ### 2026-09-02 — JDK 25 LTS, in the module's own pom *and* in the one it writes
 
 Two poms, and the second is the one that matters: `archetype-resources/pom.xml` now says
