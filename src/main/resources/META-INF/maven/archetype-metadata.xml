@@ -46,7 +46,7 @@
     </requiredProperties>
 
     <fileSets>
-        <!-- The three Java sources, under the chosen package. -->
+        <!-- The Java sources, under the chosen package; api/, plugin/types/ … keep their subdirectory. -->
         <fileSet filtered="true" packaged="true" encoding="UTF-8">
             <directory>src/main/java</directory>
             <includes>
@@ -56,7 +56,7 @@
 
         <!--
           NOT packaged: META-INF/services is a fixed path, and the file NAME is the contract interface's
-          fully-qualified name. Filtered, because its one line is ${package}.ExamplePlugin.
+          fully-qualified name. Filtered, because its one line is ${package}.plugin.ExamplePlugin.
         -->
         <fileSet filtered="true" encoding="UTF-8">
             <directory>src/main/resources</directory>

@@ -1,5 +1,6 @@
-package ${package};
+package ${package}.plugin.editors;
 
+import ${package}.api.Greeting;
 import com.botmaker.plugin.api.slot.ValueContext;
 import com.botmaker.plugin.toolkit.Fields;
 import javafx.scene.Node;
@@ -13,12 +14,12 @@ import javafx.scene.Node;
  * hand — {@code value} is empty, and this starts from a blank greeting. Building it writes nothing: the
  * author's expression stays until they commit a new name.
  */
-final class GreetingEditor {
+public final class GreetingEditor {
 
     private GreetingEditor() {
     }
 
-    static Node of(ValueContext ctx) {
+    public static Node of(ValueContext ctx) {
         Greeting current = ctx.value(Greeting.class).orElseGet(() -> new Greeting("", 1));
         return Fields.committing(current.who(), "Who to greet",
                 who -> ctx.set(new Greeting(who, current.times())));

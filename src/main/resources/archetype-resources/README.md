@@ -13,17 +13,27 @@ Add one before your first commit; `target/` is the whole of the minimum.
 
 # What is in here
 
-- `ExampleApi` — the API your plugin offers a bot. Every `public` method it declares is offered in Studio's
-  block palette; `@Hidden` takes one back out. Renaming a method renames its palette entry, because nothing
-  lists member names as strings.
-- `ExamplePlugin` — the plugin itself: the palette, the one type it owns, and one slot editor chosen by
-  the call. Studio finds it through `src/main/resources/META-INF/services/com.botmaker.plugin.api.StudioPlugin`,
-  which holds its fully-qualified name. **If you rename or move `ExamplePlugin`, edit that file too** —
-  nothing else will tell you.
-- `Greeting`, `GreetingType`, `GreetingEditor` — a value a bot can hold, its one declaration (what a new
+Three packages, and the direction between them only goes one way — `plugin` → `internal` → `api`:
+
+```
+api/        what a bot compiles against: the version boundary. No JavaFX, no toolkit.
+internal/   what a bot runs but never names (add it when you need it). No JavaFX, no toolkit.
+plugin/     the Studio half: the plugin class, types/, editors/, one package per toolbar feature.
+```
+
+- `api/ExampleApi` — the API your plugin offers a bot. Every `public` method it declares is offered in
+  Studio's block palette; `@Hidden` takes one back out. Renaming a method renames its palette entry, because
+  nothing lists member names as strings.
+- `api/Greeting` — a value a bot can hold.
+- `plugin/ExamplePlugin` — the plugin itself, wiring only: the palette, the one type it owns, and one slot
+  editor chosen by the call. Studio finds it through
+  `src/main/resources/META-INF/services/com.botmaker.plugin.api.StudioPlugin`, which holds its
+  fully-qualified name. **If you rename or move `ExamplePlugin`, edit that file too** — nothing else will
+  tell you.
+- `plugin/types/GreetingType`, `plugin/editors/GreetingEditor` — the greeting's one declaration (what a new
   one is, and the components the host writes it as), and what it looks like when clicked.
-- `ExamplePluginTest` — the palette, the type and its round trip, and the editor's predicate including the
-  contexts it must *decline*.
+- `plugin/ExamplePluginTest` — the palette, the type and its round trip, and the editor's predicate
+  including the contexts it must *decline*.
 
 # The three dependencies, and why their scopes differ
 

@@ -1,5 +1,8 @@
-package ${package};
+package ${package}.plugin;
 
+import ${package}.api.ExampleApi;
+import ${package}.api.Greeting;
+import ${package}.plugin.types.GreetingType;
 import com.botmaker.plugin.api.catalog.PaletteCatalog;
 import com.botmaker.plugin.api.slot.SlotEditor;
 import com.botmaker.plugin.api.value.PluginType;
@@ -18,6 +21,9 @@ import java.util.List;
  *
  * <p>Three contribution surfaces are shown below: the palette, the types this plugin owns, and an editor
  * chosen by the call it sits in.
+ *
+ * <p>This class is wiring only. Declarations live in {@code plugin.types}, editors in {@code plugin.editors},
+ * and each toolbar feature gets a {@code plugin.<feature>} package of its own.
  */
 public final class ExamplePlugin extends AbstractStudioPlugin {
 

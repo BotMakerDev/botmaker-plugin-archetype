@@ -29,13 +29,16 @@ A project that **builds and passes its tests with no edits**:
 - `pom.xml` with the three scopes that are easy to get wrong — `botmaker-studio-api` `provided`,
   `botmaker-plugin-toolkit` `compile`, `javafx-controls` `provided`.
 - `META-INF/services/com.botmaker.plugin.api.StudioPlugin`, the only reason Studio ever finds the plugin.
-- `ExampleApi` — a facade with one offered method and one `@Hidden` one.
-- `ExamplePlugin` — a palette, the one type it owns, and one slot editor chosen by the **call** rather than
-  by the type.
-- `Greeting`, `GreetingType`, `GreetingEditor` — a value a bot holds, declared once: what a new one is, the
-  components the host writes it as, and its editor.
-- `ExamplePluginTest` — seven tests including the ones a plugin author normally never writes: the contexts
-  the editor must *decline*.
+- The standard package tree (`../docs/refactor/34-plugin-package-tree.md` in the umbrella): `api/` for what
+  a bot compiles against, `internal/` for what it runs but never names, `plugin/` for the Studio half.
+- `api/ExampleApi` — a facade with one offered method and one `@Hidden` one; `api/Greeting` — a value a bot
+  holds.
+- `plugin/ExamplePlugin` — wiring only: a palette, the one type it owns, and one slot editor chosen by the
+  **call** rather than by the type.
+- `plugin/types/GreetingType`, `plugin/editors/GreetingEditor` — the greeting declared once (what a new one
+  is, the components the host writes it as) and its editor.
+- `plugin/ExamplePluginTest` — seven tests including the ones a plugin author normally never writes: the
+  contexts the editor must *decline*.
 
 ## Why the versions default to `main-SNAPSHOT`
 

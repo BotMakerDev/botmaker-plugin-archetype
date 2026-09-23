@@ -1,5 +1,8 @@
-package ${package};
+package ${package}.plugin;
 
+import ${package}.api.ExampleApi;
+import ${package}.api.Greeting;
+import ${package}.plugin.types.GreetingType;
 import com.botmaker.plugin.api.slot.SlotEditor;
 import com.botmaker.plugin.toolkit.testing.TestContexts;
 import org.junit.jupiter.api.Test;

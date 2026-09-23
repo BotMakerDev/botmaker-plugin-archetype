@@ -1,4 +1,4 @@
-package ${package};
+package ${package}.api;
 
 /**
  * A value this plugin owns: who to greet, and how many times.
