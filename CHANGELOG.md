@@ -11,6 +11,10 @@ No source changes since v0.0.8; re-released for updated upstream pins.
 
 ### Changed
 
+- **The example's call-site editor is `SlotEditor.forCall(SlotEditor.calls(ExampleApi.class, "greet"), 0,
+  …)`** (contract 0.3.0), and its test builds slots from `TestContexts.method(ExampleApi.class, "greet")`
+  rather than class and method names.
+
 - **`ExamplePlugin` no longer overrides `buildCatalog()`.** The host finds every `@Palette` class in the
   plugin's jar, so `ExampleApi` is offered because it is annotated, and a new facade needs no line in the
   plugin class. `ExamplePluginTest` checks the annotations with `PaletteCatalog.of(ExampleApi.class)`.

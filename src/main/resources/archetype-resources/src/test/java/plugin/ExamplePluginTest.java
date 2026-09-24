@@ -71,14 +71,15 @@ class ExamplePluginTest {
     @Test
     void the_editor_claims_the_first_argument_of_greet() {
         assertTrue(editor().matches(
-                TestContexts.slot("ExampleApi", "greet", 0, "\"world\"")));
+                TestContexts.slot(TestContexts.method(ExampleApi.class, "greet"), 0, "\"world\"")));
     }
 
     @Test
-    void the_editor_declines_a_second_argument_and_another_call() {
-        assertFalse(editor().matches(TestContexts.slot("ExampleApi", "greet", 1, "\"x\"")));
-        assertFalse(editor().matches(TestContexts.slot("ExampleApi", "somethingElse", 0, "\"x\"")));
-        assertFalse(editor().matches(TestContexts.slot("SomeOtherClass", "greet", 0, "\"x\"")));
+    void the_editor_declines_a_second_argument_another_call_and_an_unresolved_one() {
+        assertFalse(editor().matches(TestContexts.slot(TestContexts.method(ExampleApi.class, "greet"), 1, "\"x\"")));
+        assertFalse(editor().matches(
+                TestContexts.slot(TestContexts.method(ExampleApi.class, "internalHelper"), 0, "\"x\"")));
+        assertFalse(editor().matches(TestContexts.slot(null, 0, "\"x\"")));
     }
 
     @Test
@@ -86,7 +87,7 @@ class ExamplePluginTest {
         // The case a plugin author never hits by hand: every context in front of you while developing an
         // editor is a slot with a call in it. A row has no call behind it, so a call-site predicate must
         // decline rather than guess.
-        assertFalse(editor().matches(TestContexts.row("String", "world")));
+        assertFalse(editor().matches(TestContexts.row(String.class, "world")));
     }
 
     private SlotEditor editor() {

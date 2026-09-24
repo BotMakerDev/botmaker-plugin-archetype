@@ -57,11 +57,13 @@ public final class ExamplePlugin extends AbstractStudioPlugin {
      * tell the first argument of {@code ExampleApi.greet} apart from every other {@code String} in a bot.
      *
      * <p>A call-site editor is absent from the Parameters window by construction — a row has no call behind
-     * it — and {@code SlotEditor.forCall} declines there rather than guessing.
+     * it — and {@code SlotEditor.forCall} declines there rather than guessing. The call is the method the host
+     * resolved, and {@code SlotEditor.calls} checks when it is built that {@code ExampleApi} declares a
+     * public {@code greet}, so renaming it fails this plugin's tests rather than hiding the editor.
      */
     @Override
     protected List<SlotEditor> buildSlotEditors() {
-        return List.of(SlotEditor.forCall(ExampleApi.class, 0, ctx -> Editors.text(ctx, "Who to greet"),
-                "greet"));
+        return List.of(SlotEditor.forCall(SlotEditor.calls(ExampleApi.class, "greet"), 0,
+                ctx -> Editors.text(ctx, "Who to greet")));
     }
 }
