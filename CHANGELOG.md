@@ -5,7 +5,7 @@ All notable changes to `botmaker-plugin-archetype`.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this module uses
 [semantic versioning](https://semver.org/). `release.sh` refuses to cut a version with no section here.
 
-## [Unreleased]
+## [0.0.9] — 2026-09-26
 
 No source changes since v0.0.8; re-released for updated upstream pins.
 
