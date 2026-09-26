@@ -7,6 +7,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+### Changed
+
+- **The skeleton's `GreetingType` implements `EditableType`** (contract 0.3.0): a type its plugin draws says so,
+  and `botmaker plugin validate` refuses a type nobody draws.
+
 No source changes since v0.0.9; re-released for updated upstream pins.
 
 No source changes since v0.0.8; re-released for updated upstream pins.

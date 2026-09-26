@@ -4,6 +4,7 @@ import ${package}.api.Greeting;
 import ${package}.plugin.editors.GreetingEditor;
 import com.botmaker.plugin.api.slot.ValueContext;
 import com.botmaker.plugin.api.value.ComponentType;
+import com.botmaker.plugin.api.value.EditableType;
 import com.botmaker.plugin.toolkit.AbstractPluginType;
 import javafx.scene.Node;
 
@@ -23,7 +24,8 @@ import java.util.List;
  * only. {@code botmaker plugin validate} checks that {@code build(components(fresh()))} gives the same
  * components back: a value that changed on the way would be rewritten every time a bot is saved.
  */
-public final class GreetingType extends AbstractPluginType<Greeting> implements ComponentType<Greeting> {
+public final class GreetingType extends AbstractPluginType<Greeting>
+        implements EditableType<Greeting>, ComponentType<Greeting> {
 
     public GreetingType() {
         super(Greeting.class);
