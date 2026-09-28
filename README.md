@@ -33,10 +33,12 @@ A project that **builds and passes its tests with no edits**:
   a bot compiles against, `internal/` for what it runs but never names, `plugin/` for the Studio half.
 - `api/ExampleApi` — a facade with one offered method and one `@Hidden` one; `api/Greeting` — a value a bot
   holds.
-- `plugin/ExamplePlugin` — wiring only: a palette, the one type it owns, and one slot editor chosen by the
-  **call** rather than by the type.
-- `plugin/types/GreetingType`, `plugin/editors/GreetingEditor` — the greeting declared once (what a new one
-  is, the components the host writes it as) and its editor.
+- `plugin/ExamplePlugin` — one declaration, `StudioPlugin.id(ID).named(NAME).types(…).editors(…)`, on the
+  contract's `DeclaredPlugin`.
+- `plugin/types/ExampleTypes` — the greeting declared once, `PluginType.value(Greeting.class)` and its steps
+  (fresh value, editor, `writtenAsRecord()`).
+- `plugin/editors/ExampleEditors`, `plugin/editors/GreetingEditor` — one slot editor chosen by the **call**
+  rather than by the type, and the greeting's editor.
 - `plugin/ExamplePluginTest` — seven tests including the ones a plugin author normally never writes: the
   contexts the editor must *decline*.
 

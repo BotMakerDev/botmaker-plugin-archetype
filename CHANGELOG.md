@@ -9,6 +9,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Changed
 
+- **The skeleton declares itself through the contract's steps and uses no toolkit base class.**
+  `ExamplePlugin` is `StudioPlugin.id(ID).named(NAME).types(() -> ExampleTypes.ALL).editors(() ->
+  ExampleEditors.ALL)` on `DeclaredPlugin`; `GreetingType` is `ExampleTypes.GREETING`,
+  `PluginType.value(Greeting.class).fresh(…).editor(() -> GreetingEditor::of).writtenAsRecord()`; the call-site
+  editor moved to `plugin/editors/ExampleEditors`.
 - **The skeleton's `GreetingType` implements `EditableType`** (contract 0.3.0): a type its plugin draws says so,
   and `botmaker plugin validate` refuses a type nobody draws.
 

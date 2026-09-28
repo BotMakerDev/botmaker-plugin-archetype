@@ -5,6 +5,11 @@ reasoning.
 
 ## Done
 
+### 2026-09-28 — the skeleton is a declaration
+
+- `ExamplePlugin` on `DeclaredPlugin`, `ExampleTypes.GREETING` by steps, `ExampleEditors.ALL`. The skeleton
+  names no toolkit class to declare; the toolkit stays for `Editors` and `TestContexts`.
+
 ### 2026-09-23 — `ExamplePlugin` lists no palette
 
 The skeleton's `buildCatalog()` override is deleted; the host (`botmaker-plugin-host`'s `Palettes`) finds

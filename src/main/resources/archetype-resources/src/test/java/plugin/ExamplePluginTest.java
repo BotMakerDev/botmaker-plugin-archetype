@@ -2,7 +2,7 @@ package ${package}.plugin;
 
 import ${package}.api.ExampleApi;
 import ${package}.api.Greeting;
-import ${package}.plugin.types.GreetingType;
+import ${package}.plugin.types.ExampleTypes;
 import com.botmaker.plugin.api.catalog.PaletteCatalog;
 import com.botmaker.plugin.api.slot.SlotEditor;
 import com.botmaker.plugin.toolkit.testing.TestContexts;
@@ -60,7 +60,7 @@ class ExamplePluginTest {
      */
     @Test
     void a_greeting_survives_being_taken_apart_and_put_back() {
-        GreetingType type = new GreetingType();
+        var type = ExampleTypes.GREETING;
         Greeting fresh = type.fresh();
 
         assertEquals(fresh, type.build(type.components(fresh)));

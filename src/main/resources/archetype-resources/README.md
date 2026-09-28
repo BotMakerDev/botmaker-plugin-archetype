@@ -25,13 +25,17 @@ plugin/     the Studio half: the plugin class, types/, editors/, one package per
   Studio's block palette; `@Hidden` takes one back out. Renaming a method renames its palette entry, because
   nothing lists member names as strings.
 - `api/Greeting` — a value a bot can hold.
-- `plugin/ExamplePlugin` — the plugin itself, wiring only: the palette, the one type it owns, and one slot
-  editor chosen by the call. Studio finds it through
+- `plugin/ExamplePlugin` — the plugin itself, one declaration: `StudioPlugin.id(ID).named(NAME)` and then
+  each surface it fills (`types`, `editors`, and `parts`, `values`, `toolbar`, `recorded` when you need
+  them). Studio finds it through
   `src/main/resources/META-INF/services/com.botmaker.plugin.api.StudioPlugin`, which holds its
   fully-qualified name. **If you rename or move `ExamplePlugin`, edit that file too** — nothing else will
   tell you.
-- `plugin/types/GreetingType`, `plugin/editors/GreetingEditor` — the greeting's one declaration (what a new
-  one is, and the components the host writes it as), and what it looks like when clicked.
+- `plugin/types/ExampleTypes` — the greeting's one declaration, `PluginType.value(Greeting.class)` and its
+  steps: what a new one is, its editor, and how its Java is written (`writtenAsRecord()`). The steps only
+  offer what is valid next, so the compiler walks you through a new type.
+- `plugin/editors/ExampleEditors`, `plugin/editors/GreetingEditor` — the editor chosen by the call, and what
+  a greeting looks like when clicked.
 - `plugin/ExamplePluginTest` — the palette, the type and its round trip, and the editor's predicate
   including the contexts it must *decline*.
 

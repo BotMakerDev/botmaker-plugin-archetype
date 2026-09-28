@@ -1,30 +1,27 @@
 package ${package}.plugin;
 
-import ${package}.api.ExampleApi;
-import ${package}.api.Greeting;
-import ${package}.plugin.types.GreetingType;
-import com.botmaker.plugin.api.slot.SlotEditor;
-import com.botmaker.plugin.api.value.PluginType;
-import com.botmaker.plugin.toolkit.AbstractStudioPlugin;
-import com.botmaker.plugin.toolkit.Editors;
-
-import java.util.List;
+import ${package}.plugin.editors.ExampleEditors;
+import ${package}.plugin.types.ExampleTypes;
+import com.botmaker.plugin.api.DeclaredPlugin;
+import com.botmaker.plugin.api.StudioPlugin;
 
 /**
- * ${pluginName} — a BotMaker Studio plugin.
+ * ${pluginName} — a BotMaker Studio plugin, declared in one expression.
+ *
+ * <p>Each surface after {@code named} is optional and names what it lists: {@code types} (what a user can
+ * hold), {@code parts} (calls inside a value that are not types of their own), {@code editors},
+ * {@code values} ({@code @Managed} values a window of yours keeps), {@code toolbar} and {@code recorded}.
+ * The palette needs nothing: the host finds every {@code @Palette} class in this jar, so {@code ExampleApi}
+ * is offered because it carries the annotation.
  *
  * <p>Studio finds this class through {@code META-INF/services/com.botmaker.plugin.api.StudioPlugin} and
- * constructs it with {@code ServiceLoader}, which is why nothing expensive belongs in a constructor or a
- * field initialiser: that happens while a project is opening, whether or not the answer is ever wanted.
- * {@code AbstractStudioPlugin}'s {@code build…} hooks run at most once, and only when the host asks.
- *
- * <p>Three contribution surfaces are shown: the palette (found from {@code @Palette}, so no code below), the
- * types this plugin owns, and an editor chosen by the call it sits in.
+ * constructs it with {@code ServiceLoader} while a project is opening, and so does a headless host with no
+ * JavaFX. That is why each list is behind a supplier: nothing is built until the host asks for it.
  *
  * <p>This class is wiring only. Declarations live in {@code plugin.types}, editors in {@code plugin.editors},
  * and each toolbar feature gets a {@code plugin.<feature>} package of its own.
  */
-public final class ExamplePlugin extends AbstractStudioPlugin {
+public final class ExamplePlugin extends DeclaredPlugin {
 
     /**
      * The id Studio and the plugin registry know this plugin by. It is <b>not</b> the Maven coordinate: a
@@ -33,37 +30,12 @@ public final class ExamplePlugin extends AbstractStudioPlugin {
      */
     public static final String ID = "${pluginId}";
 
+    /** The name a user reads. */
+    public static final String NAME = "${pluginName}";
+
     public ExamplePlugin() {
-        super(ID, "${pluginName}");
-    }
-
-    // The palette needs no method here: the host finds every @Palette class in this jar, so ExampleApi is
-    // offered because it carries the annotation. Add a class to the menus by annotating it.
-
-    /**
-     * The types this plugin owns: one declaration each, and the host does the rest.
-     *
-     * <p>A type listed here is offered when a user adds a parameter, drawn by its own editor wherever a
-     * value of it appears, and written into the bot as Java by the host. The class is the identity, so no
-     * other plugin may list {@link Greeting} — a host loading both would leave one of them out.
-     */
-    @Override
-    protected List<PluginType<?>> buildTypes() {
-        return List.of(new GreetingType());
-    }
-
-    /**
-     * The other kind of editor: chosen by the <b>call</b> rather than by the type, which is the only way to
-     * tell the first argument of {@code ExampleApi.greet} apart from every other {@code String} in a bot.
-     *
-     * <p>A call-site editor is absent from the Parameters window by construction — a row has no call behind
-     * it — and {@code SlotEditor.forCall} declines there rather than guessing. The call is the method the host
-     * resolved, and {@code SlotEditor.calls} checks when it is built that {@code ExampleApi} declares a
-     * public {@code greet}, so renaming it fails this plugin's tests rather than hiding the editor.
-     */
-    @Override
-    protected List<SlotEditor> buildSlotEditors() {
-        return List.of(SlotEditor.forCall(SlotEditor.calls(ExampleApi.class, "greet"), 0,
-                ctx -> Editors.text(ctx, "Who to greet")));
+        super(StudioPlugin.id(ID).named(NAME)
+                .types(() -> ExampleTypes.ALL)
+                .editors(() -> ExampleEditors.ALL));
     }
 }
