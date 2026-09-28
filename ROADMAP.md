@@ -5,6 +5,11 @@ reasoning.
 
 ## Done
 
+### 2026-09-28 — the call-site editor is an annotation
+
+- `api/Greetee` (`RUNTIME`, `PARAMETER`) on `greet`'s argument; `ExampleEditors` uses `SlotEditor.onParameter`.
+  The skeleton names no method by string anywhere but its tests' `TestContexts.method`.
+
 ### 2026-09-28 — the skeleton is a declaration
 
 - `ExamplePlugin` on `DeclaredPlugin`, `ExampleTypes.GREETING` by steps, `ExampleEditors.ALL`. The skeleton

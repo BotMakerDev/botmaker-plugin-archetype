@@ -2,6 +2,7 @@ package ${package}.plugin.editors;
 
 import ${package}.api.Greeting;
 import com.botmaker.plugin.api.slot.ValueContext;
+import com.botmaker.plugin.toolkit.Editors;
 import com.botmaker.plugin.toolkit.Fields;
 import javafx.scene.Node;
 
@@ -17,6 +18,11 @@ import javafx.scene.Node;
 public final class GreetingEditor {
 
     private GreetingEditor() {
+    }
+
+    /** The argument of {@code greet}: who to greet, typed. */
+    public static Node who(ValueContext ctx) {
+        return Editors.text(ctx, "Who to greet");
     }
 
     public static Node of(ValueContext ctx) {

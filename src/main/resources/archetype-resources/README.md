@@ -34,8 +34,8 @@ plugin/     the Studio half: the plugin class, types/, editors/, one package per
 - `plugin/types/ExampleTypes` — the greeting's one declaration, `PluginType.value(Greeting.class)` and its
   steps: what a new one is, its editor, and how its Java is written (`writtenAsRecord()`). The steps only
   offer what is valid next, so the compiler walks you through a new type.
-- `plugin/editors/ExampleEditors`, `plugin/editors/GreetingEditor` — the editor chosen by the call, and what
-  a greeting looks like when clicked.
+- `api/Greetee`, `plugin/editors/ExampleEditors`, `plugin/editors/GreetingEditor` — the annotation on
+  `greet`'s parameter, the editor it chooses, and what a greeting looks like when clicked.
 - `plugin/ExamplePluginTest` — the palette, the type and its round trip, and the editor's predicate
   including the contexts it must *decline*.
 
@@ -66,9 +66,10 @@ anything you intend to publish. Change both to released tags in `pom.xml` before
 
 # Next
 
-- Declare each type you own once, in `buildTypes()`. The class is the identity: a bot holds it as Java, and
+- Declare each type you own once, in `ExampleTypes`. The class is the identity: a bot holds it as Java, and
   a project opened without your plugin shows that Java read-only rather than losing it. Keep
   `build(components(fresh()))` giving the same components back — `botmaker plugin validate` checks it.
-- A type's own editor is `PluginType.editor`. Add a `SlotEditor` only when the **call** decides what a value
-  means (`SlotEditor.forCall(...)`) — a Steam app id and a window title are both `String`.
+- A type's own editor is its declaration's `.editor(...)`. Add a `SlotEditor` only when the **parameter**
+  decides what a value means — a Steam app id and a window title are both `String`: annotate the parameter
+  with a `RUNTIME` annotation of your own and declare `SlotEditor.onParameter(YourAnnotation.class).draw(...)`.
 - Read the toolkit's Javadoc. Every widget's doc says which mistake it exists to prevent.

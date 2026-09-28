@@ -9,6 +9,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Changed
 
+- **The skeleton's call-site editor is chosen by an annotation on the parameter**: `ExampleApi.greet(@Greetee
+  String who)` and `SlotEditor.onParameter(Greetee.class).draw(() -> GreetingEditor::who)`, replacing
+  `forCall(calls(ExampleApi.class, "greet"), 0, …)`.
 - **The skeleton declares itself through the contract's steps and uses no toolkit base class.**
   `ExamplePlugin` is `StudioPlugin.id(ID).named(NAME).types(() -> ExampleTypes.ALL).editors(() ->
   ExampleEditors.ALL)` on `DeclaredPlugin`; `GreetingType` is `ExampleTypes.GREETING`,

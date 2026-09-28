@@ -28,10 +28,11 @@ public final class ExampleApi {
     /**
      * Says hello. Replace this with the first thing your plugin actually does.
      *
-     * <p>The first argument of this call is what {@code ExamplePlugin}'s slot editor draws. That editor is chosen by <em>the call</em> rather than by the argument's type,
-     * which is the only way to tell this {@code String} apart from every other {@code String} in a bot.
+     * <p>{@code who} is what {@code ExampleEditors}' slot editor draws. That editor is chosen by the
+     * {@link Greetee} on the parameter rather than by the argument's type, which is the only way to tell this
+     * {@code String} apart from every other {@code String} in a bot.
      */
-    public static String greet(String who) {
+    public static String greet(@Greetee String who) {
         return "Hello, " + who + "!";
     }
 
