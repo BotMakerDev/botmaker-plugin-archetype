@@ -12,7 +12,8 @@ package ${package}.api;
  *
  * <p>That line is the whole of how a greeting is stored. It is Java in the bot's own source, so a rename
  * javac can see fails the build naming the file, and there is no id and no text format to keep stable.
- * What must stay stable is what the host reads back: the constructor {@code GreetingType} declares.
+ * What must stay stable is what the host reads back: the record's constructor, which
+ * {@code ExampleTypes.GREETING} declares with {@code writtenAsRecord()}.
  */
 public record Greeting(String who, int times) {
 }

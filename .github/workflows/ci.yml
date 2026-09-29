@@ -8,10 +8,9 @@ name: CI
 # requiredProperties substituted at generation time.
 #
 # `mvn verify` runs the archetype's own integration test, which GENERATES the skeleton and stops. It does
-# not build what it generates: that would resolve botmaker-studio-api and botmaker-plugin-toolkit at
-# whatever `main-SNAPSHOT` currently is, making this job fail whenever somebody else's branch is red. The
-# command that does build the skeleton is in README.md and runs against a local reactor, which is where it
-# belongs.
+# not build what it generates: that would resolve botmaker-studio-api and botmaker-plugin-toolkit from
+# JitPack. The command that does build the skeleton is in README.md and runs against a local reactor, and
+# botmaker-cli's ArchetypeSkeletonTest compiles and validates it in the umbrella build.
 
 on:
   push:

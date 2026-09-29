@@ -27,11 +27,10 @@
       pom are archetype requiredProperties with defaults, substituted at generation time, not Maven
       dependencies resolved at build time. Nothing here is on anybody's classpath.
 
-      The defaults are `main-SNAPSHOT` — a real JitPack coordinate that never goes stale — rather than a
-      released tag baked in by release.sh. A baked tag would make every archetype release owe an edit here,
-      and would age badly the moment the contract moved without the archetype moving; `main-SNAPSHOT` is
-      wrong in the other direction (a plugin author tracking an unreleased contract) and says so in the
-      generated README, where an author can act on it.
+      The defaults are released tags, written by the release itself (botmaker-cli's ArchetypePin) from the
+      newest contract and toolkit tags. They were `main-SNAPSHOT` until 2026-09-29, which "never goes stale"
+      and was wrong the other way: the contract's main is ahead of every released Studio, and a plugin built
+      against it could be refused at load.
     -->
     <properties>
         <maven.compiler.release>25</maven.compiler.release>
@@ -58,10 +57,9 @@
                         <!--
                           The integration test in src/test/resources/projects GENERATES the skeleton and
                           stops there; it does not build it. Building it would resolve
-                          botmaker-studio-api and botmaker-plugin-toolkit at whatever `main-SNAPSHOT`
-                          currently is, which would put a network fetch — and somebody else's green
-                          branch — inside `mvn install` at the umbrella root. That is the one thing this
-                          repository's standing constraint forbids.
+                          botmaker-studio-api and botmaker-plugin-toolkit from JitPack, which would put
+                          a network fetch inside `mvn install` at the umbrella root. That is the one
+                          thing this repository's standing constraint forbids.
 
                           What the IT does hold is worth having on its own: the archetype descriptor is
                           well-formed, every filtered file's Velocity references resolve, and the packaged

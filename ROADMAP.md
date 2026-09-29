@@ -5,6 +5,16 @@ reasoning.
 
 ## Done
 
+### 2026-09-29 — defaults are tags, and the release moves them
+
+- `studioApiVersion`/`toolkitVersion` default to `v0.3.0`/`v0.2.0`, not `main-SNAPSHOT`. The contract's
+  `main` is routinely ahead of every released Studio, so a plugin generated at `main-SNAPSHOT` could be
+  refused at load (`ContractLinks`, *built for a newer Studio*). `botmaker-cli`'s `ArchetypePin` writes the
+  newest pair on every archetype release (`DepTag`: the tag cut in the same run, else the newest one), and
+  `ArchetypePinTest` holds the shipped defaults to be tags.
+- IntelliJ does not show the skeleton as Java, by design: see `CLAUDE.md`, *Working on the skeleton in an
+  IDE*.
+
 ### 2026-09-28 — the call-site editor is an annotation
 
 - `api/Greetee` (`RUNTIME`, `PARAMETER`) on `greet`'s argument; `ExampleEditors` uses `SlotEditor.onParameter`.
@@ -92,7 +102,7 @@ deletes the helper's `.class` — which is exactly the state a jar resolved with
 
 - **`botmaker new` (plan phase 7) shells to this**, rather than carrying its own templates. If that turns out
   to need a property this archetype does not have, add it here.
-- **A second skeleton — a type-matched editor and a `ParameterGroup`** — only when somebody wants one. Two
-  archetypes is two things to keep building; the generated README points at both mechanisms instead.
+- **A second skeleton — a toolbar feature and a `@Managed` value** — only when somebody wants one. Two
+  archetypes is two things to keep building; the generated README points at both surfaces instead.
 - **The `.gitignore` limitation is worth one more look** if the archetype ever moves off
   `maven-archetype` packaging. Do not solve it by renaming the resource.

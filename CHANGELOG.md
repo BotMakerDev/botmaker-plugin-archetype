@@ -5,6 +5,29 @@ All notable changes to `botmaker-plugin-archetype`.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this module uses
 [semantic versioning](https://semver.org/). `release.sh` refuses to cut a version with no section here.
 
+## [Unreleased]
+
+### Changed
+
+- **A generated plugin pins released versions, not `main-SNAPSHOT`.** `studioApiVersion` and
+  `toolkitVersion` default to the newest contract and toolkit tags (`v0.3.0`, `v0.2.0` today), and the
+  archetype's release writes the newest pair each time it is cut (`botmaker-cli`'s `ArchetypePin`). The tip
+  of the contract's `main` is usually ahead of every released Studio, so a plugin generated at
+  `main-SNAPSHOT` could be refused at load as *built for a newer Studio*. Checked: the skeleton generated
+  at these tags builds from JitPack and passes its seven tests.
+
+### Fixed
+
+- **The archetype's integration test runs.** `src/test/resources/projects/basic` had no `goal.txt`, so
+  `archetype:integration-test` skipped it with a warning and nothing checked that the descriptor generates a
+  project. An empty `goal.txt` makes it generate and stop, as its comments always said it did.
+- **Stale docs.** `Greeting`'s comment named `GreetingType` (it is `ExampleTypes.GREETING` since 0.1.0),
+  `pluginName` pointed at *Manage Plugins* (Studio's window is *Plugins & Libraries*), and this changelog
+  repeated earlier sections' text under later versions; each section now holds only its own entries.
+- **Why IntelliJ does not show the module as Java** is written down: the skeleton's `.java` files are
+  resources with `${package}` placeholders. README and `CLAUDE.md` say how to open the generated copy
+  instead.
+
 ## [0.1.0] — 2026-09-29
 
 ### Changed
@@ -20,61 +43,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - **The skeleton's `GreetingType` implements `EditableType`** (contract 0.3.0): a type its plugin draws says so,
   and `botmaker plugin validate` refuses a type nobody draws.
 
-No source changes since v0.0.9; re-released for updated upstream pins.
-
-No source changes since v0.0.8; re-released for updated upstream pins.
-
-### Changed
-
-- **The example's call-site editor is `SlotEditor.forCall(SlotEditor.calls(ExampleApi.class, "greet"), 0,
-  …)`** (contract 0.3.0), and its test builds slots from `TestContexts.method(ExampleApi.class, "greet")`
-  rather than class and method names.
-
-- **`ExamplePlugin` no longer overrides `buildCatalog()`.** The host finds every `@Palette` class in the
-  plugin's jar, so `ExampleApi` is offered because it is annotated, and a new facade needs no line in the
-  plugin class. `ExamplePluginTest` checks the annotations with `PaletteCatalog.of(ExampleApi.class)`.
-
-- **The skeleton is laid out as the standard plugin package tree.** `api/` holds `ExampleApi` and
-  `Greeting` (what a bot names), `plugin/` holds `ExamplePlugin` (wiring only), `plugin/types/GreetingType`
-  and `plugin/editors/GreetingEditor`. The services file names `${package}.plugin.ExamplePlugin`. The rule
-  the tree encodes — `plugin` → `internal` → `api`, and JavaFX or the toolkit only under `plugin` — is
-  the umbrella's `docs/refactor/34-plugin-package-tree.md`, and the SDK is being moved onto the same tree.
-
-- **The skeleton declares one type, and it is the documentation.** `buildValueTypes()`, the `GREETING`
-  `ValueType` and its `Codecs.or(Codecs.of(…))` block are gone with the contract's value vocabulary. In their
-  place are `Greeting` (a record a bot holds as a `@Param` field), `GreetingType` (one declaration: what a
-  new one is and the components the host writes it as, through the toolkit's `AbstractPluginType`) and
-  `GreetingEditor` (the widget, kept apart so a headless host can load the declaration without JavaFX).
-  `ExamplePluginTest` asserts the round trip `build(components(v)) == v` where it asserted a codec's
-  literal, and the call-site editor is `SlotEditor.forCall`. Still seven tests, still green unedited.
-
 ## [0.0.9] — 2026-09-26
 
-No source changes since v0.0.8; re-released for updated upstream pins.
-
 ### Changed
 
 - **The example's call-site editor is `SlotEditor.forCall(SlotEditor.calls(ExampleApi.class, "greet"), 0,
   …)`** (contract 0.3.0), and its test builds slots from `TestContexts.method(ExampleApi.class, "greet")`
   rather than class and method names.
-
-- **`ExamplePlugin` no longer overrides `buildCatalog()`.** The host finds every `@Palette` class in the
-  plugin's jar, so `ExampleApi` is offered because it is annotated, and a new facade needs no line in the
-  plugin class. `ExamplePluginTest` checks the annotations with `PaletteCatalog.of(ExampleApi.class)`.
-
-- **The skeleton is laid out as the standard plugin package tree.** `api/` holds `ExampleApi` and
-  `Greeting` (what a bot names), `plugin/` holds `ExamplePlugin` (wiring only), `plugin/types/GreetingType`
-  and `plugin/editors/GreetingEditor`. The services file names `${package}.plugin.ExamplePlugin`. The rule
-  the tree encodes — `plugin` → `internal` → `api`, and JavaFX or the toolkit only under `plugin` — is
-  the umbrella's `docs/refactor/34-plugin-package-tree.md`, and the SDK is being moved onto the same tree.
-
-- **The skeleton declares one type, and it is the documentation.** `buildValueTypes()`, the `GREETING`
-  `ValueType` and its `Codecs.or(Codecs.of(…))` block are gone with the contract's value vocabulary. In their
-  place are `Greeting` (a record a bot holds as a `@Param` field), `GreetingType` (one declaration: what a
-  new one is and the components the host writes it as, through the toolkit's `AbstractPluginType`) and
-  `GreetingEditor` (the widget, kept apart so a headless host can load the declaration without JavaFX).
-  `ExamplePluginTest` asserts the round trip `build(components(v)) == v` where it asserted a codec's
-  literal, and the call-site editor is `SlotEditor.forCall`. Still seven tests, still green unedited.
 
 ## [0.0.8] — 2026-09-23
 
@@ -111,61 +86,13 @@ No source changes since v0.0.8; re-released for updated upstream pins.
 
 No source changes since v0.0.5; re-released for updated upstream pins.
 
-No source changes since v0.0.4; re-released for updated upstream pins.
-
-No source changes since v0.0.3; re-released for updated upstream pins.
-
-### Fixed
-
-- **The generated skeleton compiles again.** `ExamplePlugin`'s value codec passed `Source::string` where a
-  codec's literal function must return a `String`; `Source.string` returns an `Expr` — a Java expression
-  rather than merely text — so a freshly generated project failed with *incompatible types: bad return type
-  in method reference*. The template calls `Source.string(text).source()` now. Everything this README claims
-  is true again: the skeleton builds and passes seven tests unedited.
-
-  It went unnoticed because nothing in the platform's own build ever generates a plugin — the only plugin
-  that exists is compiled from the same reactor as the toolkit it uses, so it cannot be out of step with it.
-  `botmaker-cli`'s `ArchetypeSkeletonTest` compiles this skeleton, loads it through `PluginLoader` and runs
-  every `PluginValidator` check over it, so the next such drift fails a build instead of a stranger's first
-  five minutes.
-
 ## [0.0.5] — 2026-09-19
 
 No source changes since v0.0.4; re-released for updated upstream pins.
 
-No source changes since v0.0.3; re-released for updated upstream pins.
-
-### Fixed
-
-- **The generated skeleton compiles again.** `ExamplePlugin`'s value codec passed `Source::string` where a
-  codec's literal function must return a `String`; `Source.string` returns an `Expr` — a Java expression
-  rather than merely text — so a freshly generated project failed with *incompatible types: bad return type
-  in method reference*. The template calls `Source.string(text).source()` now. Everything this README claims
-  is true again: the skeleton builds and passes seven tests unedited.
-
-  It went unnoticed because nothing in the platform's own build ever generates a plugin — the only plugin
-  that exists is compiled from the same reactor as the toolkit it uses, so it cannot be out of step with it.
-  `botmaker-cli`'s `ArchetypeSkeletonTest` compiles this skeleton, loads it through `PluginLoader` and runs
-  every `PluginValidator` check over it, so the next such drift fails a build instead of a stranger's first
-  five minutes.
-
 ## [0.0.4] — 2026-09-18
 
 No source changes since v0.0.3; re-released for updated upstream pins.
-
-### Fixed
-
-- **The generated skeleton compiles again.** `ExamplePlugin`'s value codec passed `Source::string` where a
-  codec's literal function must return a `String`; `Source.string` returns an `Expr` — a Java expression
-  rather than merely text — so a freshly generated project failed with *incompatible types: bad return type
-  in method reference*. The template calls `Source.string(text).source()` now. Everything this README claims
-  is true again: the skeleton builds and passes seven tests unedited.
-
-  It went unnoticed because nothing in the platform's own build ever generates a plugin — the only plugin
-  that exists is compiled from the same reactor as the toolkit it uses, so it cannot be out of step with it.
-  `botmaker-cli`'s `ArchetypeSkeletonTest` compiles this skeleton, loads it through `PluginLoader` and runs
-  every `PluginValidator` check over it, so the next such drift fails a build instead of a stranger's first
-  five minutes.
 
 ## [0.0.3] — 2026-09-16
 

@@ -47,11 +47,13 @@ plugin/     the Studio half: the plugin class, types/, editors/, one package per
   version is yours and no other plugin's. Studio does not have it. Do not mark it `provided`.
 - `javafx-controls` is **`provided`** — you draw into the host's scene graph.
 
-# The versions are `main-SNAPSHOT` unless you said otherwise
+# The versions are released tags
 
-That is the tip of each BotMaker repository's main branch, which is right for trying things and wrong for
-anything you intend to publish. Change both to released tags in `pom.xml` before you release, and re-run
-`mvn verify`.
+`pom.xml` pins the newest `botmaker-studio-api` and `botmaker-plugin-toolkit` tags there were when this
+archetype was released. Move them when Studio moves: a plugin loads in any Studio whose contract has every
+member it uses, so build against the oldest contract you mean to support. Do not pin `main-SNAPSHOT` for a
+release — the tip of the contract is usually ahead of every released Studio, which refuses the plugin as
+*built for a newer Studio*.
 
 # Three rules an editor must keep
 

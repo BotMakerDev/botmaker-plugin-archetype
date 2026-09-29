@@ -18,9 +18,9 @@ It asks four questions beyond the usual coordinates, each with a working default
 | property | default | what it is |
 |---|---|---|
 | `pluginId` | the groupId | what `StudioPlugin.id()` returns, and what the registry refuses twice. **Not** the Maven coordinate — a plugin may be re-published under a new one and must keep its id. |
-| `pluginName` | the artifactId | what Studio shows in *Manage Plugins*. |
-| `studioApiVersion` | `main-SNAPSHOT` | the contract version written into the generated pom. |
-| `toolkitVersion` | `main-SNAPSHOT` | the toolkit version written into the generated pom. |
+| `pluginName` | the artifactId | what Studio shows in *Plugins & Libraries*. |
+| `studioApiVersion` | the newest contract tag when this archetype was released | the contract version written into the generated pom. |
+| `toolkitVersion` | the newest toolkit tag when this archetype was released | the toolkit version written into the generated pom. |
 
 ## What comes out
 
@@ -42,12 +42,19 @@ A project that **builds and passes its tests with no edits**:
 - `plugin/ExamplePluginTest` — seven tests including the ones a plugin author normally never writes: the
   contexts the editor must *decline*.
 
-## Why the versions default to `main-SNAPSHOT`
+## Why the versions default to tags
 
-It is a real JitPack coordinate — the tip of that repository's main branch — and it never goes stale. The
-alternative, a released tag baked in here by `release.sh`, would owe an edit on every contract release and
-would silently age between them. `main-SNAPSHOT` is wrong in the other direction, and the generated README
-says so where an author can act on it.
+A released Studio loads a plugin only when its contract has every member the plugin uses. The tip of the
+contract's `main` is usually ahead of every released Studio, so the old `main-SNAPSHOT` default could
+generate a plugin no Studio would load (*built for a newer Studio*). The release writes the newest pair into
+the descriptor each time the archetype is cut (`botmaker-cli`'s `ArchetypePin`), so nobody edits them by hand.
+
+## Opening it in IntelliJ
+
+The skeleton's `.java` files are resources with `${package}` placeholders, so IntelliJ does not show this
+module as Java; that is expected. Run `mvn install` here, then open
+`target/test-classes/projects/basic/project/example-plugin` as a Maven project: it is the generated skeleton,
+and it builds. `CLAUDE.md` has the round trip.
 
 ## Building
 

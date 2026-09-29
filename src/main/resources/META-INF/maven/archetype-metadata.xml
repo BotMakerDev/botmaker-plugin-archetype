@@ -26,22 +26,23 @@
             <defaultValue>${groupId}</defaultValue>
         </requiredProperty>
 
-        <!-- What Studio shows in Manage Plugins. Free text. -->
+        <!-- What Studio shows in Plugins & Libraries. Free text. -->
         <requiredProperty key="pluginName">
             <defaultValue>${artifactId}</defaultValue>
         </requiredProperty>
 
         <!--
-          The two BotMaker versions written into the generated pom. `main-SNAPSHOT` is a real JitPack
-          coordinate — it builds the tip of that repository's main branch — and it is the default because it
-          never goes stale. Pass a released tag (e.g. -DstudioApiVersion=v1.0.0) for anything you intend to
-          publish; the generated README says so too.
+          The two BotMaker versions written into the generated pom: the newest released contract and toolkit
+          when this archetype was released. The release writes them (botmaker-cli's ArchetypePin); do not
+          edit them by hand. They are tags, not `main-SNAPSHOT`, because the tip of the contract's main is
+          routinely ahead of every released Studio, and a plugin built against a member only main has is
+          refused at load ("built for a newer Studio").
         -->
         <requiredProperty key="studioApiVersion">
-            <defaultValue>main-SNAPSHOT</defaultValue>
+            <defaultValue>v0.3.0</defaultValue>
         </requiredProperty>
         <requiredProperty key="toolkitVersion">
-            <defaultValue>main-SNAPSHOT</defaultValue>
+            <defaultValue>v0.2.0</defaultValue>
         </requiredProperty>
     </requiredProperties>
 

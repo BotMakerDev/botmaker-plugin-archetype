@@ -58,6 +58,24 @@ failure rather than a compile error:
   reference first, and relying on Velocity leaving an unresolvable one alone is relying on undefined
   behaviour.
 
+## Working on the skeleton in an IDE
+
+IntelliJ does not treat this module as Java, and it is right not to. The packaging is `maven-archetype`, and
+the skeleton's `.java` files are **resources** under `src/main/resources/archetype-resources/`, with
+`${package}` where a package name goes: they are not sources of this module and do not compile as written.
+Do not mark them as a source root. To edit the skeleton with completion and navigation, work on a generated
+copy:
+
+```bash
+mvn -pl botmaker-plugin-archetype install        # umbrella root; the integration test generates the copy
+# then open botmaker-plugin-archetype/target/test-classes/projects/basic/project/example-plugin
+# in IntelliJ as a Maven project; mvn verify there must be green, 7 tests
+```
+
+Port each change back into `archetype-resources/` by hand, putting `${package}` back where the generated
+copy has `com.example.plugin`. `mvn -pl botmaker-cli test -Dtest=ArchetypeSkeletonTest` then compiles,
+loads and validates the result against the reactor's contract and toolkit.
+
 ## No `.gitignore` in the skeleton, and it is not an oversight
 
 `archetype:jar` packages `archetype-resources/` through a Plexus archiver with default excludes on, and that
@@ -68,9 +86,11 @@ the resource.
 
 ## The integration test generates and stops
 
-`src/test/resources/projects/basic` runs during `mvn install`, and it deliberately does not build what it
-generates: that would resolve `main-SNAPSHOT` from the network and put somebody else's green branch inside
-`mvn install` at the umbrella root, which the standing constraint forbids. What it does hold is still real —
+`src/test/resources/projects/basic` runs during `mvn install` because its `goal.txt` exists — the plugin
+skips any IT directory without one, and until 2026-09-29 this one had none, so the test never ran. The file
+is empty on purpose: no goal means generate only. It deliberately does not build what it
+generates: that would resolve the contract and toolkit from the network inside `mvn install` at the umbrella
+root, which the standing constraint forbids. What it does hold is still real —
 the descriptor is well-formed, every filtered file's references resolve, and packaged directories land under
 the requested package.
 
