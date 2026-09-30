@@ -5,6 +5,12 @@ All notable changes to `botmaker-plugin-archetype`.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this module uses
 [semantic versioning](https://semver.org/). `release.sh` refuses to cut a version with no section here.
 
+## [Unreleased]
+
+### Changed
+
+- `ExampleApi`'s `@Palette` drops `order`, which contract 0.4.0 deletes: offered classes are alphabetical.
+
 ## [0.1.1] — 2026-09-29
 
 ### Changed

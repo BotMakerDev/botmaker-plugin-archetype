@@ -19,7 +19,7 @@ import com.botmaker.plugin.api.palette.Palette;
  * but never names goes in {@code internal}; what only Studio needs goes in {@code plugin}, which is the only
  * package that may touch JavaFX or the toolkit.
  */
-@Palette(category = "util", categoryLabel = "${pluginName}", icon = "👋", order = 100)
+@Palette(category = "util", categoryLabel = "${pluginName}", icon = "👋")
 public final class ExampleApi {
 
     private ExampleApi() {
