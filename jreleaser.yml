@@ -37,7 +37,7 @@ project:
     homepage: https://github.com/BotMakerDev/botmaker-plugin-archetype
   languages:
     java:
-      groupId: com.github.LiQiyeDev
+      groupId: com.github.BotMakerDev
       artifactId: botmaker-plugin-archetype
       version: '21'
 

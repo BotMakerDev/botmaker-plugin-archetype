@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!--
-      groupId is com.github.LiQiyeDev for the same reason as every other published module: JitPack serves
-      this repo as com.github.LiQiyeDev:botmaker-plugin-archetype:<tag> whatever this pom says. The version
+      groupId is com.github.BotMakerDev for the same reason as every other published module: JitPack serves
+      this repo as com.github.BotMakerDev:botmaker-plugin-archetype:<tag> whatever this pom says. The version
       is cosmetic.
     -->
-    <groupId>com.github.LiQiyeDev</groupId>
+    <groupId>com.github.BotMakerDev</groupId>
     <artifactId>botmaker-plugin-archetype</artifactId>
     <version>0.0.0-SNAPSHOT</version>
     <packaging>maven-archetype</packaging>

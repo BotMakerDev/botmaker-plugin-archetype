@@ -4,7 +4,7 @@
 
 ```bash
 mvn archetype:generate \
-  -DarchetypeGroupId=com.github.LiQiyeDev \
+  -DarchetypeGroupId=com.github.BotMakerDev \
   -DarchetypeArtifactId=botmaker-plugin-archetype \
   -DarchetypeVersion=v0.1.0 \
   -DarchetypeRepository=https://jitpack.io
@@ -59,7 +59,7 @@ and it builds. `CLAUDE.md` has the round trip.
 ## Building
 
 ```bash
-mvn install     # com.github.LiQiyeDev:botmaker-plugin-archetype:0.0.0-SNAPSHOT
+mvn install     # com.github.BotMakerDev:botmaker-plugin-archetype:0.0.0-SNAPSHOT
 ```
 
 To generate against the local reactor rather than JitPack — the fastest way to check a change here:
@@ -67,7 +67,7 @@ To generate against the local reactor rather than JitPack — the fastest way to
 ```bash
 mvn install                                # at the umbrella root, so the contract and toolkit are in ~/.m2
 cd /tmp && mvn archetype:generate -B \
-  -DarchetypeGroupId=com.github.LiQiyeDev \
+  -DarchetypeGroupId=com.github.BotMakerDev \
   -DarchetypeArtifactId=botmaker-plugin-archetype -DarchetypeVersion=0.0.0-SNAPSHOT \
   -DgroupId=com.example -DartifactId=my-plugin \
   -DstudioApiVersion=0.0.0-SNAPSHOT -DtoolkitVersion=0.0.0-SNAPSHOT

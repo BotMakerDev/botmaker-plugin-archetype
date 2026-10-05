@@ -17,7 +17,7 @@
 
     <repositories>
         <!-- BotMaker's modules are published through JitPack, which serves each git tag as
-             com.github.LiQiyeDev:<repo>:<tag>. -->
+             com.github.BotMakerDev:<repo>:<tag>. -->
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
@@ -32,7 +32,7 @@
           ClassCastException between two classes with identical names.
         -->
         <dependency>
-            <groupId>com.github.LiQiyeDev</groupId>
+            <groupId>com.github.BotMakerDev</groupId>
             <artifactId>botmaker-studio-api</artifactId>
             <version>${studioApiVersion}</version>
             <scope>provided</scope>
@@ -44,7 +44,7 @@
           other plugin's. Do not mark it `provided`; Studio does not have it.
         -->
         <dependency>
-            <groupId>com.github.LiQiyeDev</groupId>
+            <groupId>com.github.BotMakerDev</groupId>
             <artifactId>botmaker-plugin-toolkit</artifactId>
             <version>${toolkitVersion}</version>
         </dependency>

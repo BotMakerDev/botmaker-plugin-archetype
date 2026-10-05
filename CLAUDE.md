@@ -26,7 +26,7 @@ The acceptance test is not "the descriptor parses". It is:
 ```bash
 mvn install                                   # umbrella root, so the contract and toolkit land in ~/.m2
 cd /tmp && mvn archetype:generate -B \
-  -DarchetypeGroupId=com.github.LiQiyeDev \
+  -DarchetypeGroupId=com.github.BotMakerDev \
   -DarchetypeArtifactId=botmaker-plugin-archetype -DarchetypeVersion=0.0.0-SNAPSHOT \
   -DgroupId=com.example -DartifactId=my-plugin \
   -DstudioApiVersion=0.0.0-SNAPSHOT -DtoolkitVersion=0.0.0-SNAPSHOT
