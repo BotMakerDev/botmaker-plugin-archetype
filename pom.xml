@@ -22,8 +22,8 @@
     </description>
 
     <!--
-      THIS MODULE HAS NO BOTMAKER DEPENDENCY, and that is the whole reason it needs neither
-      flatten-maven-plugin nor a .deps.env. What it ships is TEXT: the versions it writes into a generated
+      THIS MODULE HAS NO BOTMAKER DEPENDENCY, and that is the whole reason it needs no
+      flatten-maven-plugin and pins nothing. What it ships is TEXT: the versions it writes into a generated
       pom are archetype requiredProperties with defaults, substituted at generation time, not Maven
       dependencies resolved at build time. Nothing here is on anybody's classpath.
 

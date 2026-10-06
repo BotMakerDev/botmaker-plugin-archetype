@@ -59,18 +59,20 @@ and it builds. `CLAUDE.md` has the round trip.
 ## Building
 
 ```bash
-mvn install     # com.github.BotMakerDev:botmaker-plugin-archetype:0.0.0-SNAPSHOT
+mvn install     # com.github.BotMakerDev:botmaker-plugin-archetype at the pom's main -SNAPSHOT
 ```
 
 To generate against the local reactor rather than JitPack — the fastest way to check a change here:
 
 ```bash
 mvn install                                # at the umbrella root, so the contract and toolkit are in ~/.m2
+v() { mvn -q -f "$1/pom.xml" help:evaluate -Dexpression=project.version -DforceStdout; }   # main's -SNAPSHOT
+a=$(v botmaker-plugin-archetype) s=$(v botmaker-studio-api) t=$(v botmaker-plugin-toolkit)
 cd /tmp && mvn archetype:generate -B \
   -DarchetypeGroupId=com.github.BotMakerDev \
-  -DarchetypeArtifactId=botmaker-plugin-archetype -DarchetypeVersion=0.0.0-SNAPSHOT \
+  -DarchetypeArtifactId=botmaker-plugin-archetype -DarchetypeVersion="$a" \
   -DgroupId=com.example -DartifactId=my-plugin \
-  -DstudioApiVersion=0.0.0-SNAPSHOT -DtoolkitVersion=0.0.0-SNAPSHOT
+  -DstudioApiVersion="$s" -DtoolkitVersion="$t"
 cd my-plugin && mvn verify
 ```
 

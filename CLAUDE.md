@@ -12,8 +12,8 @@ implements, `../botmaker-plugin-toolkit/CLAUDE.md` for the widgets it uses, and
 **Text, not code.** Nothing here is on anybody's classpath. The `archetype-resources/` tree is copied through
 Velocity into somebody else's empty directory, and the versions it writes into the generated pom are
 `requiredProperties` substituted at generation time — not Maven dependencies resolved at build time. That is
-why this is the one plugin-facing module with **no `flatten-maven-plugin` and no `.deps.env`**: neither has
-anything to bake.
+why this is the one plugin-facing module with **no `flatten-maven-plugin`** and no upstream pin: there is nothing
+to bake.
 
 **Its job is to be the single source of truth for the generated shape.** The plan's `botmaker new` (phase 7)
 shells to this archetype rather than carrying a second copy of the templates — the pom scopes below are
@@ -25,11 +25,13 @@ The acceptance test is not "the descriptor parses". It is:
 
 ```bash
 mvn install                                   # umbrella root, so the contract and toolkit land in ~/.m2
+v() { mvn -q -f "$1/pom.xml" help:evaluate -Dexpression=project.version -DforceStdout; }   # main's -SNAPSHOT
+a=$(v botmaker-plugin-archetype) s=$(v botmaker-studio-api) t=$(v botmaker-plugin-toolkit)
 cd /tmp && mvn archetype:generate -B \
   -DarchetypeGroupId=com.github.BotMakerDev \
-  -DarchetypeArtifactId=botmaker-plugin-archetype -DarchetypeVersion=0.0.0-SNAPSHOT \
+  -DarchetypeArtifactId=botmaker-plugin-archetype -DarchetypeVersion="$a" \
   -DgroupId=com.example -DartifactId=my-plugin \
-  -DstudioApiVersion=0.0.0-SNAPSHOT -DtoolkitVersion=0.0.0-SNAPSHOT
+  -DstudioApiVersion="$s" -DtoolkitVersion="$t"
 cd my-plugin && mvn verify                    # must be green, 7 tests, no edits
 ```
 
