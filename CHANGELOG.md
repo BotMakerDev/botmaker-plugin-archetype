@@ -14,6 +14,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Published as `com.github.BotMakerDev:botmaker-plugin-archetype` (was `com.github.LiQiyeDev`), and a
   generated plugin's pom names the contract and the toolkit under `com.github.BotMakerDev`. Tags already
   built under the old groupId still resolve under it.
+- The generated README has a *Try it in Studio* section: `mvn install`, pin the plugin in a bot, turn on
+  the project's Dev mode, press Reload after each rebuild, and release before publishing the bot.
 
 No source changes since v0.1.2; re-released for updated upstream pins.
 

@@ -11,6 +11,20 @@ mvn verify
 There is no `.gitignore` — Maven's archetype packaging drops the file silently, so it could not be shipped.
 Add one before your first commit; `target/` is the whole of the minimum.
 
+# Try it in Studio
+
+No release is needed to see a change in Studio:
+
+1. Run `mvn install`. It puts your plugin in `~/.m2` at its `-SNAPSHOT` version.
+2. Add it to a bot: `botmaker plugin run --project <bot>` does the install and the pin and opens Studio.
+   Or open the bot in Studio and pin the coordinate in *Project ▸ Plugins & Libraries*.
+3. Tick **Dev mode** in that window. Studio refuses a `-SNAPSHOT` plugin in any other project. A dev-mode
+   project loads it and shows a banner on the canvas while it does.
+4. After each rebuild (`mvn install`), press **Reload** in the same window.
+5. Publishing the bot refuses a `-SNAPSHOT` pin. Release the plugin, pin its tag, then publish.
+
+Dev mode is stored on this computer only (`.botmaker/settings.json`, not in git), for that one project.
+
 # What is in here
 
 Three packages, and the direction between them only goes one way — `plugin` → `internal` → `api`:
