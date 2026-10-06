@@ -7,11 +7,11 @@
     <!--
       groupId is com.github.BotMakerDev for the same reason as every other published module: JitPack serves
       this repo as com.github.BotMakerDev:botmaker-plugin-archetype:<tag> whatever this pom says. The version
-      is cosmetic.
+      is real: -SNAPSHOT on main, the release version on a tag (umbrella docs/refactor/43-real-versions.md).
     -->
     <groupId>com.github.BotMakerDev</groupId>
     <artifactId>botmaker-plugin-archetype</artifactId>
-    <version>0.0.0-SNAPSHOT</version>
+    <version>0.1.3-SNAPSHOT</version>
     <packaging>maven-archetype</packaging>
 
     <name>BotMaker Plugin Archetype</name>

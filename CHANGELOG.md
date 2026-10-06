@@ -9,6 +9,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Changed
 
+- The pom carries a real version, `-SNAPSHOT` on `main` and the release version on a tag, instead of the
+  cosmetic `0.0.0-SNAPSHOT` (umbrella `docs/refactor/43-real-versions.md`).
 - Published as `com.github.BotMakerDev:botmaker-plugin-archetype` (was `com.github.LiQiyeDev`), and a
   generated plugin's pom names the contract and the toolkit under `com.github.BotMakerDev`. Tags already
   built under the old groupId still resolve under it.
