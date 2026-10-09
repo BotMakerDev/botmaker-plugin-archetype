@@ -7,23 +7,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
-No source changes since v0.1.3; re-released for updated upstream pins.
-
 ### Changed
 
-- The pom carries a real version, `-SNAPSHOT` on `main` and the release version on a tag, instead of the
-  cosmetic `0.0.0-SNAPSHOT` (umbrella `docs/refactor/43-real-versions.md`).
-- Published as `com.github.BotMakerDev:botmaker-plugin-archetype` (was `com.github.LiQiyeDev`), and a
-  generated plugin's pom names the contract and the toolkit under `com.github.BotMakerDev`. Tags already
-  built under the old groupId still resolve under it.
-- The generated README has a *Try it in Studio* section: `mvn install`, pin the plugin in a bot, turn on
-  the project's Dev mode, press Reload after each rebuild, and release before publishing the bot.
-
-No source changes since v0.1.2; re-released for updated upstream pins.
-
-### Changed
-
-- `ExampleApi`'s `@Palette` drops `order`, which contract 0.4.0 deletes: offered classes are alphabetical.
+- The generated plugin's Javadoc names `@ManagedMarker`, the contract's mark for a plugin's own managed-value
+  annotation, instead of `@Managed`, which the contract deleted. That comment is the generated plugin's only
+  change: it declares no managed value.
 
 ## [0.1.3] — 2026-10-06
 

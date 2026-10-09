@@ -45,7 +45,7 @@ failure rather than a compile error:
 
 | dependency | scope | what a wrong scope does |
 |---|---|---|
-| `botmaker-studio-api` | `provided` | Harmless at `compile` since `PluginLoader` is parent-first for the contract (the SDK declares it so, because `@Param`/`@Managed` sit on a bot's own code), and `pom-scopes` accepts both. `provided` stays the skeleton's answer: a plugin that puts nothing on a bot's classpath should not bring the contract to every bot that uses it. |
+| `botmaker-studio-api` | `provided` | Harmless at `compile` since `PluginLoader` is parent-first for the contract (the SDK declares it so, because `@Param` and its `@SdkValue` marks sit on a bot's own code), and `pom-scopes` accepts both. `provided` stays the skeleton's answer: a plugin that puts nothing on a bot's classpath should not bring the contract to every bot that uses it. |
 | `botmaker-plugin-toolkit` | `compile` | `provided` compiles fine and then `NoClassDefFoundError`s at load, because Studio does not have the toolkit. |
 | `javafx-controls` | `provided` | `compile` puts a second JavaFX in a process that has one. |
 
