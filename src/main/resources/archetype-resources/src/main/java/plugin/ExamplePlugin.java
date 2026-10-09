@@ -10,7 +10,8 @@ import com.botmaker.plugin.api.StudioPlugin;
  *
  * <p>Each surface after {@code named} is optional and names what it lists: {@code types} (what a user can
  * hold), {@code parts} (calls inside a value that are not types of their own), {@code editors},
- * {@code values} ({@code @Managed} values a window of yours keeps), {@code toolbar} and {@code recorded}.
+ * {@code values} (values a window of yours keeps in the bot, each marked with an annotation of your own that
+ * carries {@code @ManagedMarker}), {@code toolbar} and {@code recorded}.
  * The palette needs nothing: the host finds every {@code @Palette} class in this jar, so {@code ExampleApi}
  * is offered because it carries the annotation.
  *
