@@ -15,9 +15,8 @@ No source changes since v0.2.0; re-released for updated upstream pins.
 
 ### Added
 
-- The generated `README.md` has a new section, *When a managed value changes shape*. A plugin keeps the old
-  declaration `.retired()` and puts the new shape under a new id. It declares a `Conversion` between the two,
-  and checks the result with `botmaker plugin validate --against`.
+- The generated `README.md` has a new section, *When a managed value changes shape*: a release changes a value
+  freely, and Studio's upgrade repairs a bot's old values like the rest of its code.
 
 ### Changed
 

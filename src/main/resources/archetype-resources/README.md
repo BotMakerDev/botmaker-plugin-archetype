@@ -83,31 +83,15 @@ release — the tip of the contract is usually ahead of every released Studio, w
 # When a managed value changes shape
 
 A managed value is Java in the bot, marked with your plugin's annotation: a method or a class of constants
-your plugin keeps up to date. A user's bot holds it, so a release cannot just change it. That covers renaming
-its holder, changing its type or set kind, or changing how its type's parts are written.
+your plugin keeps up to date. A release may change it freely: rename its holder, change its type or set kind,
+change how its type's parts are written, or drop it. Nothing converts a bot's old values. When a bot upgrades
+your plugin, Studio repairs them the way it repairs the rest of the bot's code:
 
-1. Keep the old declaration exactly as the last release had it, under the same id, and add `.retired()`.
-   Keep the types it holds in the jar too, **declared as they were**: the same factory, and every wither they
-   had. Studio still reads a retired value, and never creates or offers it. A class has one declaration, so
-   if the new shape writes a type differently, give the new shape a new class.
-2. Declare the new shape under a **new** id: add a constant to your marker's `Id` enum.
-3. Declare the step between them, and return it from `conversions()`:
+- a value whose id is gone, or that you declare another way now, is removed, or kept unmarked while the bot's
+  own code still names it;
+- a value that no longer compiles takes its declaration's first value, marked `@Refactor` for review.
 
-   ```java
-   public static final Conversion SHOUTED = Conversion.from(GREETING).to(SHOUT)
-           .by(MyConversions::shout)                   // Converted shout(Converting old)
-           .because("The greeting is shouted now.");    // shown in Studio's upgrade window
-   ```
-
-   `old.value(GREETING)` is the bot's value. Write the new one with
-   `Converted.empty().value(SHOUT, ...)`, or `.members(...)` for a set. Studio runs it when the bot upgrades
-   your plugin, writes the new values and removes the old holder once nothing names it.
-4. Check before you release: `botmaker plugin validate --against <your last release>`. Its `conversions` and
-   `managed-history` checks refuse a change no conversion covers.
-
-A retired value may be removed in any later release, together with its conversion. From then on, a bot that
-still holds it is refused by Studio until it upgrades through a release that converts it. How long you keep
-it is the window in which an old bot can jump straight to your newest release.
+Say in your changelog what a bot's author has to redo after the upgrade.
 
 # Next
 
