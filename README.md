@@ -6,9 +6,11 @@
 mvn archetype:generate \
   -DarchetypeGroupId=com.github.BotMakerDev \
   -DarchetypeArtifactId=botmaker-plugin-archetype \
-  -DarchetypeVersion=v0.1.0 \
+  -DarchetypeVersion=LATEST_TAG \
   -DarchetypeRepository=https://jitpack.io
 ```
+
+Replace `LATEST_TAG` with the newest tag on the [tags page](https://github.com/BotMakerDev/botmaker-plugin-archetype/tags).
 
 `-DarchetypeRepository` is required: BotMaker publishes through JitPack, and Maven does not read a project's
 `<repositories>` when resolving an archetype — there is no project yet.
@@ -32,22 +34,22 @@ A project that **builds and passes its tests with no edits**:
 - The standard package tree (`../docs/refactor/34-plugin-package-tree.md` in the umbrella): `api/` for what
   a bot compiles against, `internal/` for what it runs but never names, `plugin/` for the Studio half.
 - `api/ExampleApi` — a facade with one offered method and one `@Hidden` one; `api/Greeting` — a value a bot
-  holds.
+  holds; `api/Greetee` — the parameter annotation that picks an editor by parameter.
 - `plugin/ExamplePlugin` — one declaration, `StudioPlugin.id(ID).named(NAME).types(…).editors(…)`, on the
   contract's `DeclaredPlugin`.
 - `plugin/types/ExampleTypes` — the greeting declared once, `PluginType.value(Greeting.class)` and its steps
   (fresh value, editor, `writtenAsRecord()`).
-- `plugin/editors/ExampleEditors`, `plugin/editors/GreetingEditor` — one slot editor chosen by the **call**
-  rather than by the type, and the greeting's editor.
+- `plugin/editors/ExampleEditors`, `plugin/editors/GreetingEditor` — one slot editor chosen by the
+  **parameter** (`SlotEditor.onParameter(Greetee.class)`) rather than by the type, and the greeting's editor.
 - `plugin/ExamplePluginTest` — seven tests including the ones a plugin author normally never writes: the
   contexts the editor must *decline*.
 
 ## Why the versions default to tags
 
 A released Studio loads a plugin only when its contract has every member the plugin uses. The tip of the
-contract's `main` is usually ahead of every released Studio, so the old `main-SNAPSHOT` default could
-generate a plugin no Studio would load (*built for a newer Studio*). The release writes the newest pair into
-the descriptor each time the archetype is cut (`botmaker-cli`'s `ArchetypePin`), so nobody edits them by hand.
+contract's `main` is usually ahead of every released Studio, so a `-SNAPSHOT` default would generate a plugin
+no Studio loads. The release writes the newest pair into the descriptor each time the archetype is cut
+(`botmaker-cli`'s `ArchetypePin`), so nobody edits them by hand.
 
 ## Opening it in IntelliJ
 
@@ -76,4 +78,4 @@ cd /tmp && mvn archetype:generate -B \
 cd my-plugin && mvn verify
 ```
 
-Releases are cut from the umbrella with `../release.sh --plugin-archetype <version>`.
+Releases are cut from the umbrella only, with `--plugin-archetype <version>`.
