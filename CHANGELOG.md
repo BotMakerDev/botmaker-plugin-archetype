@@ -13,6 +13,12 @@ No source changes since v0.2.1; re-released for updated upstream pins.
 
 No source changes since v0.2.0; re-released for updated upstream pins.
 
+### Added
+
+- The generated `README.md` has a new section, *When a managed value changes shape*. A plugin keeps the old
+  declaration `.retired()` and puts the new shape under a new id. It declares a `Conversion` between the two,
+  and checks the result with `botmaker plugin validate --against`.
+
 ### Changed
 
 - The generated plugin's Javadoc names `@ManagedMarker`, the contract's mark for a plugin's own managed-value
