@@ -1,8 +1,10 @@
 jdk:
   - openjdk25
 install:
-  # A plain `mvn install`, as everywhere since 2026-10-06 (umbrella doc 43). This one has NO BotMaker
-  # dependency at all. What it ships is text, and the BotMaker versions it writes into a generated pom are
-  # archetype requiredProperties substituted at generation time. There is nothing for flatten to bake and
-  # nothing to pin.
-  - mvn install -DskipTests -Dmaven.javadoc.skip=true -B
+  # .jitpack/build.sh is a copy of the umbrella's tools/jitpack/build.sh, which the release's JitpackScriptGate
+  # keeps identical. It brings its own Maven 3.9.9 (and Temurin 25 where SDKMan's download fails), fetched
+  # from Google's mirror of Maven Central first, and retries a 429 rather than losing the tag (umbrella doc 43).
+  #
+  # This module has NO BotMaker dependency at all. What it ships is text, and the BotMaker versions it writes
+  # into a generated pom are archetype requiredProperties substituted at generation time.
+  - bash .jitpack/build.sh
