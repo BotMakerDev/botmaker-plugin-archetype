@@ -71,14 +71,14 @@ class ExamplePluginTest {
     @Test
     void the_editor_claims_the_first_argument_of_greet() {
         assertTrue(editor().matches(
-                TestContexts.slot(TestContexts.method(ExampleApi.class, "greet"), 0, "\"world\"")));
+                TestContexts.slot(TestContexts.call(ExampleApi::greet), 0, "\"world\"")));
     }
 
     @Test
     void the_editor_declines_a_second_argument_another_call_and_an_unresolved_one() {
-        assertFalse(editor().matches(TestContexts.slot(TestContexts.method(ExampleApi.class, "greet"), 1, "\"x\"")));
+        assertFalse(editor().matches(TestContexts.slot(TestContexts.call(ExampleApi::greet), 1, "\"x\"")));
         assertFalse(editor().matches(
-                TestContexts.slot(TestContexts.method(ExampleApi.class, "internalHelper"), 0, "\"x\"")));
+                TestContexts.slot(TestContexts.call(ExampleApi::internalHelper), 0, "\"x\"")));
         assertFalse(editor().matches(TestContexts.slot(null, 0, "\"x\"")));
     }
 
