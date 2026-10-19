@@ -4,71 +4,128 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- botmaker plugin new: coordinates -->
     <!--
-      groupId is com.github.BotMakerDev for the same reason as every other published module: JitPack serves
-      this repo as com.github.BotMakerDev:botmaker-plugin-archetype:<tag> whatever this pom says. The version
-      is real: -SNAPSHOT on main, the release version on a tag (umbrella docs/refactor/43-real-versions.md).
+      THIS POM IS TWO THINGS. It builds the example plugin in this repository, and it is the pom a new plugin
+      starts with: `botmaker plugin new` copies it, replacing the region marked `coordinates` with the new
+      plugin's own and deleting the region marked `drop`. Everything else reaches the new plugin as written,
+      so everything else is what a plugin's pom should say. CI builds and tests it here, which is the point:
+      the skeleton a newcomer gets is a project that compiled.
+
+      Its upstream versions are this repository's like any other module's: each upstream's -SNAPSHOT on main,
+      its released tag on a tag (umbrella docs/refactor/43-real-versions.md). So a plugin made by a released
+      `botmaker` pins the contract and toolkit that were released with it.
     -->
     <groupId>com.github.BotMakerDev</groupId>
     <artifactId>botmaker-plugin-archetype</artifactId>
     <version>0.3.1-SNAPSHOT</version>
-    <packaging>maven-archetype</packaging>
 
     <name>BotMaker Plugin Archetype</name>
     <description>
-        mvn archetype:generate for a BotMaker Studio plugin: a pom with the right three scopes, the
-        META-INF/services declaration, a StudioPlugin with one working slot editor and one registered value
-        type, and a test that runs with no host and no JavaFX thread.
+        The example plugin `botmaker plugin new` copies: a value type, a palette block and a managed value,
+        built and tested as they stand.
     </description>
+    <!-- /botmaker plugin new -->
 
-    <!--
-      THIS MODULE HAS NO BOTMAKER DEPENDENCY, and that is the whole reason it needs no
-      flatten-maven-plugin and pins nothing. What it ships is TEXT: the versions it writes into a generated
-      pom are archetype requiredProperties with defaults, substituted at generation time, not Maven
-      dependencies resolved at build time. Nothing here is on anybody's classpath.
-
-      The defaults are released tags, written by the release itself (botmaker-cli's ArchetypePin) from the
-      newest contract and toolkit tags. They were `main-SNAPSHOT` until 2026-09-29, which "never goes stale"
-      and was wrong the other way: the contract's main is ahead of every released Studio, and a plugin built
-      against it could be refused at load.
-    -->
     <properties>
         <maven.compiler.release>25</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--
+          Released tags (`v0.10.0`), which JitPack serves as com.github.BotMakerDev:<repo>:<tag>. Move them when
+          Studio moves: a plugin loads in any Studio whose contract has every member it uses, so build against
+          the oldest contract you mean to support. A `-SNAPSHOT` here resolves from your own ~/.m2 only.
+        -->
+        <botmaker.studioapi.version>0.10.1-SNAPSHOT</botmaker.studioapi.version>
+        <botmaker.plugintoolkit.version>0.9.1-SNAPSHOT</botmaker.plugintoolkit.version>
     </properties>
 
+    <repositories>
+        <!-- BotMaker's modules are published through JitPack, which serves each git tag as
+             com.github.BotMakerDev:<repo>:<tag>. -->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!--
+          THE CONTRACT — what this plugin implements. `compile`, because a bot needs it too: the welcome
+          parameter Studio writes into a bot carries `@Param` and `@GreetValue`, whose `@ManagedMarker` is a
+          contract class. Studio loads the contract parent-first, so a plugin's copy is never a second set of
+          classes. A plugin that never marks a bot's code (no level 3) may make this `provided`.
+        -->
+        <dependency>
+            <groupId>com.github.BotMakerDev</groupId>
+            <artifactId>botmaker-studio-api</artifactId>
+            <version>${botmaker.studioapi.version}</version>
+        </dependency>
+
+        <!--
+          THE WIDGETS — what this plugin compiles against. Ordinary `compile` scope, and that too is
+          deliberate: the toolkit is resolved onto YOUR plugin's classloader, so your version is yours and no
+          other plugin's. Do not mark it `provided`; Studio does not have it.
+        -->
+        <dependency>
+            <groupId>com.github.BotMakerDev</groupId>
+            <artifactId>botmaker-plugin-toolkit</artifactId>
+            <version>${botmaker.plugintoolkit.version}</version>
+        </dependency>
+
+        <!--
+          JavaFX, `provided`: a slot editor draws into the host's scene graph, and a second toolkit in a process
+          that already has one does not work.
+        -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>27</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
-        <extensions>
-            <!-- What makes <packaging>maven-archetype</packaging> a lifecycle Maven understands. -->
-            <extension>
-                <groupId>org.apache.maven.archetype</groupId>
-                <artifactId>archetype-packaging</artifactId>
-                <version>3.2.1</version>
-            </extension>
-        </extensions>
-
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-archetype-plugin</artifactId>
-                    <version>3.2.1</version>
-                    <configuration>
-                        <!--
-                          The integration test in src/test/resources/projects GENERATES the skeleton and
-                          stops there; it does not build it. Building it would resolve
-                          botmaker-studio-api and botmaker-plugin-toolkit from JitPack, which would put
-                          a network fetch inside `mvn install` at the umbrella root. That is the one
-                          thing this repository's standing constraint forbids.
-
-                          What the IT does hold is worth having on its own: the archetype descriptor is
-                          well-formed, every filtered file's Velocity references resolve, and the packaged
-                          directories land under the requested package.
-                        -->
-                        <noLog>true</noLog>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+            </plugin>
+            <!-- botmaker plugin new: drop -->
+            <!--
+              The skeleton `botmaker plugin new` copies, as a second artifact (classifier `template`, a zip):
+              this pom, src/main, src/test, the README in src/template, and .gitignore stored as `gitignore`.
+              botmaker-cli bundles the zip at its build; the cli names the dot back on copy, because a jar's
+              default excludes drop a `.gitignore` with no warning (the reason the maven-archetype packaging
+              this module had until 2026-10-19 could never ship one).
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.7.1</version>
+                <executions>
+                    <execution>
+                        <id>template</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/assembly/template.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- /botmaker plugin new -->
+        </plugins>
     </build>
 </project>

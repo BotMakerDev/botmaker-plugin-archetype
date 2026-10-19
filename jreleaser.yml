@@ -22,12 +22,12 @@
 
 project:
   name: botmaker-plugin-archetype
-  description: mvn archetype:generate for a BotMaker Studio plugin.
+  description: The example BotMaker Studio plugin that `botmaker plugin new` copies.
   longDescription: |
-    A skeleton that builds and passes its tests with no edits: the pom with the three scopes that are easy to
-    get wrong, the META-INF/services declaration Studio finds a plugin through, a facade, a registered value
-    type with a codec, one slot editor chosen by the call rather than by the type, and a test covering the
-    contexts that editor must decline.
+    A plugin that builds and passes its tests as it stands: the pom with the scopes that are easy to get
+    wrong, the META-INF/services declaration Studio finds a plugin through, and one of each thing a plugin
+    does — a value type, a palette block with its own slot editor, and a managed value — with tests covering
+    the contexts the editor must decline.
   authors:
     - LiQiyeDev
   license: CC0-1.0

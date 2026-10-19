@@ -3,14 +3,13 @@ name: CI
 # Three jobs, the same shape as the other BotMaker repos: `build` on every push and PR, `release` and
 # `jitpack` on a version tag.
 #
-# UNLIKE EVERY OTHER MODULE HERE, `build` checks out nothing: this repository has no BotMaker dependency.
-# What it ships is text, and the BotMaker versions it writes into a generated pom are archetype
-# requiredProperties substituted at generation time.
+# This repository is the example plugin `botmaker plugin new` copies (a maven-archetype until 2026-10-19), so
+# `build` compiles and tests it like any plugin: the skeleton a newcomer gets is one that passed here.
+# `mvn verify` also zips the `template` artifact botmaker-cli bundles; botmaker-cli's PluginTemplateTest
+# renames, compiles, loads and validates that copy.
 #
-# `mvn verify` runs the archetype's own integration test, which GENERATES the skeleton and stops. It does
-# not build what it generates: that would resolve botmaker-studio-api and botmaker-plugin-toolkit from
-# JitPack. The command that does build the skeleton is in README.md and runs against a local reactor, and
-# botmaker-cli's ArchetypeSkeletonTest compiles and validates it in the umbrella build.
+# Both upstreams are built from source, not resolved from JitPack: the pom pins each at its main -SNAPSHOT,
+# which nothing publishes.
 
 on:
   push:
@@ -23,13 +22,32 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - name: Check out botmaker-studio-api
+        uses: actions/checkout@v7
+        with:
+          repository: BotMakerDev/botmaker-studio-api
+          path: .deps/botmaker-studio-api
+
+      - name: Check out botmaker-plugin-toolkit
+        uses: actions/checkout@v7
+        with:
+          repository: BotMakerDev/botmaker-plugin-toolkit
+          path: .deps/botmaker-plugin-toolkit
+
       - uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: '25'
           cache: maven
 
-      - name: Build and generate
+      # RETRIED — Maven Central answers 429 to GitHub-hosted runners; see .github/mvn-retry.sh.
+      - name: Install the two upstreams (their main -SNAPSHOT)
+        run: |
+          source .github/mvn-retry.sh
+          mvn_retry mvn -B -f .deps/botmaker-studio-api/pom.xml install -DskipTests
+          mvn_retry mvn -B -f .deps/botmaker-plugin-toolkit/pom.xml install -DskipTests
+
+      - name: Build and test
         run: mvn -B verify
 
   # The GitHub Release, published by JReleaser from the tag the umbrella's release.sh pushed. It runs HERE
@@ -64,8 +82,8 @@ jobs:
         env:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # JitPack builds the artifact itself from the pushed tag; this just asks it to start eagerly, so the first
-  # `mvn archetype:generate` against a new tag does not wait for it.
+  # JitPack builds the artifact itself from the pushed tag; this just asks it to start eagerly, so the cli's own
+  # tag build, which resolves the `template` zip from it, does not wait for it.
   jitpack:
     if: startsWith(github.ref, 'refs/tags/')
     needs: build

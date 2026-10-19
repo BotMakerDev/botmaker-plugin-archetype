@@ -1,0 +1,19 @@
+package com.example.greetings.api;
+
+/**
+ * <b>Level 1, a value type:</b> a value this plugin owns, who to greet and how many times.
+ *
+ * <p>A bot holds one the way it holds any other value — as a {@code @Param} field, which Studio's
+ * Parameters window draws with {@code GreetingEditor}:
+ *
+ * <pre>{@code
+ * @Param public static Greeting welcome = new Greeting("world", 1);
+ * }</pre>
+ *
+ * <p>That line is the whole of how a greeting is stored. It is Java in the bot's own source, so a rename
+ * javac can see fails the build naming the file, and there is no id and no text format to keep stable.
+ * What must stay stable is what the host reads back: the record's constructor, which
+ * {@code ExampleTypes.GREETING} declares with {@code writtenAsRecord()}.
+ */
+public record Greeting(String who, int times) {
+}

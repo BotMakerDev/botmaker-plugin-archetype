@@ -18,9 +18,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Changed
 
+- **This repository is the example plugin itself, no longer a `maven-archetype`** (2026-10-19). It compiles and
+  its 9 tests run in CI, in package `com.example.greetings` with the name `Greeter`; `mvn package` also attaches a
+  `template` zip, which `botmaker plugin new` (botmaker-cli) bundles, copies and renames: package and
+  directories, plugin id and name, the pom's coordinates. A new plugin gets a `.gitignore` at last, the README's
+  `##` headings survive, and the pom pins the contract and toolkit as `botmaker.studioapi.version` and
+  `botmaker.plugintoolkit.version`, released tags on a tag like any module's pins.
 - **`ExamplePlugin` names its holder classes**: `.types(ExampleTypes.class).values(ExampleValues.class)`;
-  `ExampleTypes.ALL` is gone. This needs the contract's `types(Class)`, so the archetype's next release
-  rides a studio-api release carrying it (`ArchetypePin` writes the newest contract tag).
+  `ExampleTypes.ALL` is gone. This needs the contract's `types(Class)`, so this release rides a studio-api
+  release carrying it (studio-api now forces this module).
+
+### Removed
+
+- **`mvn archetype:generate`.** Start a plugin with `botmaker plugin new <artifact-id>`, or copy this
+  repository at a tag and rename it by hand.
 - **The contract is `compile` in the generated pom**, no longer `provided`: the welcome parameter puts
   `@Param` and `@GreetValue` (a `@ManagedMarker`) in a bot's code. A plugin without level 3 may keep it
   `provided`.

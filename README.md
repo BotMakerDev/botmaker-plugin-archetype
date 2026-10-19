@@ -1,81 +1,48 @@
 # botmaker-plugin-archetype
 
-`mvn archetype:generate` for a **BotMaker Studio plugin**.
+The example **BotMaker Studio plugin**, and the project a new plugin starts as:
 
 ```bash
-mvn archetype:generate \
-  -DarchetypeGroupId=com.github.BotMakerDev \
-  -DarchetypeArtifactId=botmaker-plugin-archetype \
-  -DarchetypeVersion=LATEST_TAG \
-  -DarchetypeRepository=https://jitpack.io
+botmaker plugin new discord-notifier --group com.example --plugin-id com.example.discord
 ```
 
-Replace `LATEST_TAG` with the newest tag on the [tags page](https://github.com/BotMakerDev/botmaker-plugin-archetype/tags).
+[`botmaker plugin new`](https://github.com/BotMakerDev/botmaker-cli) copies this plugin as it was when that
+`botmaker` was released, and renames it: the package and its directories, the plugin id and name, the pom's
+coordinates. Every option has a default derived from the artifact id. Without the cli, copy this repository at a
+tag and rename those by hand.
 
-`-DarchetypeRepository` is required: BotMaker publishes through JitPack, and Maven does not read a project's
-`<repositories>` when resolving an archetype — there is no project yet.
+It was a `maven-archetype` (`mvn archetype:generate`) until 2026-10-19. It is a plain plugin now, so CI builds
+and tests exactly the project a newcomer gets.
 
-It asks four questions beyond the usual coordinates, each with a working default:
+## What is in it
 
-| property | default | what it is |
-|---|---|---|
-| `pluginId` | the groupId | what `StudioPlugin.id()` returns, and what the registry refuses twice. **Not** the Maven coordinate — a plugin may be re-published under a new one and must keep its id. |
-| `pluginName` | the artifactId | what Studio shows in *Plugins & Libraries*. |
-| `studioApiVersion` | the newest contract tag when this archetype was released | the contract version written into the generated pom. |
-| `toolkitVersion` | the newest toolkit tag when this archetype was released | the toolkit version written into the generated pom. |
+A plugin that **builds and passes its tests as it stands**, package `com.example.greetings`, named `Greeter`:
 
-## What comes out
+- `pom.xml` with the scopes that are easy to get wrong: `botmaker-studio-api` `compile` (level 3 marks the
+  bot's code), `botmaker-plugin-toolkit` `compile`, `javafx-controls` `provided`.
+- `META-INF/services/com.botmaker.plugin.api.StudioPlugin`, the only way Studio finds the plugin.
+- One of each thing a plugin does, labelled in the code as levels:
+  1. a value type: `api/Greeting`, `plugin/types/ExampleTypes`, `plugin/editors/GreetingEditor`;
+  2. a palette block: `api/ExampleApi`, with `api/Greetee` and `plugin/editors/ExampleEditors` for the one
+     argument that needs an editor of its own;
+  3. a managed value: `api/GreetValue` and `plugin/values/ExampleValues`, a `@Param` Studio writes into the bot.
+- `plugin/ExamplePluginTest`: nine tests, including the contexts the editor must *decline*.
 
-A project that **builds and passes its tests with no edits**:
+`src/template/README.md` is the README a new plugin gets; it walks through the same files.
 
-- `pom.xml` with the three scopes that are easy to get wrong — `botmaker-studio-api` `provided`,
-  `botmaker-plugin-toolkit` `compile`, `javafx-controls` `provided`.
-- `META-INF/services/com.botmaker.plugin.api.StudioPlugin`, the only reason Studio ever finds the plugin.
-- The standard package tree (`../docs/refactor/34-plugin-package-tree.md` in the umbrella): `api/` for what
-  a bot compiles against, `internal/` for what it runs but never names, `plugin/` for the Studio half.
-- `api/ExampleApi` — a facade with one offered method and one `@Hidden` one; `api/Greeting` — a value a bot
-  holds; `api/Greetee` — the parameter annotation that picks an editor by parameter.
-- `plugin/ExamplePlugin` — one declaration, `StudioPlugin.id(ID).named(NAME).types(…).editors(…)`, on the
-  contract's `DeclaredPlugin`.
-- `plugin/types/ExampleTypes` — the greeting declared once, `PluginType.value(Greeting.class)` and its steps
-  (fresh value, editor, `writtenAsRecord()`).
-- `plugin/editors/ExampleEditors`, `plugin/editors/GreetingEditor` — one slot editor chosen by the
-  **parameter** (`SlotEditor.onParameter(Greetee.class)`) rather than by the type, and the greeting's editor.
-- `plugin/ExamplePluginTest` — seven tests including the ones a plugin author normally never writes: the
-  contexts the editor must *decline*.
+## The versions it pins
 
-## Why the versions default to tags
-
-A released Studio loads a plugin only when its contract has every member the plugin uses. The tip of the
-contract's `main` is usually ahead of every released Studio, so a `-SNAPSHOT` default would generate a plugin
-no Studio loads. The release writes the newest pair into the descriptor each time the archetype is cut
-(`botmaker-cli`'s `ArchetypePin`), so nobody edits them by hand.
-
-## Opening it in IntelliJ
-
-The skeleton's `.java` files are resources with `${package}` placeholders, so IntelliJ does not show this
-module as Java; that is expected. Run `mvn install` here, then open
-`target/test-classes/projects/basic/project/example-plugin` as a Maven project: it is the generated skeleton,
-and it builds. `CLAUDE.md` has the round trip.
+The pom pins `botmaker.studioapi.version` and `botmaker.plugintoolkit.version` like any module here: the
+upstream's `-SNAPSHOT` on `main`, its released tag on a tag. A plugin made by a released `botmaker` pins the
+contract and toolkit released with it, which a released Studio loads.
 
 ## Building
 
 ```bash
-mvn install     # com.github.BotMakerDev:botmaker-plugin-archetype at the pom's main -SNAPSHOT
+mvn install     # the plugin's jar and the `template` zip botmaker-cli bundles
 ```
 
-To generate against the local reactor rather than JitPack — the fastest way to check a change here:
-
-```bash
-mvn install                                # at the umbrella root, so the contract and toolkit are in ~/.m2
-v() { mvn -q -f "$1/pom.xml" help:evaluate -Dexpression=project.version -DforceStdout; }   # main's -SNAPSHOT
-a=$(v botmaker-plugin-archetype) s=$(v botmaker-studio-api) t=$(v botmaker-plugin-toolkit)
-cd /tmp && mvn archetype:generate -B \
-  -DarchetypeGroupId=com.github.BotMakerDev \
-  -DarchetypeArtifactId=botmaker-plugin-archetype -DarchetypeVersion="$a" \
-  -DgroupId=com.example -DartifactId=my-plugin \
-  -DstudioApiVersion="$s" -DtoolkitVersion="$t"
-cd my-plugin && mvn verify
-```
+It needs the contract and toolkit at their `main` `-SNAPSHOT` in `~/.m2`: run `mvn install` at the umbrella root
+first, or open this module in the umbrella in IntelliJ, where it is an ordinary Maven module.
 
 Releases are cut from the umbrella only, with `--plugin-archetype <version>`.

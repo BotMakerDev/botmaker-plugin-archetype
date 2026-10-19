@@ -5,6 +5,5 @@ install:
   # keeps identical. It brings its own Maven 3.9.9 (and Temurin 25 where SDKMan's download fails), fetched
   # from Google's mirror of Maven Central first, and retries a 429 rather than losing the tag (umbrella doc 43).
   #
-  # This module has NO BotMaker dependency at all. What it ships is text, and the BotMaker versions it writes
-  # into a generated pom are archetype requiredProperties substituted at generation time.
+  # It publishes the example plugin's jar and its `template` zip, which botmaker-cli's tag build resolves.
   - bash .jitpack/build.sh
