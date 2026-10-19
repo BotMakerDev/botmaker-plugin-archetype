@@ -120,7 +120,7 @@ public @interface GreetValue {
 The declaration is `plugin/values/ExampleValues.java`:
 
 ```java
-public static final ManagedValue<Greeting> WELCOME = ManagedValue.param(GreetValue.Id.WELCOME)
+public static final ManagedParam<Greeting> WELCOME = ManagedValue.param(GreetValue.Id.WELCOME)
         .in("Greetings")
         .startsAs(ExampleValues::welcome)
         .shown("Greetings", "Who the bot greets first", Param.Visibility.PUBLIC)
@@ -139,6 +139,18 @@ The steps are, in order:
 The bot reads the value as plain Java, `Greetings.welcome`. A bot without a `Greetings` class gets one in its
 package `plugins.<the last segment of your plugin id>`. This is why the contract is a `compile` dependency in
 `pom.xml`: the bot's code carries `@GreetValue` and `@Param`.
+
+A parameter is one of three shapes. Pick by who changes the value; each entry point ends in its own type:
+
+| Who changes it | Entry point | You get |
+|---|---|---|
+| the user, in the Runner or Project ▸ Parameters | `ManagedValue.param` | `ManagedParam<T>` |
+| your plugin's own window | `ManagedValue.method` | `ManagedMethod<T>` |
+| your plugin's window, which adds, renames and removes members | `ManagedValue.openSet` | a `ManagedOpenSet<T>` |
+
+An open set has four kinds, picked by its next step: `of` (constants), `ofEnum` (one enum), `ofEnumGroups`
+(enums nested in one class) and `ofClasses` (nested classes). Type the field by what the steps return, so the
+compiler offers only what that shape has.
 
 ## Two more you will meet
 

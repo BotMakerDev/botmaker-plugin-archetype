@@ -22,6 +22,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Changed
 
+- **`ExampleValues.WELCOME` is a `ManagedParam<Greeting>`**, typed by its shape for contract 0.11.0's sealed
+  `ManagedValue`, and `DECLARE.md` level 3 has a table for picking a shape: a parameter, a method value or an open
+  set, and the open set's four kinds.
 - **This repository is the example plugin itself, no longer a `maven-archetype`** (2026-10-19). It compiles and
   its 9 tests run in CI, in package `com.example.greetings` with the name `Greeter`; `mvn package` also attaches a
   `template` zip, which `botmaker plugin new` (botmaker-cli) bundles, copies and renames: package and

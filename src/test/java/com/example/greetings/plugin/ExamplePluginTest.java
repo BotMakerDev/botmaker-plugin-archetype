@@ -6,7 +6,7 @@ import com.example.greetings.plugin.types.ExampleTypes;
 import com.example.greetings.plugin.values.ExampleValues;
 import com.botmaker.plugin.api.catalog.PaletteCatalog;
 import com.botmaker.plugin.api.slot.SlotEditor;
-import com.botmaker.plugin.api.source.ManagedValue;
+import com.botmaker.plugin.api.source.ManagedParam;
 import com.botmaker.plugin.toolkit.testing.TestContexts;
 import org.junit.jupiter.api.Test;
 
@@ -98,8 +98,7 @@ class ExamplePluginTest {
     @Test
     void the_welcome_is_a_parameter_studio_writes_into_the_bot() {
         assertEquals(List.of(ExampleValues.WELCOME), plugin.managedValues());
-        ManagedValue<?> welcome = ExampleValues.WELCOME;
-        assertTrue(welcome.isParam());
+        ManagedParam<Greeting> welcome = ExampleValues.WELCOME;
         assertEquals("Greetings", welcome.holder());
         assertEquals(new Greeting("world", 1), welcome.initial());
         assertEquals(welcome.initial(), ExampleTypes.GREETING.build(

@@ -4,6 +4,7 @@ import com.example.greetings.api.GreetValue;
 import com.example.greetings.api.Greeting;
 import com.example.greetings.plugin.ExamplePlugin;
 import com.botmaker.plugin.api.params.Param;
+import com.botmaker.plugin.api.source.ManagedParam;
 import com.botmaker.plugin.api.source.ManagedValue;
 
 /**
@@ -31,7 +32,7 @@ public final class ExampleValues {
     private ExampleValues() {}
 
     /** Who the bot greets first: a {@code @Param} field in the bot's {@code Greetings} class. */
-    public static final ManagedValue<Greeting> WELCOME = ManagedValue.param(GreetValue.Id.WELCOME)
+    public static final ManagedParam<Greeting> WELCOME = ManagedValue.param(GreetValue.Id.WELCOME)
             .in("Greetings")
             .startsAs(ExampleValues::welcome)
             .shown("Greetings", "Who the bot greets first", Param.Visibility.PUBLIC)
