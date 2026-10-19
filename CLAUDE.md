@@ -32,7 +32,7 @@ cd /tmp && mvn archetype:generate -B \
   -DarchetypeArtifactId=botmaker-plugin-archetype -DarchetypeVersion="$a" \
   -DgroupId=com.example -DartifactId=my-plugin \
   -DstudioApiVersion="$s" -DtoolkitVersion="$t"
-cd my-plugin && mvn verify                    # must be green, 7 tests, no edits
+cd my-plugin && mvn verify                    # must be green, 8 tests, no edits
 ```
 
 Run it after **any** change to `archetype-resources/`. Nothing in this module's own build compiles a line of
@@ -71,7 +71,7 @@ copy:
 ```bash
 mvn -pl botmaker-plugin-archetype install        # umbrella root; the integration test generates the copy
 # then open botmaker-plugin-archetype/target/test-classes/projects/basic/project/example-plugin
-# in IntelliJ as a Maven project; mvn verify there must be green, 7 tests
+# in IntelliJ as a Maven project; mvn verify there must be green, 8 tests
 ```
 
 Port each change back into `archetype-resources/` by hand, putting `${package}` back where the generated

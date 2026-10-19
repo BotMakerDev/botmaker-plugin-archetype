@@ -8,8 +8,13 @@ import com.botmaker.plugin.api.slot.SlotEditor;
 import com.botmaker.plugin.toolkit.testing.TestContexts;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -33,6 +38,21 @@ class ExamplePluginTest {
      * this; {@code botmaker plugin validate} runs the real discovery.
      */
     private static final PaletteCatalog PALETTE = PaletteCatalog.of(ExampleApi.class);
+
+    /**
+     * A host finds a plugin only through its services file, so a plugin class renamed or moved without it loads
+     * nothing, and nothing else says so.
+     */
+    @Test
+    void the_services_file_names_this_plugin() throws IOException {
+        String services = "META-INF/services/com.botmaker.plugin.api.StudioPlugin";
+        String name = ExamplePlugin.class.getName();
+        try (InputStream in = ExamplePlugin.class.getResourceAsStream("/" + services)) {
+            assertNotNull(in, "src/main/resources/" + services + " is missing: write it with the line " + name);
+            assertTrue(new String(in.readAllBytes(), StandardCharsets.UTF_8).lines().map(String::strip)
+                    .anyMatch(name::equals), "src/main/resources/" + services + " must have the line " + name);
+        }
+    }
 
     @Test
     void the_palette_is_well_formed() {
