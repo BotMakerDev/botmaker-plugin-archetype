@@ -4,6 +4,8 @@ Made by `botmaker plugin new` from the example plugin, `botmaker-plugin-archetyp
 and name. It compiles and its tests pass as it stands. The class names are still the example's (`ExamplePlugin`,
 `Greeting`, …): rename them in your IDE as your plugin takes shape.
 
+New to plugins? Read `DECLARE.md` first: one page through this code, in the order you need it.
+
 # Build it
 
 ```bash
@@ -15,7 +17,8 @@ mvn verify
 No release is needed to see a change in Studio:
 
 1. Run `mvn install`. It puts your plugin in `~/.m2` at its `-SNAPSHOT` version.
-2. Add it to a bot: `botmaker plugin run --project <bot>` does the install and the pin and opens Studio.
+2. Add it to a bot: `botmaker plugin run --project <bot>` does the install and the pin and opens Studio, without
+   ticking Dev mode for you.
    Or open the bot in Studio and pin the coordinate in *Project ▸ Plugins & Libraries*.
 3. Tick **Dev mode** in that window. Studio refuses a `-SNAPSHOT` plugin in any other project. A dev-mode
    project loads it and shows a banner on the canvas while it does.

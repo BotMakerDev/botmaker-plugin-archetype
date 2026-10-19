@@ -20,8 +20,12 @@ test caught it, Velocity ate every `##` heading, and the jar could not carry a `
   `<!-- botmaker plugin new: drop -->` (removed: the assembly that zips the template). Everything outside them
   reaches every new plugin, so write it for a plugin author.
 - `src/template/README.md`: the README a new plugin gets. `README.md` at the root is this repository's.
-- `src/assembly/template.xml`: the `template` zip (classifier `template`): the pom, `src/main`, `src/test`, the
-  template README, and `.gitignore` stored as `gitignore`.
+- `src/template/DECLARE.md`: "Declare a plugin in 10 minutes", the one page an outside author reads. Each
+  ```` ```java ```` block is a verbatim quote of `src/main/java` (dedent allowed), checked by `DeclareDocTest`;
+  ```` ```java sdk ```` quotes another project and is not checked. Edit the example, then the page. It is not
+  renamed on copy, so it quotes no line holding the package, the quoted id or the quoted name.
+- `src/assembly/template.xml`: the `template` zip (classifier `template`): the pom, `src/main`, `src/test`
+  without `DeclareDocTest`, the template README and `DECLARE.md`, and `.gitignore` stored as `gitignore`.
 
 `botmaker-cli` bundles the zip (`maven-dependency-plugin:copy` into its jar) and its `PluginTemplate` renames on
 copy. **The copy finds what to rename by anchors this module keeps**; a template without one is refused:

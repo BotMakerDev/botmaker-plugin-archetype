@@ -29,6 +29,8 @@ A plugin that **builds and passes its tests as it stands**, package `com.example
 - `plugin/ExamplePluginTest`: nine tests, including the contexts the editor must *decline*.
 
 `src/template/README.md` is the README a new plugin gets; it walks through the same files.
+`src/template/DECLARE.md`, "Declare a plugin in 10 minutes", is the one page to read first: it quotes the
+example's code, and the build checks that the quotes still match.
 
 ## The versions it pins
 

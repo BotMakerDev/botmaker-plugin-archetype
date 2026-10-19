@@ -20,6 +20,10 @@
         <fileSet>
             <directory>src/test</directory>
             <outputDirectory>src/test</outputDirectory>
+            <!-- Checks src/template/DECLARE.md against this example; a new plugin owes the page nothing. -->
+            <excludes>
+                <exclude>java/com/example/greetings/DeclareDocTest.java</exclude>
+            </excludes>
         </fileSet>
     </fileSets>
 
@@ -29,6 +33,9 @@
         </file>
         <file>
             <source>src/template/README.md</source>
+        </file>
+        <file>
+            <source>src/template/DECLARE.md</source>
         </file>
         <!-- Without its dot, which the cli puts back: see the pom's comment on this plugin. -->
         <file>

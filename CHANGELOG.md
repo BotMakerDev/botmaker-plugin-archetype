@@ -9,6 +9,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Added
 
+- **`DECLARE.md`, "Declare a plugin in 10 minutes"** (2026-10-19): one page through the example in the order a
+  newcomer needs it (the plugin class, then the three levels, then `@Fills` and `ValueContext.declared`). A new
+  plugin gets it beside its README. Every `java` block in it is copied from the example's source, and
+  `DeclareDocTest`, which the template leaves out, fails the build when the two drift apart.
 - **The skeleton's tests check its services file names the plugin**, and say the line to write when it does not.
 - **The skeleton does all three things a plugin does, labelled as levels** (2026-10-19): level 1 a value type
   (`Greeting`, `ExampleTypes`), level 2 a palette block (`ExampleApi`, `@Greetee`, `ExampleEditors`), and, new,
