@@ -3,14 +3,17 @@ package ${package}.plugin;
 import ${package}.api.ExampleApi;
 import ${package}.api.Greeting;
 import ${package}.plugin.types.ExampleTypes;
+import ${package}.plugin.values.ExampleValues;
 import com.botmaker.plugin.api.catalog.PaletteCatalog;
 import com.botmaker.plugin.api.slot.SlotEditor;
+import com.botmaker.plugin.api.source.ManagedValue;
 import com.botmaker.plugin.toolkit.testing.TestContexts;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -86,6 +89,21 @@ class ExamplePluginTest {
         assertEquals(fresh, type.build(type.components(fresh)));
         assertEquals(new Greeting("it's \"quoted\"", 3),
                 type.build(type.components(new Greeting("it's \"quoted\"", 3))));
+    }
+
+    /**
+     * The one value this plugin keeps in a bot: a parameter Studio writes into the bot's {@code Greetings}
+     * class, starting as a greeting the type above can write. {@code botmaker plugin validate} checks the same.
+     */
+    @Test
+    void the_welcome_is_a_parameter_studio_writes_into_the_bot() {
+        assertEquals(List.of(ExampleValues.WELCOME), plugin.managedValues());
+        ManagedValue<?> welcome = ExampleValues.WELCOME;
+        assertTrue(welcome.isParam());
+        assertEquals("Greetings", welcome.holder());
+        assertEquals(new Greeting("world", 1), welcome.initial());
+        assertEquals(welcome.initial(), ExampleTypes.GREETING.build(
+                ExampleTypes.GREETING.components(ExampleValues.welcome())));
     }
 
     @Test

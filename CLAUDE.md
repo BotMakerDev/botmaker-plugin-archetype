@@ -32,7 +32,7 @@ cd /tmp && mvn archetype:generate -B \
   -DarchetypeArtifactId=botmaker-plugin-archetype -DarchetypeVersion="$a" \
   -DgroupId=com.example -DartifactId=my-plugin \
   -DstudioApiVersion="$s" -DtoolkitVersion="$t"
-cd my-plugin && mvn verify                    # must be green, 8 tests, no edits
+cd my-plugin && mvn verify                    # must be green, 9 tests, no edits
 ```
 
 Run it after **any** change to `archetype-resources/`. Nothing in this module's own build compiles a line of
@@ -45,7 +45,7 @@ failure rather than a compile error:
 
 | dependency | scope | what a wrong scope does |
 |---|---|---|
-| `botmaker-studio-api` | `provided` | Harmless at `compile` since `PluginLoader` is parent-first for the contract (the SDK declares it so, because `@Param` and its `@SdkValue` marks sit on a bot's own code), and `pom-scopes` accepts both. `provided` stays the skeleton's answer: a plugin that puts nothing on a bot's classpath should not bring the contract to every bot that uses it. |
+| `botmaker-studio-api` | `compile` | The skeleton's level 3 puts `@Param` and `@GreetValue` (a `@ManagedMarker`) on a bot's own code, so the bot needs the contract, as the SDK's bots do. Harmless in Studio: `PluginLoader` is parent-first for the contract, and `pom-scopes` accepts both. A plugin that marks no bot code may make it `provided` (until 2026-10-19 the skeleton's answer). |
 | `botmaker-plugin-toolkit` | `compile` | `provided` compiles fine and then `NoClassDefFoundError`s at load, because Studio does not have the toolkit. |
 | `javafx-controls` | `provided` | `compile` puts a second JavaFX in a process that has one. |
 
@@ -71,7 +71,7 @@ copy:
 ```bash
 mvn -pl botmaker-plugin-archetype install        # umbrella root; the integration test generates the copy
 # then open botmaker-plugin-archetype/target/test-classes/projects/basic/project/example-plugin
-# in IntelliJ as a Maven project; mvn verify there must be green, 8 tests
+# in IntelliJ as a Maven project; mvn verify there must be green, 9 tests
 ```
 
 Port each change back into `archetype-resources/` by hand, putting `${package}` back where the generated

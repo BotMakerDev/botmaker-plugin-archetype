@@ -35,28 +35,48 @@ internal/   what a bot runs but never names (add it when you need it). No JavaFX
 plugin/     the Studio half: the plugin class, types/, editors/, one package per toolbar feature.
 ```
 
-- `api/ExampleApi` — the API your plugin offers a bot. Every `public` method it declares is offered in
-  Studio's block palette; `@Hidden` takes one back out. Renaming a method renames its palette entry, because
-  nothing lists member names as strings.
-- `api/Greeting` — a value a bot can hold.
-- `plugin/ExamplePlugin` — the plugin itself, one declaration: `StudioPlugin.id(ID).named(NAME)` and then
-  each surface it fills (`types`, `editors`, and `parts`, `values`, `toolbar`, `recorded` when you need
-  them). Studio finds it through
-  `src/main/resources/META-INF/services/com.botmaker.plugin.api.StudioPlugin`, which holds its
-  fully-qualified name. **If you rename or move `ExamplePlugin`, edit that file too** — nothing else will
-  tell you.
-- `plugin/types/ExampleTypes` — the greeting's one declaration, `PluginType.value(Greeting.class)` and its
-  steps: what a new one is, its editor, and how its Java is written (`writtenAsRecord()`). The steps only
-  offer what is valid next, so the compiler walks you through a new type.
-- `api/Greetee`, `plugin/editors/ExampleEditors`, `plugin/editors/GreetingEditor` — the annotation on
-  `greet`'s parameter, the editor it chooses, and what a greeting looks like when clicked.
-- `plugin/ExamplePluginTest` — the palette, the type and its round trip, and the editor's predicate
-  including the contexts it must *decline*.
+`plugin/ExamplePlugin` is the plugin itself, one declaration: `StudioPlugin.id(ID).named(NAME)` and then
+each surface it fills. Studio finds it through
+`src/main/resources/META-INF/services/com.botmaker.plugin.api.StudioPlugin`, which holds its fully-qualified
+name. **If you rename or move `ExamplePlugin`, edit that file too**; the skeleton's test says so if you do not.
+
+A plugin does up to three things. The skeleton does each once; read them in this order and delete what you
+do not need.
+
+**Level 1, a value type** — a value a bot holds and Studio edits.
+
+- `api/Greeting` — the value, a record.
+- `plugin/types/ExampleTypes` — its one declaration, `PluginType.value(Greeting.class)` and its steps: what a
+  new one is, its editor, and how its Java is written (`writtenAsRecord()`). The steps only offer what is
+  valid next, so the compiler walks you through a new type. `.types(ExampleTypes.class)` takes every type
+  field in the class, in field order: add a field and it is declared.
+- `plugin/editors/GreetingEditor` — what a greeting looks like when clicked. The editor is named
+  `() -> GreetingEditor::of`, with a second arrow, so a host without JavaFX can read the declaration.
+
+**Level 2, a palette block** — a method a bot calls.
+
+- `api/ExampleApi` — every `public` method it declares is offered in Studio's block palette; `@Hidden` takes
+  one back out. The plugin class names nothing for it: the host finds every `@Palette` class in the jar.
+- `api/Greetee`, `plugin/editors/ExampleEditors` — the annotation on `greet`'s parameter and the editor it
+  chooses. Only for a `String` (or any type) whose meaning depends on the parameter; a type of your own uses
+  its own editor from level 1.
+
+**Level 3, a managed value** — a value the plugin keeps in the bot's own Java.
+
+- `api/GreetValue` — the plugin's mark (`@ManagedMarker`), with one enum constant per value.
+- `plugin/values/ExampleValues` — `WELCOME`, a `@Param` field Studio writes into the bot's `Greetings` class
+  when the bot adds the plugin (a bot without one gets it under `plugins/<the last segment of the plugin's
+  id>/`). The Parameters window edits it with the greeting's editor, and the bot reads
+  it as Java, `Greetings.welcome`. `.values(ExampleValues.class)` takes every value field in the class.
+
+`plugin/ExamplePluginTest` checks each level: the type's round trip, the palette, the editor's predicate
+including the contexts it must *decline*, and the managed value.
 
 # The three dependencies, and why their scopes differ
 
-- `botmaker-studio-api` is **`provided`** — Studio already has the contract, and a contract class must be
-  the *same* `Class` object on both sides of the plugin boundary.
+- `botmaker-studio-api` is **`compile`** — level 3 puts `@Param` and `@GreetValue` in a bot's code, so the
+  bot needs the contract too. Studio loads the contract from its own copy first, so a contract class is the
+  same `Class` object on both sides of the plugin boundary. Without level 3 it may be `provided`.
 - `botmaker-plugin-toolkit` is **`compile`** — it is resolved onto *your* plugin's classloader, so your
   version is yours and no other plugin's. Studio does not have it. Do not mark it `provided`.
 - `javafx-controls` is **`provided`** — you draw into the host's scene graph.

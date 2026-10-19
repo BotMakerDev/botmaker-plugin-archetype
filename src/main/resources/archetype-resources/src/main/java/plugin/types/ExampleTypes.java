@@ -5,10 +5,10 @@ import ${package}.plugin.editors.GreetingEditor;
 import com.botmaker.plugin.api.value.DeclaredCallType;
 import com.botmaker.plugin.api.value.PluginType;
 
-import java.util.List;
-
 /**
- * The types this plugin owns, each declared once as a {@code PluginType.value(…)} whose steps ask, in order,
+ * <b>Level 1, a value type.</b> The types this plugin owns, each a {@code public static final} field here —
+ * {@code .types(ExampleTypes.class)} takes every one, in field order, which is the order a picker offers them.
+ * Each is declared once as a {@code PluginType.value(…)} whose steps ask, in order,
  * for everything the host needs — the compiler walks you through it:
  *
  * <ol>
@@ -33,15 +33,12 @@ public final class ExampleTypes {
 
     private ExampleTypes() {}
 
-    /** A greeting, written {@code new Greeting("world", 1)}. */
+    /**
+     * A greeting, written {@code new Greeting("world", 1)}. The class is the identity, so no other plugin may
+     * declare {@link Greeting} — a host loading both would leave one of them out.
+     */
     public static final DeclaredCallType<Greeting> GREETING = PluginType.value(Greeting.class)
             .fresh(() -> new Greeting("world", 1))
             .editor(() -> GreetingEditor::of)
             .writtenAsRecord();
-
-    /**
-     * Every type this plugin owns, in the order a picker offers them. The class is the identity, so no other
-     * plugin may list {@link Greeting} — a host loading both would leave one of them out.
-     */
-    public static final List<PluginType<?>> ALL = List.of(GREETING);
 }

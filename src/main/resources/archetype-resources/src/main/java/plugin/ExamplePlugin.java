@@ -2,25 +2,35 @@ package ${package}.plugin;
 
 import ${package}.plugin.editors.ExampleEditors;
 import ${package}.plugin.types.ExampleTypes;
+import ${package}.plugin.values.ExampleValues;
 import com.botmaker.plugin.api.DeclaredPlugin;
 import com.botmaker.plugin.api.StudioPlugin;
 
 /**
  * ${pluginName} — a BotMaker Studio plugin, declared in one expression.
  *
- * <p>Each surface after {@code named} is optional and names what it lists: {@code types} (what a user can
- * hold), {@code parts} (calls inside a value that are not types of their own), {@code editors},
- * {@code values} (values a window of yours keeps in the bot, each marked with an annotation of your own that
- * carries {@code @ManagedMarker}), {@code toolbar} and {@code recorded}.
- * The palette needs nothing: the host finds every {@code @Palette} class in this jar, so {@code ExampleApi}
- * is offered because it carries the annotation.
+ * <p>A plugin does up to three things, and this skeleton does each once. Read them in this order:
+ *
+ * <ol>
+ *   <li><b>A value type</b> a bot can hold and Studio edits — {@code api/Greeting}, declared in
+ *       {@code plugin/types/ExampleTypes}, drawn by {@code plugin/editors/GreetingEditor};</li>
+ *   <li><b>A palette block</b> a bot calls — {@code api/ExampleApi}, which needs no line here: the host finds
+ *       every {@code @Palette} class in this jar. {@code @Greetee} and {@code plugin/editors/ExampleEditors}
+ *       give one {@code String} argument an editor of its own;</li>
+ *   <li><b>A managed value</b> this plugin keeps in the bot's Java — {@code api/GreetValue} marks it,
+ *       {@code plugin/values/ExampleValues} declares it.</li>
+ * </ol>
+ *
+ * <p>{@code types} and {@code values} name the class holding the declarations: the host takes each
+ * {@code public static final} one in it, in field order, which is the order a picker offers types in.
+ * {@code editors} stays a list, narrowest match first. {@code toolbar} and {@code recorded} are there when you
+ * need them.
  *
  * <p>Studio finds this class through {@code META-INF/services/com.botmaker.plugin.api.StudioPlugin} and
  * constructs it with {@code ServiceLoader} while a project is opening, and so does a headless host with no
- * JavaFX. That is why each list is behind a supplier: nothing is built until the host asks for it.
+ * JavaFX. That is why nothing is built here: the host reads each class or supplier when it asks.
  *
- * <p>This class is wiring only. Declarations live in {@code plugin.types}, editors in {@code plugin.editors},
- * and each toolbar feature gets a {@code plugin.<feature>} package of its own.
+ * <p>This class is wiring only. Each toolbar feature you add gets a {@code plugin.<feature>} package of its own.
  */
 public final class ExamplePlugin extends DeclaredPlugin {
 
@@ -36,7 +46,8 @@ public final class ExamplePlugin extends DeclaredPlugin {
 
     public ExamplePlugin() {
         super(StudioPlugin.id(ID).named(NAME)
-                .types(() -> ExampleTypes.ALL)
+                .types(ExampleTypes.class)
+                .values(ExampleValues.class)
                 .editors(() -> ExampleEditors.ALL));
     }
 }

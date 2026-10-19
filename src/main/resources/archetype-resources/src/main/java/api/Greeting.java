@@ -1,7 +1,7 @@
 package ${package}.api;
 
 /**
- * A value this plugin owns: who to greet, and how many times.
+ * <b>Level 1, a value type:</b> a value this plugin owns, who to greet and how many times.
  *
  * <p>A bot holds one the way it holds any other value — as a {@code @Param} field, which Studio's
  * Parameters window draws with {@code GreetingEditor}:

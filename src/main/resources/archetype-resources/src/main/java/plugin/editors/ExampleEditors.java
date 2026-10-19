@@ -6,8 +6,8 @@ import com.botmaker.plugin.api.slot.SlotEditor;
 import java.util.List;
 
 /**
- * The editors a type cannot choose for itself. An editor for one of this plugin's own types is not here — it
- * is declared beside the type, in {@code ExampleTypes}.
+ * <b>Level 2, a palette block's argument:</b> the editors a type cannot choose for itself. An editor for one
+ * of this plugin's own types is not here — it is declared beside the type, in {@code ExampleTypes}.
  *
  * <p>This one is chosen by the <b>parameter</b> rather than by the type: {@code ExampleApi.greet} marks its
  * argument {@code @Greetee}, which is the only way to tell it apart from every other {@code String} in a bot.

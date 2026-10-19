@@ -4,7 +4,8 @@ import com.botmaker.plugin.api.palette.Hidden;
 import com.botmaker.plugin.api.palette.Palette;
 
 /**
- * The API this plugin offers a bot, and the class its palette entries are read off.
+ * <b>Level 2, a palette block.</b> The API this plugin offers a bot, and the class its palette entries are
+ * read off.
  *
  * <p><b>Curation is opt-out.</b> Every {@code public} method declared here is offered in Studio's block
  * palette; {@link Hidden} takes one back out. Nothing anywhere lists member names as strings, so renaming

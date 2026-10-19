@@ -26,16 +26,15 @@
 
     <dependencies>
         <!--
-          THE CONTRACT — what this plugin implements. `provided`, and the scope is not negotiable: Studio
-          already has these classes, and they must be the SAME Class objects on both sides of the plugin
-          boundary. Shipping a second copy inside your jar is the one mistake that produces a
-          ClassCastException between two classes with identical names.
+          THE CONTRACT — what this plugin implements. `compile`, because a bot needs it too: the welcome
+          parameter Studio writes into a bot carries `@Param` and `@GreetValue`, whose `@ManagedMarker` is a
+          contract class. Studio loads the contract parent-first, so a plugin's copy is never a second set of
+          classes. A plugin that never marks a bot's code (no level 3) may make this `provided`.
         -->
         <dependency>
             <groupId>com.github.BotMakerDev</groupId>
             <artifactId>botmaker-studio-api</artifactId>
             <version>${studioApiVersion}</version>
-            <scope>provided</scope>
         </dependency>
 
         <!--

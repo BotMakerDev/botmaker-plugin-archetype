@@ -10,6 +10,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 ### Added
 
 - **The skeleton's tests check its services file names the plugin**, and say the line to write when it does not.
+- **The skeleton does all three things a plugin does, labelled as levels** (2026-10-19): level 1 a value type
+  (`Greeting`, `ExampleTypes`), level 2 a palette block (`ExampleApi`, `@Greetee`, `ExampleEditors`), and, new,
+  level 3 a managed value: `api/GreetValue` (the plugin's `@ManagedMarker`) and `plugin/values/ExampleValues`,
+  whose `WELCOME` is a `@Param` field Studio writes into the bot's `Greetings` class. `ExamplePlugin`'s Javadoc
+  says the reading order; the generated project has 9 tests.
+
+### Changed
+
+- **`ExamplePlugin` names its holder classes**: `.types(ExampleTypes.class).values(ExampleValues.class)`;
+  `ExampleTypes.ALL` is gone. This needs the contract's `types(Class)`, so the archetype's next release
+  rides a studio-api release carrying it (`ArchetypePin` writes the newest contract tag).
+- **The contract is `compile` in the generated pom**, no longer `provided`: the welcome parameter puts
+  `@Param` and `@GreetValue` (a `@ManagedMarker`) in a bot's code. A plugin without level 3 may keep it
+  `provided`.
 
 ## [0.3.0] — 2026-10-18
 
