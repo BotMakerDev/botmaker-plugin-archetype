@@ -12,8 +12,8 @@ import com.botmaker.plugin.api.value.PluginType;
  * for everything the host needs — the compiler walks you through it:
  *
  * <ol>
- *   <li>{@code fresh(…)} — what a new one starts as ({@code firstConstant()} for an enum, or
- *       {@code filledBy(Owner::method)} for a value the bot fills in itself);</li>
+ *   <li>{@code fresh(…)} — what a new one starts as ({@code firstConstant()} for an enum; a value the bot
+ *       fills in itself is no declaration here, its method in {@code api} carries {@code @Fills});</li>
  *   <li>{@code editor(…)} — how a person edits one, then optionally {@code preview(…)};</li>
  *   <li>{@code writtenAs…} — how its Java is written: {@code writtenAsRecord()} for a record, as here;
  *       {@code writtenAs(Owner::factory, Type::part, …)} for a call, one accessor per argument;
