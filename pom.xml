@@ -18,7 +18,7 @@
     -->
     <groupId>com.github.BotMakerDev</groupId>
     <artifactId>botmaker-plugin-archetype</artifactId>
-    <version>0.3.1-SNAPSHOT</version>
+    <version>0.4.0</version>
 
     <name>BotMaker Plugin Archetype</name>
     <description>
@@ -35,8 +35,8 @@
           Studio moves: a plugin loads in any Studio whose contract has every member it uses, so build against
           the oldest contract you mean to support. A `-SNAPSHOT` here resolves from your own ~/.m2 only.
         -->
-        <botmaker.studioapi.version>0.10.1-SNAPSHOT</botmaker.studioapi.version>
-        <botmaker.plugintoolkit.version>0.9.1-SNAPSHOT</botmaker.plugintoolkit.version>
+        <botmaker.studioapi.version>v0.11.0</botmaker.studioapi.version>
+        <botmaker.plugintoolkit.version>v0.10.0</botmaker.plugintoolkit.version>
     </properties>
 
     <repositories>
