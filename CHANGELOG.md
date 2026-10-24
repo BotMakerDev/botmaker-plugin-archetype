@@ -5,6 +5,46 @@ All notable changes to `botmaker-plugin-archetype`.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this module uses
 [semantic versioning](https://semver.org/). `release.sh` refuses to cut a version with no section here.
 
+## [Unreleased]
+
+No source changes since v0.4.0; re-released for updated upstream pins.
+
+### Added
+
+- **`DECLARE.md`, "Declare a plugin in 10 minutes"** (2026-10-19): one page through the example in the order a
+  newcomer needs it (the plugin class, then the three levels, then `@Fills` and `ValueContext.declared`). A new
+  plugin gets it beside its README. Every `java` block in it is copied from the example's source, and
+  `DeclareDocTest`, which the template leaves out, fails the build when the two drift apart.
+- **The skeleton's tests check its services file names the plugin**, and say the line to write when it does not.
+- **The skeleton does all three things a plugin does, labelled as levels** (2026-10-19): level 1 a value type
+  (`Greeting`, `ExampleTypes`), level 2 a palette block (`ExampleApi`, `@Greetee`, `ExampleEditors`), and, new,
+  level 3 a managed value: `api/GreetValue` (the plugin's `@ManagedMarker`) and `plugin/values/ExampleValues`,
+  whose `WELCOME` is a `@Param` field Studio writes into the bot's `Greetings` class. `ExamplePlugin`'s Javadoc
+  says the reading order; the generated project has 9 tests.
+
+### Changed
+
+- **`ExampleValues.WELCOME` is a `ManagedParam<Greeting>`**, typed by its shape for contract 0.11.0's sealed
+  `ManagedValue`, and `DECLARE.md` level 3 has a table for picking a shape: a parameter, a method value or an open
+  set, and the open set's four kinds.
+- **This repository is the example plugin itself, no longer a `maven-archetype`** (2026-10-19). It compiles and
+  its 9 tests run in CI, in package `com.example.greetings` with the name `Greeter`; `mvn package` also attaches a
+  `template` zip, which `botmaker plugin new` (botmaker-cli) bundles, copies and renames: package and
+  directories, plugin id and name, the pom's coordinates. A new plugin gets a `.gitignore` at last, the README's
+  `##` headings survive, and the pom pins the contract and toolkit as `botmaker.studioapi.version` and
+  `botmaker.plugintoolkit.version`, released tags on a tag like any module's pins.
+- **`ExamplePlugin` names its holder classes**: `.types(ExampleTypes.class).values(ExampleValues.class)`;
+  `ExampleTypes.ALL` is gone. This needs the contract's `types(Class)`, so this release rides a studio-api
+  release carrying it (studio-api now forces this module).
+
+### Removed
+
+- **`mvn archetype:generate`.** Start a plugin with `botmaker plugin new <artifact-id>`, or copy this
+  repository at a tag and rename it by hand.
+- **The contract is `compile` in the generated pom**, no longer `provided`: the welcome parameter puts
+  `@Param` and `@GreetValue` (a `@ManagedMarker`) in a bot's code. A plugin without level 3 may keep it
+  `provided`.
+
 ## [0.4.0] — 2026-10-23
 
 ### Added
