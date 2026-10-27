@@ -4,6 +4,24 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!--
+      THE PARENT — what this plugin builds against, as one version. It pins the contract, the toolkit and JavaFX
+      together, sets Java 25, and flattens the pom this plugin publishes: the pins written out, the parent
+      dropped, and <properties> kept, so the published pom still names the plugin class. Move it, and the
+      contract and toolkit move with it. To build against another contract or toolkit than it pins, set
+      botmaker.studioapi.version or botmaker.plugintoolkit.version in <properties> below.
+
+      Its version is this repository's like any pin (umbrella docs/refactor/43-real-versions.md): the parent's
+      -SNAPSHOT on main, read from the umbrella checkout beside this one; its released tag on a tag, resolved
+      from JitPack through the repository below.
+    -->
+    <parent>
+        <groupId>com.github.BotMakerDev</groupId>
+        <artifactId>botmaker-plugin-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../botmaker-plugin-parent/pom.xml</relativePath>
+    </parent>
+
     <!-- botmaker plugin new: coordinates -->
     <!--
       THIS POM IS TWO THINGS. It builds the example plugin in this repository, and it is the pom a new plugin
@@ -36,20 +54,12 @@
           class and change it here.
         -->
         <botmaker.plugin>com.example.greetings.plugin.ExamplePlugin</botmaker.plugin>
-        <maven.compiler.release>25</maven.compiler.release>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!--
-          Released tags (`v0.10.0`), which JitPack serves as com.github.BotMakerDev:<repo>:<tag>. Move them when
-          Studio moves: a plugin loads in any Studio whose contract has every member it uses, so build against
-          the oldest contract you mean to support. A `-SNAPSHOT` here resolves from your own ~/.m2 only.
-        -->
-        <botmaker.studioapi.version>0.12.1-SNAPSHOT</botmaker.studioapi.version>
-        <botmaker.plugintoolkit.version>0.11.1-SNAPSHOT</botmaker.plugintoolkit.version>
     </properties>
 
     <repositories>
         <!-- BotMaker's modules are published through JitPack, which serves each git tag as
-             com.github.BotMakerDev:<repo>:<tag>. -->
+             com.github.BotMakerDev:<repo>:<tag>. Maven finds the parent above through it too, so it is
+             declared here and not in the parent. -->
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
@@ -66,7 +76,6 @@
         <dependency>
             <groupId>com.github.BotMakerDev</groupId>
             <artifactId>botmaker-studio-api</artifactId>
-            <version>${botmaker.studioapi.version}</version>
         </dependency>
 
         <!--
@@ -77,18 +86,15 @@
         <dependency>
             <groupId>com.github.BotMakerDev</groupId>
             <artifactId>botmaker-plugin-toolkit</artifactId>
-            <version>${botmaker.plugintoolkit.version}</version>
         </dependency>
 
         <!--
-          JavaFX, `provided`: a slot editor draws into the host's scene graph, and a second toolkit in a process
-          that already has one does not work.
+          JavaFX, `provided` (the parent says so): a slot editor draws into the host's scene graph, and a second
+          toolkit in a process that already has one does not work.
         -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>27</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -101,11 +107,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
-            </plugin>
             <!-- botmaker plugin new: drop -->
             <!--
               The skeleton `botmaker plugin new` copies, as a second artifact (classifier `template`, a zip):

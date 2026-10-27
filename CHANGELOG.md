@@ -9,6 +9,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Changed
 
+- **The example's pom names `botmaker-plugin-parent`** (2026-10-27), which pins the contract, the toolkit and
+  JavaFX together, sets Java 25 and the compiler, and flattens the published pom keeping `<properties>`. The pom
+  drops `botmaker.studioapi.version`, `botmaker.plugintoolkit.version`, the dependencies' versions and the
+  surefire pin; a new plugin moves one version, the parent's. In the umbrella the parent is found by
+  `relativePath`; CI installs it from source.
 - The example is declared in its pom: `<botmaker.plugin>com.example.greetings.plugin.ExamplePlugin</botmaker.plugin>`
   replaces `META-INF/services/com.botmaker.plugin.api.StudioPlugin`, and `ExamplePlugin.ID`/`NAME` are gone
   (the pom's coordinate is the id, its `<name>` the name). `ExamplePluginTest` checks the property instead of

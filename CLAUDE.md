@@ -45,9 +45,12 @@ renames the bundled zip, compiles it, loads it and runs every validator check.
 
 ## The pins
 
-`botmaker.studioapi.version` and `botmaker.plugintoolkit.version`, moved by the release like every module's:
-`main`'s `-SNAPSHOT` here, released tags on a tag commit, which is what a released `botmaker` hands to a new
-plugin. studio-api and the toolkit force this module; this module forces the cli, which bundles it.
+One: the `<parent>`, `botmaker-plugin-parent` (2026-10-27), which pins the contract, the toolkit and JavaFX
+together and flattens the published pom. The release moves its `<version>` like any pin: `main`'s `-SNAPSHOT`
+here (found by `relativePath` in the umbrella), its released tag on a tag commit, which is what a released
+`botmaker` hands to a new plugin. The parent forces this module (the contract and the toolkit force the parent);
+this module forces the cli, which bundles it. The dependencies name no version and javafx no scope: the parent's
+`dependencyManagement` says both.
 
 ## The scopes the example exists to get right
 

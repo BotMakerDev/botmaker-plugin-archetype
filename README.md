@@ -35,9 +35,9 @@ example's code, and the build checks that the quotes still match.
 
 ## The versions it pins
 
-The pom pins `botmaker.studioapi.version` and `botmaker.plugintoolkit.version` like any module here: the
-upstream's `-SNAPSHOT` on `main`, its released tag on a tag. A plugin made by a released `botmaker` pins the
-contract and toolkit released with it, which a released Studio loads.
+The pom pins one version: its parent, `botmaker-plugin-parent`, which pins the contract, the toolkit and JavaFX
+together. The parent's `-SNAPSHOT` on `main`, its released tag on a tag. A plugin made by a released `botmaker`
+pins the parent released with it, and so the contract and toolkit a released Studio loads.
 
 ## Building
 
@@ -45,7 +45,7 @@ contract and toolkit released with it, which a released Studio loads.
 mvn install     # the plugin's jar and the `template` zip botmaker-cli bundles
 ```
 
-It needs the contract and toolkit at their `main` `-SNAPSHOT` in `~/.m2`: run `mvn install` at the umbrella root
-first, or open this module in the umbrella in IntelliJ, where it is an ordinary Maven module.
+It needs the parent beside it and the contract and toolkit at their `main` `-SNAPSHOT` in `~/.m2`: run
+`mvn install` at the umbrella root first, or open this module in the umbrella in IntelliJ, where it is an ordinary Maven module.
 
 Releases are cut from the umbrella only, with `--plugin-archetype <version>`.

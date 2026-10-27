@@ -8,8 +8,9 @@ name: CI
 # `mvn verify` also zips the `template` artifact botmaker-cli bundles; botmaker-cli's PluginTemplateTest
 # renames, compiles, loads and validates that copy.
 #
-# Both upstreams are built from source, not resolved from JitPack: the pom pins each at its main -SNAPSHOT,
-# which nothing publishes.
+# The parent and the two upstreams it pins are built from source, not resolved from JitPack: each is pinned at
+# its main -SNAPSHOT, which nothing publishes. The parent's relativePath names the umbrella's sibling, absent
+# here, so Maven finds it in ~/.m2.
 
 on:
   push:
@@ -34,6 +35,12 @@ jobs:
           repository: BotMakerDev/botmaker-plugin-toolkit
           path: .deps/botmaker-plugin-toolkit
 
+      - name: Check out botmaker-plugin-parent
+        uses: actions/checkout@v7
+        with:
+          repository: BotMakerDev/botmaker-plugin-parent
+          path: .deps/botmaker-plugin-parent
+
       - uses: actions/setup-java@v6
         with:
           distribution: temurin
@@ -41,11 +48,12 @@ jobs:
           cache: maven
 
       # RETRIED — Maven Central answers 429 to GitHub-hosted runners; see .github/mvn-retry.sh.
-      - name: Install the two upstreams (their main -SNAPSHOT)
+      - name: Install the parent and its two upstreams (their main -SNAPSHOT)
         run: |
           source .github/mvn-retry.sh
           mvn_retry mvn -B -f .deps/botmaker-studio-api/pom.xml install -DskipTests
           mvn_retry mvn -B -f .deps/botmaker-plugin-toolkit/pom.xml install -DskipTests
+          mvn_retry mvn -B -f .deps/botmaker-plugin-parent/pom.xml install
 
       - name: Build and test
         run: mvn -B verify
