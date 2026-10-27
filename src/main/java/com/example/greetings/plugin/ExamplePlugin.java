@@ -26,29 +26,18 @@ import com.botmaker.plugin.api.StudioPlugin;
  * {@code editors} stays a list, narrowest match first. {@code toolbar} and {@code recorded} are there when you
  * need them.
  *
- * <p>Studio finds this class through {@code META-INF/services/com.botmaker.plugin.api.StudioPlugin} and
- * constructs it with {@code ServiceLoader} while a project is opening, and so does a headless host with no
- * JavaFX. That is why nothing is built here: the host reads each class or supplier when it asks.
+ * <p>Studio finds this class through the {@code botmaker.plugin} property of {@code pom.xml}, and knows the
+ * plugin by that pom's {@code groupId:artifactId} and shows its {@code <name>}: none of the three is code. If
+ * you rename or move this class, change the property too; {@code ExamplePluginTest} fails until you do. Studio
+ * constructs it while a project is opening, and so does a headless host with no JavaFX. That is why nothing is
+ * built here: the host reads each class or supplier when it asks.
  *
  * <p>This class is wiring only. Each toolbar feature you add gets a {@code plugin.<feature>} package of its own.
  */
 public final class ExamplePlugin extends DeclaredPlugin {
 
-    /**
-     * The id Studio and the plugin registry know this plugin by. It is <b>not</b> the Maven coordinate: a
-     * plugin may be re-published under a new coordinate, and this id must not change when it is. Two
-     * plugins may not claim the same one. {@code botmaker plugin new} writes the one you give it here.
-     */
-    public static final String ID = "com.example.greetings";
-
-    /**
-     * The name a user reads. {@code botmaker plugin new} writes the one you give it here and in
-     * {@code ExampleApi}'s palette label, the two places it is spelled as {@code "Greeter"}.
-     */
-    public static final String NAME = "Greeter";
-
     public ExamplePlugin() {
-        super(StudioPlugin.id(ID).named(NAME)
+        super(StudioPlugin.declare()
                 .types(ExampleTypes.class)
                 .values(ExampleValues.class)
                 .editors(() -> ExampleEditors.ALL));

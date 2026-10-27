@@ -2,7 +2,6 @@ package com.example.greetings.plugin.values;
 
 import com.example.greetings.api.GreetValue;
 import com.example.greetings.api.Greeting;
-import com.example.greetings.plugin.ExamplePlugin;
 import com.botmaker.plugin.api.params.Param;
 import com.botmaker.plugin.api.source.ManagedParam;
 import com.botmaker.plugin.api.source.ManagedValue;
@@ -36,8 +35,7 @@ public final class ExampleValues {
             .in("Greetings")
             .startsAs(ExampleValues::welcome)
             .shown("Greetings", "Who the bot greets first", Param.Visibility.PUBLIC)
-            .because(ExamplePlugin.NAME
-                    + " reads this parameter. Change its value in the Runner or Project ▸ Parameters.");
+            .because("This plugin reads this parameter. Change its value in the Runner or Project ▸ Parameters.");
 
     /** The welcome a bot starts with. */
     public static Greeting welcome() {

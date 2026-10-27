@@ -5,6 +5,15 @@ All notable changes to `botmaker-plugin-archetype`.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this module uses
 [semantic versioning](https://semver.org/). `release.sh` refuses to cut a version with no section here.
 
+## [Unreleased]
+
+### Changed
+
+- The example is declared in its pom: `<botmaker.plugin>com.example.greetings.plugin.ExamplePlugin</botmaker.plugin>`
+  replaces `META-INF/services/com.botmaker.plugin.api.StudioPlugin`, and `ExamplePlugin.ID`/`NAME` are gone
+  (the pom's coordinate is the id, its `<name>` the name). `ExamplePluginTest` checks the property instead of
+  the services file; `DECLARE.md` and the template README say so.
+
 ## [0.5.0] — 2026-10-25
 
 No source changes since v0.4.0; re-released for updated upstream pins.

@@ -37,10 +37,10 @@ internal/   what a bot runs but never names (add it when you need it). No JavaFX
 plugin/     the Studio half: the plugin class, types/, editors/, one package per toolbar feature.
 ```
 
-`plugin/ExamplePlugin` is the plugin itself, one declaration: `StudioPlugin.id(ID).named(NAME)` and then
-each surface it fills. Studio finds it through
-`src/main/resources/META-INF/services/com.botmaker.plugin.api.StudioPlugin`, which holds its fully-qualified
-name. **If you rename or move `ExamplePlugin`, edit that file too**; the skeleton's test says so if you do not.
+`plugin/ExamplePlugin` is the plugin itself, one declaration: `StudioPlugin.declare()` and then each surface
+it fills. Studio finds it through the `botmaker.plugin` property in `pom.xml`, which holds its fully-qualified
+name; the pom's `groupId:artifactId` is the plugin's identity and its `<name>` what Studio shows. **If you rename
+or move `ExamplePlugin`, edit that property too**; the skeleton's test says so if you do not.
 
 A plugin does up to three things. The skeleton does each once; read them in this order and delete what you
 do not need.

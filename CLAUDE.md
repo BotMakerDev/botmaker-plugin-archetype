@@ -13,7 +13,10 @@ plugin this example is meant to be.
 Velocity templates until 2026-10-19; nothing built them, so the skeleton drifted from the toolkit twice before a
 test caught it, Velocity ate every `##` heading, and the jar could not carry a `.gitignore`. Now:
 
-- `src/main`, `src/test`: the example, package `com.example.greetings`, plugin id the same, name `Greeter`.
+- `src/main`, `src/test`: the example, package `com.example.greetings`, name `Greeter` (the pom's `<name>` and
+  its palette label).
+  The pom's `botmaker.plugin` property names `ExamplePlugin`; the pom's coordinate is the plugin's identity and
+  its `<name>` what Studio shows (2026-10-27): the class names neither.
   `mvn verify` compiles it and runs its 9 tests.
 - `pom.xml` is both this module's build and the new plugin's pom. Two regions are marked for the copy:
   `<!-- botmaker plugin new: coordinates -->` (replaced by the new plugin's coordinates and name) and
@@ -32,9 +35,8 @@ copy. **The copy finds what to rename by anchors this module keeps**; a template
 
 | Anchor | Where | Renamed to |
 |---|---|---|
-| `com.example.greetings` | every `.java`, the services file, the source directories | the new package |
-| `"com.example.greetings"` (quoted, exactly once) | `ExamplePlugin.ID` | the plugin id |
-| `"Greeter"` (quoted) | `ExamplePlugin.NAME`, `ExampleApi`'s palette label | the plugin name |
+| `com.example.greetings` | every `.java`, the pom's `botmaker.plugin`, the source directories | the new package |
+| `"Greeter"` (quoted) | `ExampleApi`'s palette label | the plugin name |
 | the two marked regions | `pom.xml` | coordinates; nothing |
 
 So: never spell the package, the quoted id or the quoted name anywhere they should survive the rename, and keep
@@ -70,7 +72,7 @@ IntelliJ opens this module like any other in the umbrella; edit the example dire
 ## Style
 
 The example's comments are the deliverable. A plugin author reads them before any documentation, so every one
-says which *mistake* it prevents: that renaming `ExamplePlugin` needs the services file edited, that a type's
+says which *mistake* it prevents: that renaming `ExamplePlugin` needs the pom's `botmaker.plugin` edited, that a type's
 editor is delegated so a headless host can load its declaration, that a call-site predicate must decline a
 Parameters row. That is the same rule the contract and the toolkit keep.
 

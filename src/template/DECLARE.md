@@ -13,19 +13,20 @@ and **a managed value** the plugin keeps in the bot's own Java. Skip a level you
 
 ```java
 public ExamplePlugin() {
-    super(StudioPlugin.id(ID).named(NAME)
+    super(StudioPlugin.declare()
             .types(ExampleTypes.class)
             .values(ExampleValues.class)
             .editors(() -> ExampleEditors.ALL));
 }
 ```
 
-- `ID` is what Studio and the registry know the plugin by. It is not the Maven coordinate, and it never changes.
+- The class names no id and no name: the pom carries both. Studio knows the plugin by `pom.xml`'s
+  `groupId:artifactId` and shows its `<name>`.
 - `.types(…)` and `.values(…)` name a class. The host takes every `public static final` declaration in it, in
   field order. Add a field and it is declared; nothing else lists it.
 - `.editors(…)` stays a list, because the first editor that matches wins: narrowest first.
-- Studio finds the class through `src/main/resources/META-INF/services/com.botmaker.plugin.api.StudioPlugin`.
-  If you rename or move `ExamplePlugin`, edit that file too. `ExamplePluginTest` fails until you do.
+- Studio finds the class through the `botmaker.plugin` property in `pom.xml`, which Maven copies into the jar.
+  If you rename or move `ExamplePlugin`, edit that property too. `ExamplePluginTest` fails until you do.
 
 The constructor builds nothing. A headless host (`botmaker plugin validate`, the registry's CI) constructs it with
 no JavaFX, and the host reads each class or supplier only when it needs it.
@@ -124,8 +125,7 @@ public static final ManagedParam<Greeting> WELCOME = ManagedValue.param(GreetVal
         .in("Greetings")
         .startsAs(ExampleValues::welcome)
         .shown("Greetings", "Who the bot greets first", Param.Visibility.PUBLIC)
-        .because(ExamplePlugin.NAME
-                + " reads this parameter. Change its value in the Runner or Project ▸ Parameters.");
+        .because("This plugin reads this parameter. Change its value in the Runner or Project ▸ Parameters.");
 ```
 
 The steps are, in order:

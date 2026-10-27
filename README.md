@@ -20,7 +20,8 @@ A plugin that **builds and passes its tests as it stands**, package `com.example
 
 - `pom.xml` with the scopes that are easy to get wrong: `botmaker-studio-api` `compile` (level 3 marks the
   bot's code), `botmaker-plugin-toolkit` `compile`, `javafx-controls` `provided`.
-- `META-INF/services/com.botmaker.plugin.api.StudioPlugin`, the only way Studio finds the plugin.
+- the pom's `botmaker.plugin` property, the only way Studio finds the plugin; its `groupId:artifactId` is the
+  plugin's identity and its `<name>` what Studio shows.
 - One of each thing a plugin does, labelled in the code as levels:
   1. a value type: `api/Greeting`, `plugin/types/ExampleTypes`, `plugin/editors/GreetingEditor`;
   2. a palette block: `api/ExampleApi`, with `api/Greetee` and `plugin/editors/ExampleEditors` for the one

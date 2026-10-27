@@ -20,7 +20,8 @@
     <artifactId>botmaker-plugin-archetype</artifactId>
     <version>0.5.1-SNAPSHOT</version>
 
-    <name>BotMaker Plugin Archetype</name>
+    <!-- The name Studio shows for the plugin. -->
+    <name>Greeter</name>
     <description>
         The example plugin `botmaker plugin new` copies: a value type, a palette block and a managed value,
         built and tested as they stand.
@@ -28,6 +29,13 @@
     <!-- /botmaker plugin new -->
 
     <properties>
+        <!--
+          The plugin class this jar is. Studio reads it off the pom Maven copies into the jar
+          (META-INF/maven/<groupId>/<artifactId>/pom.xml), so it must be the literal class name: this pom's
+          groupId:artifactId is the plugin's identity and its <name> what Studio shows. Rename or move the
+          class and change it here.
+        -->
+        <botmaker.plugin>com.example.greetings.plugin.ExamplePlugin</botmaker.plugin>
         <maven.compiler.release>25</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!--
