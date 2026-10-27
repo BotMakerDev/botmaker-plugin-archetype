@@ -137,7 +137,7 @@ The steps are, in order:
 5. the sentence a user reads when Studio keeps them from renaming or deleting it.
 
 The bot reads the value as plain Java, `Greetings.welcome`. A bot without a `Greetings` class gets one in its
-package `plugins.<the last segment of your plugin id>`. This is why the contract is a `compile` dependency in
+package `plugins.<your groupId>.<your artifactId>`, each made one package name: lower-cased, every character a package name cannot hold made `_`. This is why the contract is a `compile` dependency in
 `pom.xml`: the bot's code carries `@GreetValue` and `@Param`.
 
 A parameter is one of three shapes. Pick by who changes the value; each entry point ends in its own type:

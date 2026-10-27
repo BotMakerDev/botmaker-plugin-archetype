@@ -3,12 +3,12 @@
 The example **BotMaker Studio plugin**, and the project a new plugin starts as:
 
 ```bash
-botmaker plugin new discord-notifier --group com.example --plugin-id com.example.discord
+botmaker plugin new discord-notifier --group com.example --plugin-name "Discord Notifier"
 ```
 
 [`botmaker plugin new`](https://github.com/BotMakerDev/botmaker-cli) copies this plugin as it was when that
-`botmaker` was released, and renames it: the package and its directories, the plugin id and name, the pom's
-coordinates. Every option has a default derived from the artifact id. Without the cli, copy this repository at a
+`botmaker` was released, and renames it: the package and its directories, the plugin's name, the pom's
+coordinates (the plugin's identity) and the class its `botmaker.plugin` property names. Every option has a default derived from the artifact id. Without the cli, copy this repository at a
 tag and rename those by hand.
 
 It was a `maven-archetype` (`mvn archetype:generate`) until 2026-10-19. It is a plain plugin now, so CI builds
