@@ -9,6 +9,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Changed
 
+- **The template README names the cli's plugin chores** (2026-10-27): `botmaker plugin declare` after renaming
+  `ExamplePlugin`, `plugin upgrade` for the parent, and the `jitpack.yml` + `.jitpack/` the cli writes into every
+  copy (the template zip carries neither; this repository's own are its build). The README's example names
+  `--owner`, which replaced `--group`.
 - **The example's pom names `botmaker-plugin-parent`** (2026-10-27), which pins the contract, the toolkit and
   JavaFX together, sets Java 25 and the compiler, and flattens the published pom keeping `<properties>`. The pom
   drops `botmaker.studioapi.version`, `botmaker.plugintoolkit.version`, the dependencies' versions and the

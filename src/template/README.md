@@ -40,7 +40,12 @@ plugin/     the Studio half: the plugin class, types/, editors/, one package per
 `plugin/ExamplePlugin` is the plugin itself, one declaration: `StudioPlugin.declare()` and then each surface
 it fills. Studio finds it through the `botmaker.plugin` property in `pom.xml`, which holds its fully-qualified
 name; the pom's `groupId:artifactId` is the plugin's identity and its `<name>` what Studio shows. **If you rename
-or move `ExamplePlugin`, edit that property too**; the skeleton's test says so if you do not.
+or move `ExamplePlugin`, edit that property too** (`botmaker plugin declare` does); the skeleton's test says so if
+you do not.
+
+`jitpack.yml` and `.jitpack/` are how JitPack builds the plugin's tags; `botmaker plugin publish` writes them again
+from the `botmaker` that publishes, so leave them be. `botmaker plugin upgrade` moves the pom's
+`botmaker-plugin-parent` (the contract, the toolkit and JavaFX, pinned together) to its newest release.
 
 A plugin does up to three things. The skeleton does each once; read them in this order and delete what you
 do not need.

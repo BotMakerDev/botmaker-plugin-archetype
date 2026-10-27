@@ -3,13 +3,15 @@
 The example **BotMaker Studio plugin**, and the project a new plugin starts as:
 
 ```bash
-botmaker plugin new discord-notifier --group com.example --plugin-name "Discord Notifier"
+botmaker plugin new discord-notifier --owner somedev --plugin-name "Discord Notifier"
 ```
 
 [`botmaker plugin new`](https://github.com/BotMakerDev/botmaker-cli) copies this plugin as it was when that
 `botmaker` was released, and renames it: the package and its directories, the plugin's name, the pom's
-coordinates (the plugin's identity) and the class its `botmaker.plugin` property names. Every option has a default derived from the artifact id. Without the cli, copy this repository at a
-tag and rename those by hand.
+coordinates (the plugin's identity, `com.github.<owner>:<artifact-id>`) and the class its `botmaker.plugin` property
+names. It adds `jitpack.yml` and `.jitpack/`, the JitPack build the cli owns (this repository's own are its build,
+not the template's). Every option has a default derived from the artifact id. Without the cli, copy this repository
+at a tag and rename those by hand.
 
 It was a `maven-archetype` (`mvn archetype:generate`) until 2026-10-19. It is a plain plugin now, so CI builds
 and tests exactly the project a newcomer gets.
