@@ -183,6 +183,18 @@ return ctx.declared(type)
 
 `ctx.declared(…)` is empty on a host older than the method. The editor then shows the value read-only.
 
+## When a project opens, the log, the changelog and the icon
+
+- **A project opening or closing.** `.onProjectOpened(MySession::open)` takes a method that receives the
+  project's `StudioServices`; `.onProjectClosing(MySession::close)` one that takes nothing. They are steps like the
+  others, so the plugin class stays a declaration.
+- **The log.** `services.log().info(…)`, `.warn(…)` and `.error(…, e)` write lines Studio files under your
+  plugin: *Plugins & Libraries ▸ Installed ▸ Log*. Studio also logs there what your steps throw.
+- **The changelog.** `CHANGELOG.md` beside the pom, sections headed `## [1.2.0] — 2026-11-02`. The parent copies it
+  into the jar, and Studio's upgrade dialog shows the sections a bot moves through.
+- **The icon.** `icon.png` beside the pom, square, 64 px, shown beside the plugin's name. The parent copies it
+  into the jar too; without one Studio shows a puzzle piece.
+
 ## Check it
 
 ```bash

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   The skeleton `botmaker plugin new` copies: what a new plugin's directory holds, at its root. botmaker-cli's
-  PluginTemplate reads it, and refuses a zip that lacks the pom's two marked regions or ExamplePlugin.
+  PluginTemplate reads it, and refuses a zip that lacks the pom's two marked regions or ExamplePlugin. Entries
+  under minimal/ are the minimal variant's (`plugin new` with its minimal option).
 -->
 <assembly xmlns="http://maven.apache.org/ASSEMBLY/2.2.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -23,7 +24,13 @@
             <!-- Checks src/template/DECLARE.md against this example; a new plugin owes the page nothing. -->
             <excludes>
                 <exclude>java/com/example/greetings/DeclareDocTest.java</exclude>
+                <exclude>java/com/example/greetings/MinimalTemplateTest.java</exclude>
             </excludes>
+        </fileSet>
+        <!-- What the minimal `plugin new` writes in place of src/main, src/test and the README; the full copy skips it. -->
+        <fileSet>
+            <directory>src/template/minimal</directory>
+            <outputDirectory>minimal</outputDirectory>
         </fileSet>
     </fileSets>
 
@@ -36,6 +43,14 @@
         </file>
         <file>
             <source>src/template/DECLARE.md</source>
+        </file>
+        <!-- A starter changelog; CHANGELOG.md at the root is this repository's. -->
+        <file>
+            <source>src/template/CHANGELOG.md</source>
+        </file>
+        <!-- The default icon, which is this example's own: botmaker-plugin-parent copies it into the jar. -->
+        <file>
+            <source>icon.png</source>
         </file>
         <!-- Without its dot, which the cli puts back: see the pom's comment on this plugin. -->
         <file>

@@ -1,8 +1,9 @@
 # A BotMaker Studio plugin
 
-Made by `botmaker plugin new` from the example plugin, `botmaker-plugin-archetype`, with your package, plugin id
-and name. It compiles and its tests pass as it stands. The class names are still the example's (`ExamplePlugin`,
-`Greeting`, …): rename them in your IDE as your plugin takes shape.
+Made by `botmaker plugin new` from the example plugin, `botmaker-plugin-archetype`, with your coordinates,
+package and name, and its classes named after your plugin (`ExamplePlugin`, `ExampleTypes`, …). It compiles and its
+tests pass as it stands. The example's values (`Greeting`, `GreetValue`) keep their names: rename or delete them as
+your plugin takes shape.
 
 New to plugins? Read `DECLARE.md` first: one page through this code, in the order you need it.
 
@@ -47,6 +48,14 @@ you do not.
 from the `botmaker` that publishes, so leave them be. `botmaker plugin upgrade` moves the pom's
 `botmaker-plugin-parent` (the contract, the toolkit and JavaFX, pinned together) to its newest release.
 
+`CHANGELOG.md` says what each release changes; the build copies it into the jar, and Studio's upgrade dialog shows
+the sections a bot moves through. `icon.png` is the icon Studio shows beside the plugin's name: replace it with
+your own, square, 64 px. `botmaker plugin validate` warns when either is missing.
+
+A plugin writes to Studio's log through `services.log()` (`info`, `warn`, `error`), on the `StudioServices` its
+steps are handed — `.onProjectOpened(MySession::open)` gets one. Each line shows under the plugin in
+*Plugins & Libraries ▸ Installed ▸ Log*.
+
 A plugin does up to three things. The skeleton does each once; read them in this order and delete what you
 do not need.
 
@@ -72,9 +81,14 @@ do not need.
 
 - `api/GreetValue` — the plugin's mark (`@ManagedMarker`), with one enum constant per value.
 - `plugin/values/ExampleValues` — `WELCOME`, a `@Param` field Studio writes into the bot's `Greetings` class
-  when the bot adds the plugin (a bot without one gets it under `plugins/<the last segment of the plugin's
-  id>/`). The Parameters window edits it with the greeting's editor, and the bot reads
-  it as Java, `Greetings.welcome`. `.values(ExampleValues.class)` takes every value field in the class.
+  when the bot adds the plugin (a bot without one gets it under `plugins/<groupId>/<artifactId>/`, from the
+  plugin's coordinate). The Parameters window edits it with the greeting's editor, and the bot reads
+  it as Java, `Greetings.welcome`. `.values(ExampleValues.class)` takes what the class's `values()` lists.
+
+Every step works this way: it names a holder class, the class implements the step's interface (`TypeHolder`,
+`ValueHolder`, `EditorHolder`, `ToolbarHolder`, …), and that interface's one method lists what it gives. Keep each
+declaration in a `static final` field and list it; `PluginTests.assertListsEveryField` fails on a field you forgot
+to list.
 
 `plugin/ExamplePluginTest` checks each level: the type's round trip, the palette, the editor's predicate
 including the contexts it must *decline*, and the managed value.
@@ -88,13 +102,15 @@ including the contexts it must *decline*, and the managed value.
   version is yours and no other plugin's. Studio does not have it. Do not mark it `provided`.
 - `javafx-controls` is **`provided`** — you draw into the host's scene graph.
 
-# The versions are released tags
+# The versions come from the parent
 
-`pom.xml` pins the `botmaker-studio-api` and `botmaker-plugin-toolkit` tags released with the `botmaker` that
-made it (`botmaker.studioapi.version`, `botmaker.plugintoolkit.version`). Move them when Studio moves: a plugin loads in any Studio whose contract has every
-member it uses, so build against the oldest contract you mean to support. Do not pin `main-SNAPSHOT` for a
-release — the tip of the contract is usually ahead of every released Studio, which refuses the plugin as
-*built for a newer Studio*.
+`pom.xml` names `botmaker-plugin-parent` at the release that came with the `botmaker` that made it, and the parent
+pins `botmaker-studio-api`, `botmaker-plugin-toolkit` and JavaFX together; the dependencies name no version.
+`botmaker plugin upgrade` moves the parent to its newest release. A plugin loads in any Studio whose contract has
+every member it uses, so stay on the oldest parent whose contract you need. To build against another contract or
+toolkit than the parent pins, set `botmaker.studioapi.version` or `botmaker.plugintoolkit.version` in
+`<properties>`. Never release on a `-SNAPSHOT` parent: the tip of the contract is usually ahead of every released
+Studio, which refuses the plugin as *built for a newer Studio*, and `plugin publish` refuses it.
 
 # Three rules an editor must keep
 

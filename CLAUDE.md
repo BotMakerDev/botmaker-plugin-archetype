@@ -17,7 +17,7 @@ test caught it, Velocity ate every `##` heading, and the jar could not carry a `
   its palette label).
   The pom's `botmaker.plugin` property names `ExamplePlugin`; the pom's coordinate is the plugin's identity and
   its `<name>` what Studio shows (2026-10-27): the class names neither.
-  `mvn verify` compiles it and runs its 10 tests; `PluginTests.assertDeclared` and `assertListsEveryField` (toolkit) are the
+  `mvn verify` compiles it and runs its 12 tests; `PluginTests.assertDeclared` and `assertListsEveryField` (toolkit) are the
   host's load checks, run by the plugin's own build.
 - `pom.xml` is both this module's build and the new plugin's pom. Two regions are marked for the copy:
   `<!-- botmaker plugin new: coordinates -->` (replaced by the new plugin's coordinates and name) and
@@ -26,17 +26,23 @@ test caught it, Velocity ate every `##` heading, and the jar could not carry a `
 - `src/template/README.md`: the README a new plugin gets. `README.md` at the root is this repository's.
 - `src/template/DECLARE.md`: "Declare a plugin in 10 minutes", the one page an outside author reads. Each
   ```` ```java ```` block is a verbatim quote of `src/main/java` (dedent allowed), checked by `DeclareDocTest`;
-  ```` ```java sdk ```` quotes another project and is not checked. Edit the example, then the page. It is not
-  renamed on copy, so it quotes no line holding the package, the quoted id or the quoted name.
+  ```` ```java sdk ```` quotes another project and is not checked. Edit the example, then the page. The copy
+  renames its package and `Example…` class names as it does the sources'.
+- `src/template/CHANGELOG.md`: a new plugin's starter changelog (`CHANGELOG.md` at the root is this repository's).
+  `icon.png` at the root is this example's icon and every new plugin's default; the parent copies it into the jar.
+- `src/template/minimal/`: what `plugin new --minimal` writes in place of `src/` and the README (a plugin class
+  declaring nothing, its one test); `MinimalTemplateTest` compiles it.
 - `src/assembly/template.xml`: the `template` zip (classifier `template`): the pom, `src/main`, `src/test`
-  without `DeclareDocTest`, the template README and `DECLARE.md`, and `.gitignore` stored as `gitignore`.
+  without `DeclareDocTest` and `MinimalTemplateTest`, the template README, `DECLARE.md` and `CHANGELOG.md`,
+  `icon.png`, `minimal/`, and `.gitignore` stored as `gitignore`.
 
 `botmaker-cli` bundles the zip (`maven-dependency-plugin:copy` into its jar) and its `PluginTemplate` renames on
 copy. **The copy finds what to rename by anchors this module keeps**; a template without one is refused:
 
 | Anchor | Where | Renamed to |
 |---|---|---|
-| `com.example.greetings` | every `.java`, the pom's `botmaker.plugin`, the source directories | the new package |
+| `com.example.greetings` | every `.java` and `.md`, the pom's `botmaker.plugin`, the source directories | the new package |
+| `Example` before a capital (`ExampleTypes`) | every `.java` and `.md`, file names, the pom's `botmaker.plugin` | the plugin's class prefix (`DiscordNotifierTypes`) |
 | `"Greeter"` (quoted) | `ExampleApi`'s palette label | the plugin name |
 | the two marked regions | `pom.xml` | coordinates; nothing |
 

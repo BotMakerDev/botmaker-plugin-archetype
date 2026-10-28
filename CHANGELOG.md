@@ -7,6 +7,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+### Added
+
+- **A starter changelog, the default icon and a minimal variant in the template** (2026-10-28):
+  `src/template/CHANGELOG.md` becomes a new plugin's `CHANGELOG.md`, `icon.png` (this example's own, copied into
+  its jar by the parent) its icon, and `src/template/minimal/` what `botmaker plugin new --minimal` writes in place
+  of `src/` and the README — a plugin class declaring nothing and its one test, compiled by `MinimalTemplateTest`.
+- The template README and `DECLARE.md` say the classes are named after the plugin, where a bot's holders go
+  (`plugins/<groupId>/<artifactId>/`), that the versions come from the parent, and how to use the lifecycle steps,
+  the log, the changelog and the icon. The "plugin id" is gone from both.
+
 ### Changed
 
 - **Each holder says what it gives** (contract 0.13.0): `ExampleTypes` implements `TypeHolder` and lists
