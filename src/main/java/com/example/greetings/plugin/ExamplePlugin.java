@@ -21,16 +21,17 @@ import com.botmaker.plugin.api.StudioPlugin;
  *       {@code plugin/values/ExampleValues} declares it.</li>
  * </ol>
  *
- * <p>{@code types} and {@code values} name the class holding the declarations: the host takes each
- * {@code public static final} one in it, in field order, which is the order a picker offers types in.
- * {@code editors} stays a list, narrowest match first. {@code toolbar} and {@code recorded} are there when you
- * need them.
+ * <p>Each step names the class holding that surface's declarations. The class implements the step's holder
+ * interface — {@code TypeHolder}, {@code ValueHolder}, {@code EditorHolder} — whose one method lists what it
+ * gives, in the order the host uses: a picker offers types in that order, and the first editor that matches
+ * wins. {@code toolbar}, {@code assistant} and {@code onProjectOpened} are there when you need them.
  *
  * <p>Studio finds this class through the {@code botmaker.plugin} property of {@code pom.xml}, and knows the
  * plugin by that pom's {@code groupId:artifactId} and shows its {@code <name>}: none of the three is code. If
  * you rename or move this class, change the property too; {@code ExamplePluginTest} fails until you do. Studio
  * constructs it while a project is opening, and so does a headless host with no JavaFX. That is why nothing is
- * built here: the host reads each class or supplier when it asks.
+ * built here: the host builds each holder through its constructor with no arguments, and asks it, only when it
+ * needs that surface.
  *
  * <p>This class is wiring only. Each toolbar feature you add gets a {@code plugin.<feature>} package of its own.
  */
@@ -40,6 +41,6 @@ public final class ExamplePlugin extends DeclaredPlugin {
         super(StudioPlugin.declare()
                 .types(ExampleTypes.class)
                 .values(ExampleValues.class)
-                .editors(() -> ExampleEditors.ALL));
+                .editors(ExampleEditors.class));
     }
 }

@@ -17,7 +17,8 @@ test caught it, Velocity ate every `##` heading, and the jar could not carry a `
   its palette label).
   The pom's `botmaker.plugin` property names `ExamplePlugin`; the pom's coordinate is the plugin's identity and
   its `<name>` what Studio shows (2026-10-27): the class names neither.
-  `mvn verify` compiles it and runs its 9 tests.
+  `mvn verify` compiles it and runs its 10 tests; `PluginTests.assertDeclared` and `assertListsEveryField` (toolkit) are the
+  host's load checks, run by the plugin's own build.
 - `pom.xml` is both this module's build and the new plugin's pom. Two regions are marked for the copy:
   `<!-- botmaker plugin new: coordinates -->` (replaced by the new plugin's coordinates and name) and
   `<!-- botmaker plugin new: drop -->` (removed: the assembly that zips the template). Everything outside them

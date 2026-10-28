@@ -2,17 +2,16 @@ package com.example.greetings.plugin;
 
 import com.example.greetings.api.ExampleApi;
 import com.example.greetings.api.Greeting;
+import com.example.greetings.plugin.editors.ExampleEditors;
 import com.example.greetings.plugin.types.ExampleTypes;
 import com.example.greetings.plugin.values.ExampleValues;
 import com.botmaker.plugin.api.catalog.PaletteCatalog;
 import com.botmaker.plugin.api.slot.SlotEditor;
 import com.botmaker.plugin.api.source.ManagedParam;
+import com.botmaker.plugin.toolkit.testing.PluginTests;
 import com.botmaker.plugin.toolkit.testing.TestContexts;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,13 +42,20 @@ class ExamplePluginTest {
 
     /**
      * A host finds a plugin only through the {@code botmaker.plugin} property of its pom, so a plugin class
-     * renamed or moved without it loads nothing, and nothing else says so.
+     * renamed or moved without it loads nothing, and nothing else says so. The same check constructs the plugin
+     * and builds every holder it names, as a host does.
      */
     @Test
-    void the_pom_names_this_plugin() throws IOException {
-        String name = ExamplePlugin.class.getName();
-        assertTrue(Files.readString(Path.of("pom.xml")).contains("<botmaker.plugin>" + name + "</botmaker.plugin>"),
-                "pom.xml must set <properties><botmaker.plugin>" + name + "</botmaker.plugin></properties>");
+    void the_pom_names_this_plugin_and_a_host_can_load_it() {
+        PluginTests.assertDeclared(ExamplePlugin.class);
+    }
+
+    /** A declaration written as a field and never listed by its holder's method is declared nowhere. */
+    @Test
+    void every_holder_lists_every_field() {
+        PluginTests.assertListsEveryField(ExampleTypes.class);
+        PluginTests.assertListsEveryField(ExampleValues.class);
+        PluginTests.assertListsEveryField(ExampleEditors.class);
     }
 
     @Test

@@ -55,8 +55,8 @@ do not need.
 - `api/Greeting` — the value, a record.
 - `plugin/types/ExampleTypes` — its one declaration, `PluginType.value(Greeting.class)` and its steps: what a
   new one is, its editor, and how its Java is written (`writtenAsRecord()`). The steps only offer what is
-  valid next, so the compiler walks you through a new type. `.types(ExampleTypes.class)` takes every type
-  field in the class, in field order: add a field and it is declared.
+  valid next, so the compiler walks you through a new type. `.types(ExampleTypes.class)` takes what the
+  class's `types()` lists, in that order: add a field, then list it.
 - `plugin/editors/GreetingEditor` — what a greeting looks like when clicked. The editor is named
   `() -> GreetingEditor::of`, with a second arrow, so a host without JavaFX can read the declaration.
 

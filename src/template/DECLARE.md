@@ -16,20 +16,24 @@ public ExamplePlugin() {
     super(StudioPlugin.declare()
             .types(ExampleTypes.class)
             .values(ExampleValues.class)
-            .editors(() -> ExampleEditors.ALL));
+            .editors(ExampleEditors.class));
 }
 ```
 
 - The class names no id and no name: the pom carries both. Studio knows the plugin by `pom.xml`'s
   `groupId:artifactId` and shows its `<name>`.
-- `.types(…)` and `.values(…)` name a class. The host takes every `public static final` declaration in it, in
-  field order. Add a field and it is declared; nothing else lists it.
-- `.editors(…)` stays a list, because the first editor that matches wins: narrowest first.
+- Each step names a holder class. It implements the step's interface (`TypeHolder`, `ValueHolder`,
+  `EditorHolder`), whose one method lists what the class gives. Your IDE's *Implement methods* writes it, and the
+  compiler refuses a holder without it or one named on the wrong step.
+- The list's order is the order the host uses: a picker offers types in it, and the first editor that matches
+  wins, so narrowest first.
 - Studio finds the class through the `botmaker.plugin` property in `pom.xml`, which Maven copies into the jar.
   If you rename or move `ExamplePlugin`, edit that property too. `ExamplePluginTest` fails until you do.
 
 The constructor builds nothing. A headless host (`botmaker plugin validate`, the registry's CI) constructs it with
-no JavaFX, and the host reads each class or supplier only when it needs it.
+no JavaFX, and the host builds each holder, through its constructor with no arguments, only when it needs it.
+`PluginTests.assertDeclared` in `ExamplePluginTest` does what a host does, so a holder that cannot be built fails
+`mvn verify`.
 
 ## Level 1: a value type
 
@@ -93,8 +97,13 @@ alike. `@Greetee` (in `api/`, `RUNTIME` retention) marks the parameter, and `plu
 claims it:
 
 ```java
-public static final List<SlotEditor> ALL = List.of(
-        SlotEditor.onParameter(Greetee.class).draw(() -> GreetingEditor::who));
+public static final SlotEditor GREETEE = SlotEditor.onParameter(Greetee.class).draw(() -> GreetingEditor::who);
+
+/** Every editor this plugin offers, narrowest match first: the host tries them in this order. */
+@Override
+public List<SlotEditor> editors() {
+    return List.of(GREETEE);
+}
 ```
 
 ## Level 3: a managed value

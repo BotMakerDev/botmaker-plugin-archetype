@@ -9,6 +9,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Changed
 
+- **Each holder says what it gives** (contract 0.13.0): `ExampleTypes` implements `TypeHolder` and lists
+  `GREETING` in `types()`, `ExampleValues` a `ValueHolder` listing `WELCOME`, and `ExampleEditors` an
+  `EditorHolder` whose `editors()` lists `GREETEE` (the `ALL` list is gone); the plugin names all three by class.
+  `ExamplePluginTest` runs the toolkit's `PluginTests.assertDeclared` (the pom names the class, a host can
+  construct it and build every holder) and `assertListsEveryField`. `DECLARE.md` and the template README follow.
 - **The template README names the cli's plugin chores** (2026-10-27): `botmaker plugin declare` after renaming
   `ExamplePlugin`, `plugin upgrade` for the parent, and the `jitpack.yml` + `.jitpack/` the cli writes into every
   copy (the template zip carries neither; this repository's own are its build). The README's example names

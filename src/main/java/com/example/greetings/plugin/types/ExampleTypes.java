@@ -2,12 +2,16 @@ package com.example.greetings.plugin.types;
 
 import com.example.greetings.api.Greeting;
 import com.example.greetings.plugin.editors.GreetingEditor;
+import com.botmaker.plugin.api.TypeHolder;
 import com.botmaker.plugin.api.value.DeclaredCallType;
 import com.botmaker.plugin.api.value.PluginType;
 
+import java.util.List;
+
 /**
- * <b>Level 1, a value type.</b> The types this plugin owns, each a {@code public static final} field here —
- * {@code .types(ExampleTypes.class)} takes every one, in field order, which is the order a picker offers them.
+ * <b>Level 1, a value type.</b> The types this plugin owns, each a {@code public static final} field here and
+ * listed by {@link #types()} — {@code .types(ExampleTypes.class)} takes that list, in its order, which is the order
+ * a picker offers them. A field you forget to list is declared nowhere; {@code ExamplePluginTest} says so.
  * Each is declared once as a {@code PluginType.value(…)} whose steps ask, in order,
  * for everything the host needs — the compiler walks you through it:
  *
@@ -29,9 +33,7 @@ import com.botmaker.plugin.api.value.PluginType;
  * registry's CI, {@code botmaker plugin validate} — builds this list with no JavaFX, and a reference to a
  * method returning a {@code Node} would load JavaFX the moment the list is built.
  */
-public final class ExampleTypes {
-
-    private ExampleTypes() {}
+public final class ExampleTypes implements TypeHolder {
 
     /**
      * A greeting, written {@code new Greeting("world", 1)}. The class is the identity, so no other plugin may
@@ -41,4 +43,9 @@ public final class ExampleTypes {
             .fresh(() -> new Greeting("world", 1))
             .editor(() -> GreetingEditor::of)
             .writtenAsRecord();
+
+    @Override
+    public List<PluginType<?>> types() {
+        return List.of(GREETING);
+    }
 }

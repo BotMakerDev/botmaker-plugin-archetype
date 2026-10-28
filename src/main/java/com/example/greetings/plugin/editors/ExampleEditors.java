@@ -1,6 +1,7 @@
 package com.example.greetings.plugin.editors;
 
 import com.example.greetings.api.Greetee;
+import com.botmaker.plugin.api.EditorHolder;
 import com.botmaker.plugin.api.slot.SlotEditor;
 
 import java.util.List;
@@ -18,11 +19,14 @@ import java.util.List;
  * <p>The drawing is {@code () -> GreetingEditor::who}: the extra arrow keeps building this list from loading
  * JavaFX, which a headless host ({@code botmaker plugin validate}) does not have.
  */
-public final class ExampleEditors {
+public final class ExampleEditors implements EditorHolder {
 
-    private ExampleEditors() {}
+    /** Who {@code ExampleApi.greet} greets, the argument marked {@code @Greetee}. */
+    public static final SlotEditor GREETEE = SlotEditor.onParameter(Greetee.class).draw(() -> GreetingEditor::who);
 
-    /** Every editor this plugin offers, narrowest match first. */
-    public static final List<SlotEditor> ALL = List.of(
-            SlotEditor.onParameter(Greetee.class).draw(() -> GreetingEditor::who));
+    /** Every editor this plugin offers, narrowest match first: the host tries them in this order. */
+    @Override
+    public List<SlotEditor> editors() {
+        return List.of(GREETEE);
+    }
 }
