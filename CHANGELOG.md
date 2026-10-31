@@ -5,6 +5,41 @@ All notable changes to `botmaker-plugin-archetype`.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this module uses
 [semantic versioning](https://semver.org/). `release.sh` refuses to cut a version with no section here.
 
+## [Unreleased]
+
+No source changes since v0.6.0; re-released for updated upstream pins.
+
+### Added
+
+- **A starter changelog, the default icon and a minimal variant in the template** (2026-10-28):
+  `src/template/CHANGELOG.md` becomes a new plugin's `CHANGELOG.md`, `icon.png` (this example's own, copied into
+  its jar by the parent) its icon, and `src/template/minimal/` what `botmaker plugin new --minimal` writes in place
+  of `src/` and the README — a plugin class declaring nothing and its one test, compiled by `MinimalTemplateTest`.
+- The template README and `DECLARE.md` say the classes are named after the plugin, where a bot's holders go
+  (`plugins/<groupId>/<artifactId>/`), that the versions come from the parent, and how to use the lifecycle steps,
+  the log, the changelog and the icon. The "plugin id" is gone from both.
+
+### Changed
+
+- **Each holder says what it gives** (contract 0.13.0): `ExampleTypes` implements `TypeHolder` and lists
+  `GREETING` in `types()`, `ExampleValues` a `ValueHolder` listing `WELCOME`, and `ExampleEditors` an
+  `EditorHolder` whose `editors()` lists `GREETEE` (the `ALL` list is gone); the plugin names all three by class.
+  `ExamplePluginTest` runs the toolkit's `PluginTests.assertDeclared` (the pom names the class, a host can
+  construct it and build every holder) and `assertListsEveryField`. `DECLARE.md` and the template README follow.
+- **The template README names the cli's plugin chores** (2026-10-27): `botmaker plugin declare` after renaming
+  `ExamplePlugin`, `plugin upgrade` for the parent, and the `jitpack.yml` + `.jitpack/` the cli writes into every
+  copy (the template zip carries neither; this repository's own are its build). The README's example names
+  `--owner`, which replaced `--group`.
+- **The example's pom names `botmaker-plugin-parent`** (2026-10-27), which pins the contract, the toolkit and
+  JavaFX together, sets Java 25 and the compiler, and flattens the published pom keeping `<properties>`. The pom
+  drops `botmaker.studioapi.version`, `botmaker.plugintoolkit.version`, the dependencies' versions and the
+  surefire pin; a new plugin moves one version, the parent's. In the umbrella the parent is found by
+  `relativePath`; CI installs it from source.
+- The example is declared in its pom: `<botmaker.plugin>com.example.greetings.plugin.ExamplePlugin</botmaker.plugin>`
+  replaces `META-INF/services/com.botmaker.plugin.api.StudioPlugin`, and `ExamplePlugin.ID`/`NAME` are gone
+  (the pom's coordinate is the id, its `<name>` the name). `ExamplePluginTest` checks the property instead of
+  the services file; `DECLARE.md` and the template README say so.
+
 ## [0.6.0] — 2026-10-28
 
 ### Added
