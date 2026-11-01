@@ -41,25 +41,61 @@ The value is plain Java in `api/`, which is what a bot compiles against. `api/Gr
 
 ```java
 public record Greeting(String who, int times) {
+
+    /**
+     * A greeting to {@code who}, once. The host reads its parameter by name: {@code who} is given by
+     * {@link #who()}, so keep the two names equal.
+     */
+    public static Greeting to(String who) {
+        return new Greeting(who, 1);
+    }
+
+    /**
+     * This greeting, said {@code times} times. {@link Link} tells the host to chain it after the factory, paired
+     * with {@link #times()} by name and type; the host leaves it out while it is the factory's own 1.
+     */
+    @Link
+    public Greeting times(int times) {
+        return new Greeting(who, times);
+    }
 }
 ```
 
-Its one declaration, `plugin/types/ExampleTypes.java`:
+`@Link` is `com.botmaker.plugin.api.value.Link`, from the contract, which `api/` may import because the contract
+is a `compile` dependency. A bot writes one as `Greeting.to("world")`, or `Greeting.to("world").times(3)`. Its one
+declaration,
+`plugin/types/ExampleTypes.java`:
 
 ```java
 public static final DeclaredCallType<Greeting> GREETING = PluginType.value(Greeting.class)
-        .fresh(() -> new Greeting("world", 1))
+        .fresh(() -> Greeting.to("world"))
         .editor(() -> GreetingEditor::of)
-        .writtenAsRecord();
+        .writtenAs(Greeting::to);
 ```
 
 Each step offers only what may come next, so the compiler walks you through a new type:
 
 1. `fresh(…)`: what a new one starts as. Use `firstConstant()` for an enum.
 2. `editor(…)`: how a person edits one. `preview(…)` may follow.
-3. `writtenAs…`: how its Java is written. Use `writtenAsRecord()` for a record and
-   `writtenAs(Owner::factory, Type::part, …)` for a factory call, with one accessor per argument. Use
-   `writtenAsConstant()` for an enum and `writtenAsLiteral()` for text or a number.
+3. `writtenAs…`: how its Java is written. Use `writtenAs(Owner::factory)` for a factory call. Use
+   `writtenAsRecord()` for a record's constructor, `writtenAsConstant()` for an enum and `writtenAsLiteral()`
+   for text or a number.
+
+`writtenAs(Greeting::to)` names no part, because the names say them:
+
+- **Each factory parameter is read by the accessor of the same name and type.** `to(String who)` is read by
+  `who()`. A `boolean` one may be read by `isX()`. The parent compiles with `-parameters`, which keeps the names.
+- **Each method marked `@Link` is chained after the factory.** `times(int)` pairs with `times()`. A `@Link` with
+  no parameter is a flag, paired with `boolean isX()`. The host writes a link only when it changes the value, so
+  `Greeting.to("world")` stays as short as that.
+- **A name with no partner is refused when the class is first read.** That happens in `ExamplePluginTest`, before
+  any bot sees it.
+
+For a type that is not yours, such as a JDK class, there are no `@Link`s or parameter names to read. The same
+applies to a pair whose names differ. Name the accessors yourself then:
+`writtenAs(LocalDate::of, LocalDate::getYear, …)`, and `.with(Owner::wither, Owner::part)` for a link.
+A class written by several factories is declared once per factory. The host writes a value with the one that
+builds it back equal.
 
 The host writes and reads the Java from those parts. Your plugin never parses or prints Java.
 
@@ -71,9 +107,9 @@ The editor is handed the value, never text. `plugin/editors/GreetingEditor.java`
 
 ```java
 public static Node of(ValueContext ctx) {
-    Greeting current = ctx.value(Greeting.class).orElseGet(() -> new Greeting("", 1));
+    Greeting current = ctx.value(Greeting.class).orElseGet(() -> Greeting.to(""));
     return Fields.committing(current.who(), "Who to greet",
-            who -> ctx.set(new Greeting(who, current.times())));
+            who -> ctx.set(Greeting.to(who).times(current.times())));
 }
 ```
 

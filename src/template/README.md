@@ -61,9 +61,11 @@ do not need.
 
 **Level 1, a value type** — a value a bot holds and Studio edits.
 
-- `api/Greeting` — the value, a record.
+- `api/Greeting` — the value, a record with a factory `to(who)` and a `@Link` `times(n)`, written
+  `Greeting.to("world").times(3)`.
 - `plugin/types/ExampleTypes` — its one declaration, `PluginType.value(Greeting.class)` and its steps: what a
-  new one is, its editor, and how its Java is written (`writtenAsRecord()`). The steps only offer what is
+  new one is, its editor, and how its Java is written (`writtenAs(Greeting::to)`: parameters and `@Link`s are
+  paired with accessors by name and type, so a rename that breaks a pair fails `mvn verify`). The steps only offer what is
   valid next, so the compiler walks you through a new type. `.types(ExampleTypes.class)` takes what the
   class's `types()` lists, in that order: add a field, then list it.
 - `plugin/editors/GreetingEditor` — what a greeting looks like when clicked. The editor is named

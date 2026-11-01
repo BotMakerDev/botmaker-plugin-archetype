@@ -88,8 +88,20 @@ class ExamplePluginTest {
         Greeting fresh = type.fresh();
 
         assertEquals(fresh, type.build(type.components(fresh)));
-        assertEquals(new Greeting("it's \"quoted\"", 3),
-                type.build(type.components(new Greeting("it's \"quoted\"", 3))));
+        assertEquals(Greeting.to("it's \"quoted\"").times(3),
+                type.build(type.components(Greeting.to("it's \"quoted\"").times(3))));
+    }
+
+    /**
+     * {@code writtenAs(Greeting::to)} names no part: {@code who} is read by {@code who()}, and {@code times(int)},
+     * marked {@code @Link}, by {@code times()}. Renaming one side alone fails here, not in a bot.
+     */
+    @Test
+    void a_greeting_is_written_by_its_factory_and_its_link() {
+        var type = ExampleTypes.GREETING;
+
+        assertEquals("to", type.factory().getName());
+        assertEquals(List.of("times"), type.withers().stream().map(w -> w.method().getName()).toList());
     }
 
     /**
@@ -101,7 +113,7 @@ class ExamplePluginTest {
         assertEquals(List.of(ExampleValues.WELCOME), plugin.managedValues());
         ManagedParam<Greeting> welcome = ExampleValues.WELCOME;
         assertEquals("Greetings", welcome.holder());
-        assertEquals(new Greeting("world", 1), welcome.initial());
+        assertEquals(Greeting.to("world"), welcome.initial());
         assertEquals(welcome.initial(), ExampleTypes.GREETING.build(
                 ExampleTypes.GREETING.components(ExampleValues.welcome())));
     }

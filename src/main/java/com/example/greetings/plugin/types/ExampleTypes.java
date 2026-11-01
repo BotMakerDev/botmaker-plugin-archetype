@@ -19,11 +19,18 @@ import java.util.List;
  *   <li>{@code fresh(…)} — what a new one starts as ({@code firstConstant()} for an enum; a value the bot
  *       fills in itself is no declaration here, its method in {@code api} carries {@code @Fills});</li>
  *   <li>{@code editor(…)} — how a person edits one, then optionally {@code preview(…)};</li>
- *   <li>{@code writtenAs…} — how its Java is written: {@code writtenAsRecord()} for a record, as here;
- *       {@code writtenAs(Owner::factory, Type::part, …)} for a call, one accessor per argument;
+ *   <li>{@code writtenAs…} — how its Java is written: {@code writtenAs(Owner::factory)} for a factory call, as
+ *       here, each parameter read by the accessor of the same name and type, then each method marked
+ *       {@code @Link} chained after it; {@code writtenAsRecord()} for a record's constructor;
  *       {@code writtenAsEach(…)} for a varargs call; {@code writtenAsConstant()} for an enum;
  *       {@code writtenAsLiteral()} for text or a number.</li>
  * </ol>
+ *
+ * <p>The names are the declaration: the plugin is compiled with {@code -parameters} (the parent sets it), and a
+ * factory parameter or a {@code @Link} with no accessor to pair with is refused when this class is first read —
+ * by {@code ExamplePluginTest}, before any bot sees it. For a type that is not yours (a JDK class) or a pair whose
+ * names differ, name the accessors yourself: {@code writtenAs(LocalDate::of, LocalDate::getYear, …)}, and
+ * {@code .with(Owner::wither, Owner::part)} for a link.
  *
  * <p>Nothing here parses or prints Java — the host does, from the parts — which is why a quote inside
  * {@code who} cannot break a bot. {@code botmaker plugin validate} checks that {@code build(components(v))}
@@ -36,13 +43,14 @@ import java.util.List;
 public final class ExampleTypes implements TypeHolder {
 
     /**
-     * A greeting, written {@code new Greeting("world", 1)}. The class is the identity, so no other plugin may
-     * declare {@link Greeting} — a host loading both would leave one of them out.
+     * A greeting, written {@code Greeting.to("world")}, or {@code Greeting.to("world").times(3)} when said more
+     * than once. The class is the identity, so no other plugin may declare {@link Greeting} — a host loading both
+     * would leave one of them out.
      */
     public static final DeclaredCallType<Greeting> GREETING = PluginType.value(Greeting.class)
-            .fresh(() -> new Greeting("world", 1))
+            .fresh(() -> Greeting.to("world"))
             .editor(() -> GreetingEditor::of)
-            .writtenAsRecord();
+            .writtenAs(Greeting::to);
 
     @Override
     public List<PluginType<?>> types() {

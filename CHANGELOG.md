@@ -5,6 +5,15 @@ All notable changes to `botmaker-plugin-archetype`.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this module uses
 [semantic versioning](https://semver.org/). `release.sh` refuses to cut a version with no section here.
 
+## [Unreleased]
+
+### Changed
+
+- **The example declares its type the short way** (2026-11-01): `Greeting` gains the factory `to(who)` and the
+  `@Link` `times(n)`, and `ExampleTypes.GREETING` is `writtenAs(Greeting::to)`, its parts read by name and type.
+  A bot writes `Greeting.to("world").times(3)`. `DECLARE.md` and the template README explain the name rules and
+  the explicit `.with` fallback; `ExamplePluginTest` checks the factory and the link it finds.
+
 ## [0.7.0] — 2026-11-01
 
 No source changes since v0.6.0; re-released for updated upstream pins.

@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
  * public final class Greetings {
  *     @GreetValue(GreetValue.Id.WELCOME)
  *     @Param(category = "Greetings", visibility = Param.PUBLIC, description = "Who the bot greets first")
- *     public static Greeting welcome = new Greeting("world", 1);
+ *     public static Greeting welcome = Greeting.to("world");
  * }
  * }</pre>
  *

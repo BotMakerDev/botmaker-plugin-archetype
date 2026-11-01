@@ -26,8 +26,8 @@ public final class GreetingEditor {
     }
 
     public static Node of(ValueContext ctx) {
-        Greeting current = ctx.value(Greeting.class).orElseGet(() -> new Greeting("", 1));
+        Greeting current = ctx.value(Greeting.class).orElseGet(() -> Greeting.to(""));
         return Fields.committing(current.who(), "Who to greet",
-                who -> ctx.set(new Greeting(who, current.times())));
+                who -> ctx.set(Greeting.to(who).times(current.times())));
     }
 }

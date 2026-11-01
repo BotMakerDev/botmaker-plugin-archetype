@@ -45,6 +45,6 @@ public final class ExampleValues implements ValueHolder {
 
     /** The welcome a bot starts with. */
     public static Greeting welcome() {
-        return new Greeting("world", 1);
+        return Greeting.to("world");
     }
 }
