@@ -9,6 +9,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Changed
 
+- **The example names its holder by enum** (2026-11-04): `GreetValue` has `enum Id implements ManagedId<Holder>`
+  and `enum Holder { GREETINGS }`, and `ExampleValues` writes `.in(GreetValue.Holder.GREETINGS)`; `DECLARE.md`
+  follows.
+
 - **`WELCOME` is a method of the bot's `Greetings` group** (2026-11-04): Studio writes it in the bot's
   `params/<groupId>/<artifactId>/` folder, private to each computer, with a committed starting copy under
   `starting-params/`. `@GreetValue` targets methods (it targeted fields), and a bot reads the value as

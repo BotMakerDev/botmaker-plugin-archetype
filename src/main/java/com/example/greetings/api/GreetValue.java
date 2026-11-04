@@ -1,5 +1,6 @@
 package com.example.greetings.api;
 
+import com.botmaker.plugin.api.managed.ManagedId;
 import com.botmaker.plugin.api.managed.ManagedMarker;
 
 import java.lang.annotation.Documented;
@@ -28,8 +29,10 @@ import java.lang.annotation.Target;
  * }</pre>
  *
  * <p>Each part is required: {@link ManagedMarker} makes this the plugin's mark, {@code RUNTIME} lets Studio see
- * it, and the nested {@link Id} enum names every value the plugin keeps, one constant each. {@code METHOD} is
- * where this plugin's values sit, parameters and {@code ManagedValue.method} values alike.
+ * it, and the nested {@link Id} enum names every value the plugin keeps, one constant each. {@link Holder} names the
+ * bot's classes they sit in, an UPPER_SNAKE constant each ({@code GREETINGS} is the class {@code Greetings}), and
+ * {@code Id implements ManagedId<Holder>} lets javac refuse any other plugin's. {@code METHOD} is where this plugin's
+ * values sit, parameters and {@code ManagedValue.method} values alike.
  */
 @Documented
 @ManagedMarker
@@ -40,7 +43,12 @@ public @interface GreetValue {
     Id value();
 
     /** Every value this plugin keeps in a bot. */
-    enum Id {
+    enum Id implements ManagedId<Holder> {
         WELCOME
+    }
+
+    /** Every class of the bot's this plugin's values sit in. */
+    enum Holder {
+        GREETINGS
     }
 }

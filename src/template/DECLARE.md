@@ -157,17 +157,27 @@ public @interface GreetValue {
     Id value();
 
     /** Every value this plugin keeps in a bot. */
-    enum Id {
+    enum Id implements ManagedId<Holder> {
         WELCOME
+    }
+
+    /** Every class of the bot's this plugin's values sit in. */
+    enum Holder {
+        GREETINGS
     }
 }
 ```
+
+`Holder` names the bot's classes your values sit in, one UPPER_SNAKE constant each: `GREETINGS` is the class
+`Greetings`, `FLOW_LAYOUT` would be `FlowLayout`. Because `Id implements ManagedId<Holder>`, a declaration's `.in(…)`
+takes only your own holders; any other spelling, or two constants naming classes that differ only by case, is
+refused when the plugin declares the value.
 
 The declaration is `plugin/values/ExampleValues.java`:
 
 ```java
 public static final ManagedParam<Greeting> WELCOME = ManagedValue.param(GreetValue.Id.WELCOME)
-        .in("Greetings")
+        .in(GreetValue.Holder.GREETINGS)
         .startsAs(ExampleValues::welcome)
         .shown("Greetings", "Who the bot greets first", Param.Visibility.PUBLIC)
         .because("This plugin reads this parameter. Change its value in the Runner or Project ▸ Parameters.");
@@ -176,7 +186,7 @@ public static final ManagedParam<Greeting> WELCOME = ManagedValue.param(GreetVal
 The steps are, in order:
 
 1. the mark's id;
-2. the bot's group the parameter is a method of;
+2. the bot's group the parameter is a method of, a constant of your `Holder`;
 3. its first value, as a method reference;
 4. where the Parameters window lists it;
 5. the sentence a user reads when Studio keeps them from renaming or deleting it.

@@ -34,7 +34,7 @@ public final class ExampleValues implements ValueHolder {
 
     /** Who the bot greets first: a method of the bot's {@code Greetings} group in {@code params/}. */
     public static final ManagedParam<Greeting> WELCOME = ManagedValue.param(GreetValue.Id.WELCOME)
-            .in("Greetings")
+            .in(GreetValue.Holder.GREETINGS)
             .startsAs(ExampleValues::welcome)
             .shown("Greetings", "Who the bot greets first", Param.Visibility.PUBLIC)
             .because("This plugin reads this parameter. Change its value in the Runner or Project ▸ Parameters.");
