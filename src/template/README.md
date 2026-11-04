@@ -82,10 +82,11 @@ do not need.
 **Level 3, a managed value** — a value the plugin keeps in the bot's own Java.
 
 - `api/GreetValue` — the plugin's mark (`@ManagedMarker`), with one enum constant per value.
-- `plugin/values/ExampleValues` — `WELCOME`, a `@Param` field Studio writes into the bot's `Greetings` class
-  when the bot adds the plugin (a bot without one gets it under `plugins/<groupId>/<artifactId>/`, from the
-  plugin's coordinate). The Parameters window edits it with the greeting's editor, and the bot reads
-  it as Java, `Greetings.welcome`. `.values(ExampleValues.class)` takes what the class's `values()` lists.
+- `plugin/values/ExampleValues` — `WELCOME`, a parameter Studio writes as a method of the bot's `Greetings`
+  group when the bot adds the plugin, under `params/<groupId>/<artifactId>/` (private to each computer; its
+  starting copy under `starting-params/` is committed). The Parameters window edits it with the greeting's
+  editor, and the bot reads it as Java, `new Greetings().welcome()`. `.values(ExampleValues.class)` takes what
+  the class's `values()` lists.
 
 Every step works this way: it names a holder class, the class implements the step's interface (`TypeHolder`,
 `ValueHolder`, `EditorHolder`, `ToolbarHolder`, …), and that interface's one method lists what it gives. Keep each

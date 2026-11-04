@@ -12,13 +12,14 @@ import java.util.List;
 /**
  * <b>Level 3, a managed value:</b> a value this plugin keeps in the bot's own Java, here a parameter.
  *
- * <p>When a bot adds this plugin, Studio writes the field {@code WELCOME} declares into the bot's class
- * {@code Greetings}, marked {@code @GreetValue(GreetValue.Id.WELCOME)}. A bot without that class gets one, in its
- * package {@code plugins.<the last segment of this plugin's id>}.
- * The Parameters window then edits it with the greeting's own editor, and the bot reads it as plain Java:
+ * <p>When a bot adds this plugin, Studio writes the parameter {@code WELCOME} declares as a method of the bot's
+ * group {@code Greetings}, marked {@code @GreetValue(GreetValue.Id.WELCOME)}, in its package
+ * {@code params.<groupId>.<artifactId>} — private to each computer, with a committed starting copy under
+ * {@code starting-params/}. The Parameters window then edits it with the greeting's own editor, and the bot reads
+ * it as plain Java:
  *
  * <pre>{@code
- * ExampleApi.greet(Greetings.welcome.who());
+ * ExampleApi.greet(new Greetings().welcome().who());
  * }</pre>
  *
  * <p>The steps, in order: the mark's id, the class the field goes in, its first value (a method reference, so
@@ -31,7 +32,7 @@ import java.util.List;
  */
 public final class ExampleValues implements ValueHolder {
 
-    /** Who the bot greets first: a {@code @Param} field in the bot's {@code Greetings} class. */
+    /** Who the bot greets first: a method of the bot's {@code Greetings} group in {@code params/}. */
     public static final ManagedParam<Greeting> WELCOME = ManagedValue.param(GreetValue.Id.WELCOME)
             .in("Greetings")
             .startsAs(ExampleValues::welcome)

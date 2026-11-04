@@ -5,11 +5,13 @@ import com.botmaker.plugin.api.value.Link;
 /**
  * <b>Level 1, a value type:</b> a value this plugin owns, who to greet and how many times.
  *
- * <p>A bot holds one the way it holds any other value — as a {@code @Param} field, which Studio's
- * Parameters window draws with {@code GreetingEditor}:
+ * <p>A bot holds one the way it holds any other value — as a parameter, a method of a {@code @Param} class,
+ * which Studio's Parameters window draws with {@code GreetingEditor}:
  *
  * <pre>{@code
- * @Param public static Greeting welcome = Greeting.to("world").times(2);
+ * public Greeting welcome() {
+ *     return Greeting.to("world").times(2);
+ * }
  * }</pre>
  *
  * <p>That line is the whole of how a greeting is stored. It is Java in the bot's own source, so a rename

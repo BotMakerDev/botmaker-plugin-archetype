@@ -5,6 +5,15 @@ All notable changes to `botmaker-plugin-archetype`.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this module uses
 [semantic versioning](https://semver.org/). `release.sh` refuses to cut a version with no section here.
 
+## [Unreleased]
+
+### Changed
+
+- **`WELCOME` is a method of the bot's `Greetings` group** (2026-11-04): Studio writes it in the bot's
+  `params/<groupId>/<artifactId>/` folder, private to each computer, with a committed starting copy under
+  `starting-params/`. `@GreetValue` targets methods (it targeted fields), and a bot reads the value as
+  `new Greetings().welcome()`. `DECLARE.md`, the template README and the javadoc say so.
+
 ## [0.7.1] — 2026-11-01
 
 ### Changed

@@ -151,7 +151,7 @@ plugin, and finds it again by its mark, never by its name. The mark is `api/Gree
 @Documented
 @ManagedMarker
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Target(ElementType.METHOD)
 public @interface GreetValue {
 
     Id value();
@@ -176,13 +176,15 @@ public static final ManagedParam<Greeting> WELCOME = ManagedValue.param(GreetVal
 The steps are, in order:
 
 1. the mark's id;
-2. the bot class the field goes in;
+2. the bot's group the parameter is a method of;
 3. its first value, as a method reference;
 4. where the Parameters window lists it;
 5. the sentence a user reads when Studio keeps them from renaming or deleting it.
 
-The bot reads the value as plain Java, `Greetings.welcome`. A bot without a `Greetings` class gets one in its
-package `plugins.<your groupId>.<your artifactId>`, each made one package name: lower-cased, every character a package name cannot hold made `_`. This is why the contract is a `compile` dependency in
+The bot reads the value as plain Java, `new Greetings().welcome()`. Studio writes the `@Param` class `Greetings`
+in the bot's package `params.<your groupId>.<your artifactId>`, each made one package name: lower-cased, every
+character a package name cannot hold made `_`. That folder is private to each computer; its starting copy under
+`starting-params/` is committed. This is why the contract is a `compile` dependency in
 `pom.xml`: the bot's code carries `@GreetValue` and `@Param`.
 
 A parameter is one of three shapes. Pick by who changes the value; each entry point ends in its own type:
