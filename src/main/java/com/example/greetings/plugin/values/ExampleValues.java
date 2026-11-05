@@ -23,7 +23,8 @@ import java.util.List;
  * }</pre>
  *
  * <p>The steps, in order: the mark's id, the class the field goes in, its first value (a method reference, so
- * its full type is read off the method), where the Parameters window lists it, and the sentence a user reads
+ * its full type is read off the method), the line the Parameters window shows under it (the window lists it under
+ * its group, {@code Greetings}: there is no other heading), and the sentence a user reads
  * when Studio keeps them from renaming or deleting the field. The plugin names this class once,
  * {@code .values(ExampleValues.class)}, and the host takes what {@link #values()} lists.
  *
@@ -36,7 +37,7 @@ public final class ExampleValues implements ValueHolder {
     public static final ManagedParam<Greeting> WELCOME = ManagedValue.param(GreetValue.Id.WELCOME)
             .in(GreetValue.Holder.GREETINGS)
             .startsAs(ExampleValues::welcome)
-            .shown("Greetings", "Who the bot greets first", Param.Visibility.PUBLIC)
+            .shown("Who the bot greets first", Param.Visibility.PUBLIC)
             .because("This plugin reads this parameter. Change its value in the Runner or Project ▸ Parameters.");
 
     @Override

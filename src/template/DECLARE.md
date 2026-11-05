@@ -179,7 +179,7 @@ The declaration is `plugin/values/ExampleValues.java`:
 public static final ManagedParam<Greeting> WELCOME = ManagedValue.param(GreetValue.Id.WELCOME)
         .in(GreetValue.Holder.GREETINGS)
         .startsAs(ExampleValues::welcome)
-        .shown("Greetings", "Who the bot greets first", Param.Visibility.PUBLIC)
+        .shown("Who the bot greets first", Param.Visibility.PUBLIC)
         .because("This plugin reads this parameter. Change its value in the Runner or Project ▸ Parameters.");
 ```
 
@@ -188,7 +188,8 @@ The steps are, in order:
 1. the mark's id;
 2. the bot's group the parameter is a method of, a constant of your `Holder`;
 3. its first value, as a method reference;
-4. where the Parameters window lists it;
+4. the line the Parameters window shows under it, and who sees it (the window lists it under its group, the class
+   step 2 names);
 5. the sentence a user reads when Studio keeps them from renaming or deleting it.
 
 The bot reads the value as plain Java, `new Greetings().welcome()`. Studio writes the `@Param` class `Greetings`

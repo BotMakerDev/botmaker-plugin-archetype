@@ -9,6 +9,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Changed
 
+- **`WELCOME` names no category** (2026-11-05): `.shown("Who the bot greets first", Param.Visibility.PUBLIC)`; the
+  Parameters window lists it under its group, `Greetings`. `DECLARE.md` follows.
+
 - **The example names its holder by enum** (2026-11-04): `GreetValue` has `enum Id implements ManagedId<Holder>`
   and `enum Holder { GREETINGS }`, and `ExampleValues` writes `.in(GreetValue.Holder.GREETINGS)`; `DECLARE.md`
   follows.

@@ -21,7 +21,7 @@ import java.lang.annotation.Target;
  * @Param
  * public class Greetings {
  *     @GreetValue(GreetValue.Id.WELCOME)
- *     @Param.Shown(category = "Greetings", description = "Who the bot greets first")
+ *     @Param.Shown(description = "Who the bot greets first")
  *     public Greeting welcome() {
  *         return Greeting.to("world");
  *     }
