@@ -18,7 +18,7 @@
     <parent>
         <groupId>com.github.BotMakerDev</groupId>
         <artifactId>botmaker-plugin-parent</artifactId>
-        <version>v0.3.0</version>
+        <version>0.3.1-SNAPSHOT</version>
         <relativePath>../botmaker-plugin-parent/pom.xml</relativePath>
     </parent>
 
@@ -36,7 +36,7 @@
     -->
     <groupId>com.github.BotMakerDev</groupId>
     <artifactId>botmaker-plugin-archetype</artifactId>
-    <version>0.8.0</version>
+    <version>0.8.1-SNAPSHOT</version>
 
     <!-- The name Studio shows for the plugin. -->
     <name>Greeter</name>
