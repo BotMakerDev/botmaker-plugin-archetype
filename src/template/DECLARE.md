@@ -169,7 +169,7 @@ public @interface GreetValue {
 ```
 
 `Holder` names the bot's classes your values sit in, one UPPER_SNAKE constant each: `GREETINGS` is the class
-`Greetings`, `FLOW_LAYOUT` would be `FlowLayout`. Because `Id implements ManagedId<Holder>`, a declaration's `.in(…)`
+`Greetings`, `SCREEN_MAP` would be `ScreenMap`. Because `Id implements ManagedId<Holder>`, a declaration's `.in(…)`
 takes only your own holders; any other spelling, or two constants naming classes that differ only by case, is
 refused when the plugin declares the value.
 
