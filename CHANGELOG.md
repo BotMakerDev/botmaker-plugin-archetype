@@ -9,6 +9,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Changed
 
+- Every file of this repository states its license and copyright by REUSE (`REUSE.toml`, `LICENSES/`), checked by
+  the `reuse` workflow on each push. Its Java carries no SPDX header: a new plugin copies it, and it is the
+  plugin author's.
 - This repository is licensed under PolyForm Noncommercial 1.0.0, copyright LiQiyeDev: free for any noncommercial
   use, commercial use needs a license from LiQiyeDev. Releases up to v0.10.0 stay CC0 1.0. A new plugin's copy
   carries no licence: its author picks one.
