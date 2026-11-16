@@ -5,6 +5,14 @@ All notable changes to `botmaker-plugin-archetype`.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this module uses
 [semantic versioning](https://semver.org/). `release.sh` refuses to cut a version with no section here.
 
+## [Unreleased]
+
+### Changed
+
+- This repository is licensed under PolyForm Noncommercial 1.0.0, copyright LiQiyeDev: free for any noncommercial
+  use, commercial use needs a license from LiQiyeDev. Releases up to v0.10.0 stay CC0 1.0. A new plugin's copy
+  carries no licence: its author picks one.
+
 ## [0.10.0] — 2026-11-16
 
 ### Changed
