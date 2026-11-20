@@ -86,4 +86,4 @@ says which *mistake* it prevents: that renaming `ExamplePlugin` needs the pom's 
 editor is delegated so a headless host can load its declaration, that a call-site predicate must decline a
 Parameters row. That is the same rule the contract and the toolkit keep.
 
-Published through JitPack. Releases are cut from the umbrella with `../release.sh --plugin-archetype <version>`.
+Published through JitPack. Releases are cut from the umbrella with `sluice --plugin-archetype <version>`.
