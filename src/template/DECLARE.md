@@ -179,7 +179,7 @@ The declaration is `plugin/values/ExampleValues.java`:
 public static final ManagedParam<Greeting> WELCOME = ManagedValue.param(GreetValue.Id.WELCOME)
         .in(GreetValue.Holder.GREETINGS)
         .startsAs(ExampleValues::welcome)
-        .shown("Who the bot greets first", Param.Visibility.PUBLIC)
+        .shown("Who the bot greets first")
         .because("This plugin reads this parameter. Change its value in the Runner or Project ▸ Parameters.");
 ```
 

@@ -3,7 +3,6 @@ package com.example.greetings.plugin.values;
 import com.example.greetings.api.GreetValue;
 import com.example.greetings.api.Greeting;
 import com.botmaker.plugin.api.ValueHolder;
-import com.botmaker.plugin.api.params.Param;
 import com.botmaker.plugin.api.source.ManagedParam;
 import com.botmaker.plugin.api.source.ManagedValue;
 
@@ -37,7 +36,7 @@ public final class ExampleValues implements ValueHolder {
     public static final ManagedParam<Greeting> WELCOME = ManagedValue.param(GreetValue.Id.WELCOME)
             .in(GreetValue.Holder.GREETINGS)
             .startsAs(ExampleValues::welcome)
-            .shown("Who the bot greets first", Param.Visibility.PUBLIC)
+            .shown("Who the bot greets first")
             .because("This plugin reads this parameter. Change its value in the Runner or Project ▸ Parameters.");
 
     @Override

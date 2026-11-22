@@ -5,6 +5,12 @@ All notable changes to `botmaker-plugin-archetype`.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this module uses
 [semantic versioning](https://semver.org/). `release.sh` refuses to cut a version with no section here.
 
+## [Unreleased]
+
+### Changed
+
+- The example parameter is declared with `shown(description)`: the contract removed a parameter's visibility.
+
 ## [0.11.1] — 2026-11-22
 
 ### Changed
